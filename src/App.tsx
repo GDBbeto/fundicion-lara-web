@@ -1,10 +1,15 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom'; // Importa BrowserRouter
+
+import NavigationMenu from 'components/NavigationMenu';
 
 function App() {
   return (
-    <div className="App">
-      Pagina inicial
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <NavigationMenu />
+      </div>
+    </BrowserRouter>
   );
 }
 
