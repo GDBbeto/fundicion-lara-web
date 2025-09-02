@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React from 'react';
 
 import {
   ListItem,
@@ -8,16 +8,19 @@ import {
 } from '@mui/material';
 
 import { menuItemStyle } from '../styles';
+import { MenuItem } from '../types';
 
 interface Props {
   index: number;
   open: boolean;
-  item: { text: string; icon: JSX.Element };
+  item: MenuItem;
   selectedIndex: number;
   handleClick: () => void;
 }
 
 const ItemMenu = ({ open, item, index, selectedIndex, handleClick }: Props) => {
+  const Icon = item.icon;
+
   return (
     <ListItem disablePadding sx={{ display: 'block' }}>
       <ListItemButton
@@ -33,7 +36,7 @@ const ItemMenu = ({ open, item, index, selectedIndex, handleClick }: Props) => {
             justifyContent: 'center',
           }}
         >
-          {item.icon}
+          <Icon />
         </ListItemIcon>
         <ListItemText
           primary={item.text}

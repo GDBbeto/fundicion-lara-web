@@ -9,6 +9,15 @@ const theme = createTheme({
       contrastText: '#fff', // Color de texto para el color primario
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 960,
+      lg: 1280,
+      xl: 1600,
+    },
+  },
 });
 
 export default theme;

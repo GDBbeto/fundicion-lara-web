@@ -35,7 +35,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }));
@@ -43,26 +43,17 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 // Estilo para la AppBar
 export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme, open: open2 }) => ({
+})<AppBarProps>(({ theme, open }) => ({
+  //zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
+    duration: open
+      ? theme.transitions.duration.enteringScreen
+      : theme.transitions.duration.leavingScreen,
   }),
-  backgroundColor: theme.palette.common.white, // Color azul profesional
-  width: open2 ? `calc(100% - ${drawerWidth}px)` : `calc(100% - 60px)`,
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
+  marginLeft: open ? drawerWidth : 0,
+  width: open ? `calc(100% - ${drawerWidth}px)` : '100%',
+  backgroundColor: theme.palette.background.default,
 }));
 
 // Estilo para el Drawer

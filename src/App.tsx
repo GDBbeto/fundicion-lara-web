@@ -4,7 +4,7 @@ import { CssBaseline } from '@mui/material';
 
 import { ThemeProvider } from '@mui/material/styles';
 
-import NavigationMenu from 'components/NavigationMenu';
+import SideBarMenu from 'components/SideBarMenu';
 
 import theme from 'theme';
 
@@ -14,7 +14,7 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <div className="App">
-          <NavigationMenu />
+          <SideBarMenu />
         </div>
       </BrowserRouter>
     </ThemeProvider>
