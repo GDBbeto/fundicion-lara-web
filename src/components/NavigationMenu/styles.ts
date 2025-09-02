@@ -35,7 +35,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'flex-end',
+  justifyContent: 'center',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }));
@@ -43,15 +43,13 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
 // Estilo para la AppBar
 export const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
+})<AppBarProps>(({ theme, open: open2 }) => ({
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  backgroundColor: '#3f51b5', // Color azul profesional
-  boxShadow: '0 4px 10px rgba(0, 0, 0, 0.1)', // Sombra suave
-  color: theme.palette.common.white,
+  backgroundColor: theme.palette.common.white, // Color azul profesional
+  width: open2 ? `calc(100% - ${drawerWidth}px)` : `calc(100% - 60px)`,
   variants: [
     {
       props: ({ open }) => open,
@@ -75,7 +73,8 @@ export const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  backgroundColor: '#ffffff', // Blanco para el fondo del Drawer
+  // backgroundColor: '#ffffff', // Blanco para el fondo del Drawer
+  // backgroundColor: '#3f51b5', // Blanco para el fondo del Drawer
   boxShadow: '2px 0 10px rgba(0, 0, 0, 0.15)', // Sombra sutil
   variants: [
     {

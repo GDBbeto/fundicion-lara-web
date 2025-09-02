@@ -5,14 +5,11 @@ import {
   Box,
   Toolbar,
   List,
-  CssBaseline,
   Typography,
   Divider,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
+  Avatar,
   ListItemText,
+  ListItem,
 } from '@mui/material';
 
 import {
@@ -23,12 +20,10 @@ import {
   People as PeopleIcon,
   Settings as SettingsIcon,
   ExitToApp as ExitToAppIcon,
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 
-import { DrawerHeader, AppBar, Drawer, menuItemStyle } from './styles';
+import { DrawerHeader, AppBar, Drawer } from './styles';
+import ItemMenu from './ItemMenu';
 
 const menuItems = [
   { text: 'Inicio', icon: <HomeIcon /> },
@@ -50,106 +45,85 @@ export default function NavigationMenu() {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} elevation={0}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
+          <Typography
+            variant="h5"
+            noWrap
+            component="div"
+            color="primary"
             sx={{
-              marginRight: 5,
-              display: open ? 'none' : 'block',
+              fontWeight: 600,
+              letterSpacing: 0.5,
+              textTransform: 'capitalize',
             }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
             {menuItems[selectedIndex].text}
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
+      <Drawer
+        variant="permanent"
+        open={open}
+        onMouseEnter={() => {
+          handleDrawerOpen();
+        }}
+        onMouseLeave={() => {
+          handleDrawerClose();
+        }}
+      >
+        <List>
+          <ListItem
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              px: 2,
+              paddingLeft: '12px',
+            }}
+          >
+            <Avatar
+              sx={{
+                bgcolor: theme.palette.primary.main,
+              }}
+            >
+              RA
+            </Avatar>
+            <ListItemText
+              primary="Roberto Aguilar"
+              secondary="Texto"
+              sx={{
+                opacity: open ? 1 : 0,
+                fontWeight: 'bold',
+                transition: 'opacity 0.3s ease',
+                ml: open ? 2 : 0,
+              }}
+            />
+          </ListItem>
+        </List>
+
         <List>
           {menuItems.map((item, index) => (
-            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                onClick={() => handleListItemClick(index)} // Cambiar la opción seleccionada
-                sx={{
-                  ...menuItemStyle,
-                  backgroundColor:
-                    selectedIndex === index ? '#d0d0d0' : 'transparent', // Resalta la opción seleccionada
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    justifyContent: 'center',
-                    color: '#3f51b5', // Cambia el color del ícono
-                    '&:hover': {
-                      color: theme.palette.primary.main, // Color de ícono al pasar el mouse
-                    },
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.text}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    fontWeight: open ? 'bold' : 'normal',
-                    transition: 'opacity 0.3s ease',
-                    color: '#333', // Cambiar color de texto
-                    ml: open ? 2 : 0,
-                  }}
-                />
-              </ListItemButton>
-            </ListItem>
+            <ItemMenu
+              key={index}
+              open={open}
+              item={item}
+              index={index}
+              selectedIndex={selectedIndex}
+              handleClick={() => handleListItemClick(index)}
+            />
           ))}
         </List>
         <Divider />
         <Box sx={{ flexGrow: 1 }} />
         {/* Opción de cerrar sesión */}
         <List>
-          <ListItem disablePadding sx={{ display: 'block' }}>
-            <ListItemButton
-              sx={{
-                ...menuItemStyle,
-                backgroundColor: 'transparent',
-              }}
-              onClick={handleLogout}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  justifyContent: 'center',
-                  color: '#e91e63', // Color rojo para Cerrar sesión
-                }}
-              >
-                <ExitToAppIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={'Cerrar sesión'}
-                sx={{
-                  opacity: open ? 1 : 0,
-                  fontWeight: 'bold',
-                  color: '#e91e63', // Rojo para el texto de Cerrar sesión
-                  ml: open ? 2 : 0,
-                }}
-              />
-            </ListItemButton>
-          </ListItem>
+          <ItemMenu
+            open={open}
+            item={{ text: 'Cerrar sesión', icon: <ExitToAppIcon /> }}
+            index={-1}
+            selectedIndex={selectedIndex}
+            handleClick={handleLogout}
+          />
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
