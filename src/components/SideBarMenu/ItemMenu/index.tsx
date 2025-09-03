@@ -27,8 +27,8 @@ const ItemMenu = ({ open, item, index, selectedIndex, handleClick }: Props) => {
         onClick={handleClick}
         sx={{
           ...menuItemStyle,
-          backgroundColor: selectedIndex === index ? '#d0d0d0' : 'transparent',
         }}
+        selected={selectedIndex === index}
       >
         <ListItemIcon
           sx={{

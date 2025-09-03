@@ -66,7 +66,7 @@ export const Drawer = styled(MuiDrawer, {
   boxSizing: 'border-box',
   // backgroundColor: '#ffffff', // Blanco para el fondo del Drawer
   // backgroundColor: '#3f51b5', // Blanco para el fondo del Drawer
-  boxShadow: '2px 0 10px rgba(0, 0, 0, 0.15)', // Sombra sutil
+  // boxShadow: '2px 0 10px rgba(0, 0, 0, 0.15)', // Sombra sutil
   variants: [
     {
       props: ({ open }) => open,
@@ -88,5 +88,5 @@ export const Drawer = styled(MuiDrawer, {
 export const menuItemStyle = {
   minHeight: 48,
   px: 2.5,
-  '&:hover': { backgroundColor: '#f1f1f1' },
+  // '&:hover': { backgroundColor: '#f1f1f1' },
 };

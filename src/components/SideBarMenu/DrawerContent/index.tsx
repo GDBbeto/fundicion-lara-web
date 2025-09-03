@@ -12,6 +12,8 @@ import {
 
 import { ExitToApp as ExitToAppIcon } from '@mui/icons-material';
 
+import { useAuth } from 'hooks';
+
 import ItemMenu from '../ItemMenu';
 import { MenuItem } from '../types';
 
@@ -29,8 +31,9 @@ const DrawerContent = ({
   handleListItemClick,
 }: Props) => {
   const theme = useTheme();
+  const { logout } = useAuth();
 
-  const handleLogout = () => console.log('Cerrando sesión...');
+  const handleLogout = () => logout();
 
   return (
     <>
@@ -79,7 +82,12 @@ const DrawerContent = ({
       <List>
         <ItemMenu
           open={open}
-          item={{ id: 'logOut', text: 'Cerrar sesión', icon: ExitToAppIcon }}
+          item={{
+            id: 'logOut',
+            path: '',
+            text: 'Cerrar sesión',
+            icon: ExitToAppIcon,
+          }}
           index={-1}
           selectedIndex={selectedIndex}
           handleClick={handleLogout}

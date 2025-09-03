@@ -1,4 +1,7 @@
 import * as React from 'react';
+
+import { useNavigate } from 'react-router-dom';
+
 import { useTheme } from '@mui/material/styles';
 
 import {
@@ -13,30 +16,28 @@ import {
 
 import {
   Home as HomeIcon,
-  ShoppingCart as ShoppingCartIcon,
-  Payment as PaymentIcon,
-  AddShoppingCart as AddShoppingCartIcon,
-  People as PeopleIcon,
-  Settings as SettingsIcon,
   Menu as MenuIcon,
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
+  CategoryOutlined as CategoryOutlinedIcon,
 } from '@mui/icons-material';
-
 import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles'; // 👈 Renombrado para claridad
 import DrawerContent from './DrawerContent';
 
 const menuItems = [
-  { id: 'home', text: 'Inicio', icon: HomeIcon },
-  { id: 'home1', text: 'Ventas', icon: ShoppingCartIcon },
-  { id: 'home2', text: 'Compras', icon: PaymentIcon },
-  { id: 'home3', text: 'Productos', icon: AddShoppingCartIcon },
-  { id: 'home4', text: 'Otros gastos', icon: PeopleIcon },
-  { id: 'home5', text: 'Administración', icon: SettingsIcon },
+  { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
+  {
+    id: 'home3',
+    path: '/productos',
+    text: 'Productos',
+    icon: CategoryOutlinedIcon,
+  },
 ];
 
 export default function SideBarMenu() {
   const theme = useTheme();
+  const navigate = useNavigate();
+
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
@@ -45,6 +46,7 @@ export default function SideBarMenu() {
   const handleDrawerClose = () => setDrawerOpen(false);
   const handleListItemClick = (index: number) => {
     setSelectedIndex(index);
+    navigate(menuItems[index].path);
     if (isSmallScreen) handleDrawerClose();
   };
 
@@ -55,7 +57,7 @@ export default function SideBarMenu() {
     handleListItemClick,
     userName: 'Roberto Aguilar',
   };
-
+  // #dadada o # #F9F9F9
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={drawerOpen} elevation={0}>
@@ -63,7 +65,7 @@ export default function SideBarMenu() {
           {!drawerOpen && (
             <IconButton
               color="primary"
-              aria-label="drawerOpen drawer"
+              aria-label="open drawer"
               onClick={handleDrawerOpen}
               edge="start"
               sx={{ mr: 2 }}
@@ -121,12 +123,6 @@ export default function SideBarMenu() {
           <DrawerContent {...drawerContentProps} />
         </CustomDrawer>
       )}
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Typography sx={{ marginBottom: 2 }}>
-          Este es el contenido de la aplicación. Puedes agregar más aquí.
-        </Typography>
-      </Box>
     </Box>
   );
 }
