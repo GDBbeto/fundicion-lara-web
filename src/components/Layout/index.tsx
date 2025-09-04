@@ -1,21 +1,33 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
-
+import { Box, Toolbar, Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import SideBarMenu from 'components/SideBarMenu';
-import { DrawerHeader } from 'components/SideBarMenu/styles';
 
 const Layout = () => {
   return (
-    <Grid container>
+    <Box sx={{ display: 'flex' }}>
+      {/* Menú lateral + AppBar */}
       <SideBarMenu />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <Outlet />
+      {/* Contenido principal */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: '100%',
+        }}
+      >
+        {/* Este Toolbar ocupa el espacio del AppBar */}
+        <Toolbar />
+
+        {/* Puedes envolver el contenido si deseas padding lateral responsivo */}
+        <Container maxWidth="xl" disableGutters>
+          <Outlet />
+        </Container>
       </Box>
-    </Grid>
+    </Box>
   );
 };
 

@@ -23,6 +23,7 @@ import {
 } from '@mui/icons-material';
 import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles'; // 👈 Renombrado para claridad
 import DrawerContent from './DrawerContent';
+import { colors } from 'commons/colors';
 
 const menuItems = [
   { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
@@ -57,7 +58,7 @@ export default function SideBarMenu() {
     handleListItemClick,
     userName: 'Roberto Aguilar',
   };
-  // #dadada o # #F9F9F9
+
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="fixed" open={drawerOpen} elevation={0}>
@@ -80,9 +81,12 @@ export default function SideBarMenu() {
             component="div"
             color="primary"
             sx={{
+              transition: 'margin-left 0.3s ease', // <- transición suave
+              ml: !drawerOpen && !isSmallScreen ? 3 : undefined,
               fontWeight: 600,
               letterSpacing: 0.5,
               textTransform: 'capitalize',
+              flexGrow: 1, // <-- evita el salto al mover el drawer
             }}
           >
             {menuItems[selectedIndex].text}
@@ -96,11 +100,22 @@ export default function SideBarMenu() {
           open={drawerOpen}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Mejora el rendimiento en móviles
+            keepMounted: true,
+          }}
+          slotProps={{
+            paper: {
+              sx: {
+                backgroundColor: colors.darkBlue,
+                color: theme.palette.common.white,
+              },
+            },
           }}
         >
           <DrawerHeader>
-            <IconButton onClick={handleDrawerClose}>
+            <IconButton
+              onClick={handleDrawerClose}
+              sx={{ color: theme.palette.common.white }}
+            >
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon />
               ) : (

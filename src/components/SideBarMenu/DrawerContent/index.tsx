@@ -37,30 +37,49 @@ const DrawerContent = ({
 
   return (
     <>
-      <List>
-        <ListItem
+      <ListItem
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          px: 2,
+          paddingLeft: '12px',
+          paddingBottom: 0,
+          paddingTop: 0,
+          marginTop: 2,
+        }}
+      >
+        <Avatar
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            px: 2,
-            paddingLeft: '12px',
-            paddingBottom: 0,
-            paddingTop: 0,
+            bgcolor: theme.palette.common.white,
+            color: theme.palette.primary.main,
           }}
         >
-          <Avatar sx={{ bgcolor: theme.palette.primary.main }}>RA</Avatar>
-          <ListItemText
-            primary="Roberto Aguilar"
-            secondary="Texto"
-            sx={{
-              opacity: open ? 1 : 0,
-              fontWeight: 'bold',
-              transition: 'opacity 0.3s ease',
-              ml: open ? 2 : 0,
-            }}
-          />
-        </ListItem>
-      </List>
+          RA
+        </Avatar>
+        <ListItemText
+          primary="Roberto Aguilar"
+          secondary="Administrador"
+          sx={{
+            ml: open ? 2 : 0,
+            opacity: open ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
+          slotProps={{
+            primary: {
+              sx: {
+                color: theme.palette.common.white,
+                fontWeight: 500,
+              },
+            },
+            secondary: {
+              sx: {
+                color: theme.palette.common.white,
+                opacity: 0.8,
+              },
+            },
+          }}
+        />
+      </ListItem>
 
       <Divider />
 

@@ -2,6 +2,7 @@ import { styled, Theme, CSSObject } from '@mui/material/styles';
 
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import { colors } from 'commons/colors';
 
 const drawerWidth = 240;
 
@@ -56,7 +57,8 @@ export const AppBar = styled(MuiAppBar, {
   backgroundColor: theme.palette.background.default,
 }));
 
-// Estilo para el Drawer
+// styles.ts
+
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({
@@ -64,22 +66,27 @@ export const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: 'nowrap',
   boxSizing: 'border-box',
-  // backgroundColor: '#ffffff', // Blanco para el fondo del Drawer
-  // backgroundColor: '#3f51b5', // Blanco para el fondo del Drawer
-  // boxShadow: '2px 0 10px rgba(0, 0, 0, 0.15)', // Sombra sutil
   variants: [
     {
       props: ({ open }) => open,
       style: {
         ...openedMixin(theme),
-        '& .MuiDrawer-paper': openedMixin(theme),
+        '& .MuiDrawer-paper': {
+          ...openedMixin(theme),
+          backgroundColor: colors.darkBlue,
+          color: theme.palette.common.white,
+        },
       },
     },
     {
       props: ({ open }) => !open,
       style: {
         ...closedMixin(theme),
-        '& .MuiDrawer-paper': closedMixin(theme),
+        '& .MuiDrawer-paper': {
+          ...closedMixin(theme),
+          backgroundColor: colors.darkBlue,
+          color: theme.palette.common.white,
+        },
       },
     },
   ],
@@ -88,5 +95,19 @@ export const Drawer = styled(MuiDrawer, {
 export const menuItemStyle = {
   minHeight: 48,
   px: 2.5,
-  // '&:hover': { backgroundColor: '#f1f1f1' },
+  borderRadius: '6px',
+  '&.Mui-selected': {
+    backgroundColor: colors.darkBlue200,
+    color: colors.white,
+    '& .MuiListItemIcon-root': {
+      color: colors.lightBlue,
+    },
+  },
+  '&:hover': {
+    backgroundColor: colors.darkerBlue,
+    color: colors.white,
+    '& .MuiListItemIcon-root': {
+      color: colors.lightBlue,
+    },
+  },
 };

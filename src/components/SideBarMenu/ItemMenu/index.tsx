@@ -9,6 +9,7 @@ import {
 
 import { menuItemStyle } from '../styles';
 import { MenuItem } from '../types';
+import { colors } from 'commons/colors';
 
 interface Props {
   index: number;
@@ -27,6 +28,7 @@ const ItemMenu = ({ open, item, index, selectedIndex, handleClick }: Props) => {
         onClick={handleClick}
         sx={{
           ...menuItemStyle,
+          color: selectedIndex === index ? colors.white : colors.blueGreyLight,
         }}
         selected={selectedIndex === index}
       >
@@ -34,17 +36,27 @@ const ItemMenu = ({ open, item, index, selectedIndex, handleClick }: Props) => {
           sx={{
             minWidth: 0,
             justifyContent: 'center',
+            color:
+              selectedIndex === index ? colors.lightBlue : colors.blueGreyLight,
           }}
         >
           <Icon />
         </ListItemIcon>
+
         <ListItemText
           primary={item.text}
           sx={{
             opacity: open ? 1 : 0,
-            fontWeight: 'bold',
-            transition: 'opacity 0.3s ease',
             ml: open ? 2 : 0,
+            transition: 'opacity 0.3s ease',
+            span: {
+              fontWeight: 500,
+              fontSize: '0.95rem',
+              color:
+                selectedIndex === index
+                  ? colors.lightBlue
+                  : colors.blueGreyLight,
+            },
           }}
         />
       </ListItemButton>

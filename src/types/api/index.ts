@@ -1,0 +1,13 @@
+export interface ApiResponse<T> {
+  status: string;
+  message: string;
+  pagination?: Pagination | null;
+  data: T;
+}
+
+export interface Pagination {
+  page: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+}

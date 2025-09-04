@@ -3,8 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import PublicRoute from 'router/PublicRoute';
 import PrivateRoute from 'router/PrivateRoute';
+import Layout from 'components/Layout';
 
-const Layout = lazy(() => import('components/Layout'));
 const Login = lazy(() => import('views/Login'));
 const Home = lazy(() => import('views/Home'));
 const Productos = lazy(() => import('views/Productos'));
