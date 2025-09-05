@@ -1,0 +1,77 @@
+// components/ui/CustomModal.tsx
+
+import React from 'react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+  Box,
+  useTheme,
+} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
+interface CustomModalProps {
+  open: boolean;
+  title: string;
+  handleClose: () => void;
+  children: React.ReactNode;
+  maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  fullWidth?: boolean;
+}
+
+const CustomModal: React.FC<CustomModalProps> = ({
+  open,
+  title,
+  handleClose,
+  children,
+  maxWidth = 'sm',
+  fullWidth = true,
+}) => {
+  const theme = useTheme();
+
+  return (
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      fullWidth={fullWidth}
+      maxWidth={maxWidth}
+      aria-labelledby="customized-dialog-title"
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          padding: 2,
+          backgroundColor: theme.palette.background.paper,
+        },
+      }}
+      BackdropProps={{
+        sx: {
+          backgroundColor: 'rgba(27, 38, 59, 0.5)', // darkBlue con opacidad
+        },
+      }}
+    >
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        px={1.5}
+      >
+        <DialogTitle
+          id="customized-dialog-title"
+          sx={{ p: 0, fontWeight: 600, flexGrow: 1 }}
+        >
+          {title}
+        </DialogTitle>
+        <IconButton aria-label="close" onClick={handleClose} color="primary">
+          <CloseIcon />
+        </IconButton>
+      </Box>
+
+      <DialogContent dividers sx={{ mt: 1 }}>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default CustomModal;

@@ -1,5 +1,4 @@
-import type { Pagination } from 'types/api';
-import type { Product } from 'types/api/product';
+import type { Pagination, Product } from 'types/api';
 
 export interface ProductContextType {
   search: string;

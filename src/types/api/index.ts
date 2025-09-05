@@ -1,3 +1,5 @@
+export * from './product';
+
 export interface ApiResponse<T> {
   status: string;
   message: string;

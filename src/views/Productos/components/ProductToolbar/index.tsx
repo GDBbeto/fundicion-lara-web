@@ -5,12 +5,15 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { useDebounce } from 'use-debounce';
 
-import useProductos from 'views/Productos/hooks/useProductos';
 import SearchInput from 'components/shared/SearchInput';
+
+import useProductos from 'views/Productos/hooks/useProductos';
+import ProductFormModal from '../ProductFormModal';
 
 const ProductToolbar = () => {
   const theme = useTheme();
   const isExactSm = useMediaQuery(theme.breakpoints.only('sm'));
+  const [open, setOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
@@ -18,7 +21,7 @@ const ProductToolbar = () => {
   const { setSearch, products } = useProductos();
 
   const handleAddProduct = () => {
-    alert('Agregar producto (modal o navegación)');
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -50,6 +53,15 @@ const ProductToolbar = () => {
           </Button>
         </Grid>
       </Grid>
+      <ProductFormModal
+        open={open}
+        product={null} // opcional
+        handleClose={() => setOpen(false)}
+        onSubmit={(data) => {
+          console.log('Guardar', data);
+          setOpen(false);
+        }}
+      />
     </Box>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card, CardMedia } from '@mui/material';
 
-import { Product } from 'types/api/product';
+import type { Product } from 'types/api';
+
 import fallbackImage from 'assets/images/product-placeholder.png';
 
 import { cardStyles, cardMediaStyles } from './styles';

@@ -7,7 +7,7 @@ import SellIcon from '@mui/icons-material/Sell';
 
 import { NumericFormat } from 'react-number-format';
 
-import { Product } from 'types/api/product';
+import type { Product } from 'types/api';
 
 interface Props {
   product: Product;

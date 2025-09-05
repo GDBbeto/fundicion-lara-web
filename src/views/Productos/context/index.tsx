@@ -1,7 +1,6 @@
 import React, { useState, createContext } from 'react';
 
-import type { Product } from 'types/api/product';
-import type { Pagination } from 'types/api';
+import type { Pagination, Product } from 'types/api';
 
 import { ProductContextType } from './types';
 

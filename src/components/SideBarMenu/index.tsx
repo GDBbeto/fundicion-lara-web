@@ -1,8 +1,5 @@
-import * as React from 'react';
-
-import { useNavigate } from 'react-router-dom';
-
-import { useTheme } from '@mui/material/styles';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import {
   Box,
@@ -13,7 +10,6 @@ import {
   Drawer as MuiDrawer,
   Divider,
 } from '@mui/material';
-
 import {
   Home as HomeIcon,
   Menu as MenuIcon,
@@ -21,43 +17,61 @@ import {
   ChevronLeft as ChevronLeftIcon,
   CategoryOutlined as CategoryOutlinedIcon,
 } from '@mui/icons-material';
-import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles'; // 👈 Renombrado para claridad
-import DrawerContent from './DrawerContent';
+
+import { useTheme } from '@mui/material/styles';
+
 import { colors } from 'commons/colors';
+
+import DrawerContent from './DrawerContent';
+
+import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles';
 
 const menuItems = [
   { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
   {
-    id: 'home3',
+    id: 'products',
     path: '/productos',
     text: 'Productos',
     icon: CategoryOutlinedIcon,
   },
 ];
 
-export default function SideBarMenu() {
+const SideBarMenu = () => {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState<number>(0);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'), {
+    noSsr: true,
+  });
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleDrawerOpen = () => setDrawerOpen(true);
-  const handleDrawerClose = () => setDrawerOpen(false);
-  const handleListItemClick = (index: number) => {
-    setSelectedIndex(index);
-    navigate(menuItems[index].path);
-    if (isSmallScreen) handleDrawerClose();
-  };
+  const handleDrawerOpen = useCallback(() => setDrawerOpen(true), []);
+  const handleDrawerClose = useCallback(() => setDrawerOpen(false), []);
 
-  const drawerContentProps = {
-    open: drawerOpen,
-    menuItems,
-    selectedIndex,
-    handleListItemClick,
-    userName: 'Roberto Aguilar',
-  };
+  const selectedIndex = useMemo(() => {
+    const index = menuItems.findIndex((item) => item.path === pathname);
+    return index >= 0 ? index : 0;
+  }, [pathname]);
+
+  const handleListItemClick = useCallback(
+    (index: number) => {
+      navigate(menuItems[index].path);
+      if (isSmallScreen) handleDrawerClose();
+    },
+    [navigate, isSmallScreen, handleDrawerClose],
+  );
+
+  const drawerContentProps = useMemo(
+    () => ({
+      open: drawerOpen,
+      menuItems,
+      selectedIndex,
+      handleListItemClick,
+      userName: 'Roberto Aguilar',
+    }),
+    [drawerOpen, selectedIndex, handleListItemClick],
+  );
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -81,15 +95,15 @@ export default function SideBarMenu() {
             component="div"
             color="primary"
             sx={{
-              transition: 'margin-left 0.3s ease', // <- transición suave
-              ml: !drawerOpen && !isSmallScreen ? 3 : undefined,
+              ml: !drawerOpen && !isSmallScreen ? 3 : 0,
               fontWeight: 600,
               letterSpacing: 0.5,
               textTransform: 'capitalize',
-              flexGrow: 1, // <-- evita el salto al mover el drawer
+              flexGrow: 1,
+              transition: 'margin-left 0.3s ease',
             }}
           >
-            {menuItems[selectedIndex].text}
+            {menuItems[selectedIndex]?.text ?? ''}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -99,9 +113,7 @@ export default function SideBarMenu() {
           variant="temporary"
           open={drawerOpen}
           onClose={handleDrawerClose}
-          ModalProps={{
-            keepMounted: true,
-          }}
+          ModalProps={{ keepMounted: true }}
           slotProps={{
             paper: {
               sx: {
@@ -140,4 +152,6 @@ export default function SideBarMenu() {
       )}
     </Box>
   );
-}
+};
+
+export default SideBarMenu;
