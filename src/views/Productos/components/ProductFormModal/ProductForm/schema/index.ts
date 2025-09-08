@@ -1,5 +1,3 @@
-// src/validations/productSchema.ts
-
 import * as yup from 'yup';
 import { validationMessages as msg } from 'commons/messages';
 
@@ -35,7 +33,7 @@ const schema = yup.object().shape({
     .required(msg.required),
 
   description: yup.string().notRequired(),
-  productId: yup.string().notRequired(),
+  productId: yup.number().notRequired(),
   avatar: yup.string().notRequired(),
 });
 

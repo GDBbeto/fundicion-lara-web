@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom'; // Importa BrowserRouter
+import { BrowserRouter as Router } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 
 import { ThemeProvider } from '@mui/material/styles';

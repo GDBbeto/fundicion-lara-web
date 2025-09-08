@@ -62,7 +62,12 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             name="description"
             control={control}
             render={({ field }) => (
-              <CustomTextField {...field} label="Descripción" multiline />
+              <CustomTextField
+                {...field}
+                label="Descripción"
+                multiline
+                rows={2}
+              />
             )}
           />
         </Grid>

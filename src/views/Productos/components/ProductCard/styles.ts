@@ -16,7 +16,7 @@ export const cardMediaStyles: SxProps<Theme> = {
   height: 200,
   width: '100%',
   objectFit: 'contain',
-  backgroundColor: '#f5f5f5',
+  backgroundColor: 'grey.50',
   p: 1,
 };
 

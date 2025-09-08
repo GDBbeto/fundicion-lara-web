@@ -57,8 +57,6 @@ export const AppBar = styled(MuiAppBar, {
   backgroundColor: theme.palette.background.default,
 }));
 
-// styles.ts
-
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme }) => ({

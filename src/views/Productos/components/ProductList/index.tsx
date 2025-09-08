@@ -1,15 +1,27 @@
 import React from 'react';
-import { Grid, Pagination, Typography, Box } from '@mui/material';
-import Inventory2Icon from '@mui/icons-material/Inventory2'; // Icono caja vacía
-
-import useProductos from 'views/Productos/hooks/useProductos';
+import { Grid, Typography, Box } from '@mui/material';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 import { colors } from 'commons/colors';
+
+import useProductos from 'views/Productos/hooks/useProductos';
+import CustomPagination from 'components/shared/CustomPagination';
 
 import ProductCard from '../ProductCard';
 
 const ProductList = () => {
   const { products, pagination, setPage } = useProductos();
+
+  const handlePageChange = (_: unknown, newPage: number) => {
+    setPage(newPage + 1);
+  };
+
+  const handleRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    //  setPageSize(parseInt(event.target.value, 10));
+    setPage(1);
+  };
 
   if (products.length === 0) {
     return (
@@ -17,7 +29,7 @@ const ProductList = () => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        height="70vh" // Ocupa buena parte de la pantalla
+        height="70vh"
       >
         <Box
           display="flex"
@@ -63,15 +75,12 @@ const ProductList = () => {
           </Grid>
         ))}
       </Grid>
-
-      <Box display="flex" justifyContent="center" mt={4}>
-        <Pagination
-          count={pagination.totalPages}
-          page={pagination.page}
-          onChange={(_, value) => setPage(value)}
-          color="primary"
-        />
-      </Box>
+      <Box mt={2} />
+      <CustomPagination
+        pagination={pagination}
+        handlePageChange={handlePageChange}
+        handleRowsPerPageChange={handleRowsPerPageChange}
+      />
     </Box>
   );
 };

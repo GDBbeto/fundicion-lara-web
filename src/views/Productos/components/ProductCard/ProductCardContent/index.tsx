@@ -29,7 +29,7 @@ const ProductCardContent = ({ product }: Props) => {
           <Box display="flex" alignItems="center">
             <InventoryIcon fontSize="small" color="action" sx={{ mr: 1 }} />
             <Typography variant="body2" fontWeight={500} noWrap>
-              Stock:&nbsp;
+              Stock:
             </Typography>
           </Box>
           <Typography
@@ -38,7 +38,7 @@ const ProductCardContent = ({ product }: Props) => {
             fontWeight={600}
             color="primary"
           >
-            {product.stock}
+            {product.stock}&nbsp;{product.unidad || ''}
           </Typography>
         </Box>
 

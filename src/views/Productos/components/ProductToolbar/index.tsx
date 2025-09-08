@@ -25,7 +25,7 @@ const ProductToolbar = () => {
   };
 
   useEffect(() => {
-    setSearch(debouncedSearch); // Aplica búsqueda al contexto
+    setSearch(debouncedSearch);
   }, [debouncedSearch, setSearch]);
 
   return (
@@ -53,15 +53,17 @@ const ProductToolbar = () => {
           </Button>
         </Grid>
       </Grid>
-      <ProductFormModal
-        open={open}
-        product={null} // opcional
-        handleClose={() => setOpen(false)}
-        onSubmit={(data) => {
-          console.log('Guardar', data);
-          setOpen(false);
-        }}
-      />
+      {open ? (
+        <ProductFormModal
+          open={open}
+          product={null}
+          handleClose={() => setOpen(false)}
+          onSubmit={(data) => {
+            console.log('Guardar', data);
+            setOpen(false);
+          }}
+        />
+      ) : null}
     </Box>
   );
 };

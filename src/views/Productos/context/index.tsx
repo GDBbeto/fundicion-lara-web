@@ -14,10 +14,10 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [pagination, setPagination] = useState<Pagination>({
     page: 1,
     pageSize: 10,
-    totalElements: 5,
+    totalElements: 15,
     totalPages: 1,
   });
-  /*  React.useEffect(() => {
+  React.useEffect(() => {
     setProducts([
       {
         productId: 1,
@@ -79,7 +79,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
         avatar: null,
       },
     ]);
-  }, []); */
+  }, []);
 
   const setPage = (page: number) => {
     setPagination((prev) => ({ ...prev, page }));

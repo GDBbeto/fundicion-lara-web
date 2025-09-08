@@ -1,3 +1,4 @@
 import useAuth from './useAuth';
+import useDevice from './useDevice';
 
-export { useAuth };
+export { useAuth, useDevice };

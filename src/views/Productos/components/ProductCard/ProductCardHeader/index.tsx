@@ -61,14 +61,6 @@ const ProductCardHeader = ({ name, onEdit, onDelete }: Props) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        slotProps={{
-          paper: {
-            style: {
-              maxHeight: 48 * 4.5,
-              width: '200px',
-            },
-          },
-        }}
       >
         <MenuItem onClick={handleEdit}>
           <EditIcon fontSize="small" sx={{ mr: 1 }} />

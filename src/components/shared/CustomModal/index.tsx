@@ -1,5 +1,3 @@
-// components/ui/CustomModal.tsx
-
 import React from 'react';
 import {
   Dialog,
