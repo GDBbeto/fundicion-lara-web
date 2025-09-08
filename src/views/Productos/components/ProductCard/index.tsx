@@ -3,10 +3,13 @@ import { Card } from '@mui/material';
 
 import type { Product } from 'types/api';
 
+import DeleteConfirmationModal from 'components/shared/DeleteConfirmationModal';
+
+import ProductFormModal from '../ProductFormModal';
+
 import ProductCardHeader from './ProductCardHeader';
 import ProductCardContent from './ProductCardContent';
 import ProductCardImage from './ProductCardImage';
-import ProductFormModal from '../ProductFormModal';
 
 import { cardStyles } from './styles';
 
@@ -17,13 +20,14 @@ interface Props {
 const ProductCard = ({ product }: Props) => {
   console.log({ product });
   const [open, setOpen] = useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   /*const handleEdit = () => {
     alert(`Editar producto ${product.name}`);
   };*/
 
   const handleDelete = () => {
-    alert(`Eliminar producto ${product.name}`);
+    console.log('Eliminar');
   };
 
   const handleUpload = async (file: File) => {
@@ -36,7 +40,7 @@ const ProductCard = ({ product }: Props) => {
       <ProductCardHeader
         name={product.name}
         onEdit={() => setOpen(true)}
-        onDelete={handleDelete}
+        onDelete={() => setOpenDeleteModal(true)}
       />
 
       {/* Imagen */}
@@ -60,6 +64,15 @@ const ProductCard = ({ product }: Props) => {
             console.log('Guardar', data);
             setOpen(false);
           }}
+        />
+      ) : null}
+      {openDeleteModal ? (
+        <DeleteConfirmationModal
+          open={openDeleteModal}
+          handleClose={() => setOpenDeleteModal(false)}
+          onConfirm={handleDelete}
+          title="Eliminar producto"
+          confirmMessage={`¿Estás seguro de que deseas eliminar el producto "${product.name}"?`}
         />
       ) : null}
     </Card>

@@ -16,6 +16,7 @@ interface CustomModalProps {
   children: React.ReactNode;
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   fullWidth?: boolean;
+  titleAlign?: 'left' | 'center';
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({
@@ -23,6 +24,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
   title,
   handleClose,
   children,
+  titleAlign,
   maxWidth = 'sm',
   fullWidth = true,
 }) => {
@@ -56,13 +58,21 @@ const CustomModal: React.FC<CustomModalProps> = ({
       >
         <DialogTitle
           id="customized-dialog-title"
-          sx={{ p: 0, fontWeight: 600, flexGrow: 1 }}
+          sx={{
+            p: 0,
+            fontWeight: 600,
+            flexGrow: 1,
+            textAlign: titleAlign || 'left',
+          }}
         >
           {title}
         </DialogTitle>
-        <IconButton aria-label="close" onClick={handleClose} color="primary">
-          <CloseIcon />
-        </IconButton>
+        {/* Solo mostramos el botón de cerrar si el título NO está centrado */}
+        {titleAlign !== 'center' && (
+          <IconButton aria-label="close" onClick={handleClose} color="primary">
+            <CloseIcon />
+          </IconButton>
+        )}
       </Box>
 
       <DialogContent dividers sx={{ mt: 1 }}>
