@@ -6,5 +6,6 @@ export interface ProductContextType {
   products: Product[];
   pagination: Pagination;
   setPage: (page: number) => void;
-  setSearch: (value: string) => void;
+  handleSearch: (value: string) => void;
+  handleRefetch: () => void;
 }

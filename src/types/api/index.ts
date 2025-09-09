@@ -13,3 +13,9 @@ export interface Pagination {
   totalElements: number;
   totalPages?: number;
 }
+
+export interface CommonError {
+  userMessage: string;
+  message: string;
+  status?: number;
+}

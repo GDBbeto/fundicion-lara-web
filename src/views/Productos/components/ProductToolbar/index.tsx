@@ -18,15 +18,15 @@ const ProductToolbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
 
-  const { setSearch, products } = useProductos();
+  const { handleSearch, products } = useProductos();
 
   const handleAddProduct = () => {
     setOpen(true);
   };
 
   useEffect(() => {
-    setSearch(debouncedSearch);
-  }, [debouncedSearch, setSearch]);
+    handleSearch(debouncedSearch);
+  }, [debouncedSearch, handleSearch]);
 
   return (
     <Box mb={3}>
