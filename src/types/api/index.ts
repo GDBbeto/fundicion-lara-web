@@ -11,5 +11,5 @@ export interface Pagination {
   page: number;
   pageSize: number;
   totalElements: number;
-  totalPages: number;
+  totalPages?: number;
 }

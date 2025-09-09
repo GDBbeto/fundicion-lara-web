@@ -18,7 +18,6 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
-  console.log({ product });
   const [open, setOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 

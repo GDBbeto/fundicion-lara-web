@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Dialog,
   DialogTitle,
@@ -8,6 +9,8 @@ import {
   useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
+import { BACKGROUND_COLOR } from 'commons/colors';
 
 interface CustomModalProps {
   open: boolean;
@@ -46,7 +49,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       }}
       BackdropProps={{
         sx: {
-          backgroundColor: 'rgba(27, 38, 59, 0.5)', // darkBlue con opacidad
+          backgroundColor: BACKGROUND_COLOR,
         },
       }}
     >

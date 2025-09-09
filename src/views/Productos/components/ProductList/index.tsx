@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Grid, Typography, Box } from '@mui/material';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 
 import { colors } from 'commons/colors';
 
+import { useDevice } from 'hooks';
+
 import useProductos from 'views/Productos/hooks/useProductos';
+
 import CustomPagination from 'components/shared/CustomPagination';
 
 import ProductCard from '../ProductCard';
+import ProductCardSkeleton from '../ProductCardSkeleton';
 
 const ProductList = () => {
-  const { products, pagination, setPage } = useProductos();
+  const { products, isLoading, pagination, setPage } = useProductos();
+
+  const { isXs, isSm, isMd, isLg } = useDevice();
+
+  const isEmpty = useMemo(() => products.length === 0, [products]);
+
+  const skeletonCount = useMemo(() => {
+    if (isXs) return 2;
+    if (isSm) return 4;
+    if (isMd) return 8;
+    if (isLg) return 10;
+    return 8; // fallback
+  }, [isXs, isSm, isMd, isLg]);
+
+  const skeletonArray = useMemo(
+    () => Array.from({ length: skeletonCount }),
+    [skeletonCount],
+  );
 
   const handlePageChange = (_: unknown, newPage: number) => {
     setPage(newPage + 1);
@@ -23,7 +44,19 @@ const ProductList = () => {
     setPage(1);
   };
 
-  if (products.length === 0) {
+  if (isLoading) {
+    return (
+      <Grid container spacing={2}>
+        {skeletonArray.map((_, index) => (
+          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+            <ProductCardSkeleton />
+          </Grid>
+        ))}
+      </Grid>
+    );
+  }
+
+  if (isEmpty) {
     return (
       <Box
         display="flex"
