@@ -19,6 +19,7 @@ function useTableData<T>() {
 
   const handleRowsPerPageChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
+      console.log({ value: event.target.value });
       setPagination((prev) => ({
         ...prev,
         page: 1,

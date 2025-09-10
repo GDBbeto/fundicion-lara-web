@@ -33,6 +33,7 @@ const schema = yup.object().shape({
     .required(msg.required),
 
   description: yup.string().notRequired(),
+  client: yup.string().notRequired(),
   productId: yup.number().notRequired(),
   avatar: yup.string().notRequired(),
 });

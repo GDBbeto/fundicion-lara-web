@@ -84,6 +84,7 @@ const ProductCard = ({ product }: Props) => {
       {/* Encabezado */}
       <ProductCardHeader
         name={product.name}
+        client={product.client}
         onEdit={() => setOpen(true)}
         onDelete={() => setOpenDeleteModal(true)}
       />

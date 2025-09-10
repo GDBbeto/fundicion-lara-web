@@ -33,6 +33,22 @@ const theme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: 'rgba(27, 38, 59, 0.9)',
+          color: colors.white,
+          fontSize: '0.85rem',
+          borderRadius: 6,
+          padding: '8px 12px',
+          boxShadow: '0px 2px 6px rgba(0,0,0,0.2)',
+          maxWidth: 250,
+        },
+        arrow: {
+          color: 'rgba(27, 38, 59, 0.9)',
+        },
+      },
+    },
   },
   breakpoints: {
     values: {

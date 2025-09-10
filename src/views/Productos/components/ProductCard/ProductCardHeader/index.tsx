@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Box, Typography, IconButton, Menu, MenuItem } from '@mui/material';
+import {
+  Box,
+  Typography,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Chip,
+} from '@mui/material';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -9,11 +17,12 @@ import { productNameStyles } from '../styles';
 
 interface Props {
   name: string;
+  client?: string | null;
   onEdit: () => void;
   onDelete: () => void;
 }
 
-const ProductCardHeader = ({ name, onEdit, onDelete }: Props) => {
+const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -42,9 +51,27 @@ const ProductCardHeader = ({ name, onEdit, onDelete }: Props) => {
       pt={1}
       pb={1}
     >
-      <Typography variant="h6" sx={productNameStyles}>
-        {name}
-      </Typography>
+      <Tooltip title={name} arrow placement="top">
+        <Typography variant="h6" sx={productNameStyles}>
+          {name}
+        </Typography>
+      </Tooltip>
+
+      {client && (
+        <Tooltip title="Cliente" arrow placement="top">
+          <Chip
+            label={client}
+            color="primary"
+            size="small"
+            sx={{
+              fontWeight: 500,
+              backgroundColor: 'primary.light',
+              color: 'white',
+              textTransform: 'uppercase',
+            }}
+          />
+        </Tooltip>
+      )}
 
       <IconButton
         aria-label="more"

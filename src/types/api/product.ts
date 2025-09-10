@@ -1,10 +1,11 @@
 export interface Product {
   productId: number;
   name: string;
+  client?: string | null;
   description?: string | null;
-  unidad: string;
-  stock: number;
-  purchasePrice: number;
-  sellingPrice: number;
+  unidad: string | null;
+  stock: number | null;
+  purchasePrice: number | null;
+  sellingPrice: number | null;
   avatar?: string | null;
 }

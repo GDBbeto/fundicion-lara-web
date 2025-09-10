@@ -4,11 +4,12 @@ import { useQuery } from '@tanstack/react-query';
 
 import type { ApiResponse, CommonError, Product } from 'types/api';
 
-import { useTableData } from 'hooks';
+import { useSnackbar, useTableData } from 'hooks';
 
 import { getProducts } from 'services/productService';
 
 import { ERROR_MESSAGES } from 'commons/messages';
+import { HttpStatusCode } from 'commons/global';
 
 import { ProductContextType } from './types';
 
@@ -24,6 +25,8 @@ const paginationDefault = {
 };
 
 const ProductProvider = ({ children }: { children: React.ReactNode }) => {
+  const { showSnackbar } = useSnackbar();
+
   const [search, setSearch] = useState('');
 
   const {
@@ -68,15 +71,17 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
       if (data.pagination) {
         setPagination({ ...data.pagination });
       }
-    } else {
-      cleanTable();
     }
-  }, [data, setRows, setPagination, cleanTable]);
+  }, [data, setRows, setPagination]);
 
   useEffect(() => {
     if (isError) {
-      console.log(error?.userMessage || ERROR_MESSAGES.DEFAULT);
+      cleanTable();
+      if (error.status !== HttpStatusCode.NotFound) {
+        showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isError, error]);
 
   return (

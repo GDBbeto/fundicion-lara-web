@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
-import { Grid, Typography, Box } from '@mui/material';
+import { Grid, Typography, Box, Fade } from '@mui/material';
 import Inventory2Icon from '@mui/icons-material/Inventory2';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 import { colors } from 'commons/colors';
+import { HttpStatusCode } from 'commons/global';
 
 import { useDevice } from 'hooks';
 
 import useProductos from 'views/Productos/hooks/useProductos';
 
-import CustomPagination from 'components/shared/CustomPagination';
+import { CustomSpinner, CustomPagination } from 'components/shared';
 
 import ProductCard from '../ProductCard';
 import ProductCardSkeleton from '../ProductCardSkeleton';
@@ -42,154 +43,183 @@ const ProductList = () => {
     [skeletonCount],
   );
 
-  if (isLoading) {
+  if (isLoading && search) {
     return (
-      <Grid container spacing={2}>
-        {skeletonArray.map((_, index) => (
-          <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
-            <ProductCardSkeleton />
-          </Grid>
-        ))}
-      </Grid>
+      <Fade in timeout={300}>
+        <CustomSpinner open />
+      </Fade>
     );
   }
 
-  if (search && isEmpty) {
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      height="70vh"
-    >
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        mt={10}
-        mb={10}
-        sx={{
-          backgroundColor: colors.veryLightGray,
-          borderRadius: 2,
-          p: 5,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-          maxWidth: 500,
-          mx: 'auto',
-          textAlign: 'center',
-        }}
-      >
-        <Inventory2Icon sx={{ fontSize: 80, color: 'primary.main', mb: 2 }} />
-        <Typography variant="h5" fontWeight="bold" gutterBottom>
-          No encontramos productos que coincidan con tu b&uacute;squeda.
-        </Typography>
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          mb={3}
-          display="block"
-        >
-          Prueba ajustando los filtros o el t&eacute;rmino.
-        </Typography>
-      </Box>
-    </Box>;
+  if (isLoading) {
+    return (
+      <Fade in timeout={300}>
+        <Grid container spacing={2}>
+          {skeletonArray.map((_, index) => (
+            <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+              <ProductCardSkeleton />
+            </Grid>
+          ))}
+        </Grid>
+      </Fade>
+    );
   }
 
-  if (error) {
+  if (search && error && error.status === HttpStatusCode.NotFound) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="70vh"
-      >
+      <Fade in timeout={300}>
         <Box
           display="flex"
-          flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          mt={10}
-          mb={10}
-          sx={{
-            backgroundColor: colors.veryLightGray,
-            borderRadius: 2,
-            p: 5,
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            maxWidth: 500,
-            mx: 'auto',
-            textAlign: 'center',
-          }}
+          height="70vh"
         >
-          <ErrorOutlineIcon sx={{ fontSize: 80, color: 'error.main', mb: 2 }} />
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Ocurrió un error al cargar los productos
-          </Typography>
-          <Typography variant="body1" color="text.secondary" mb={3}>
-            {error.userMessage ?? 'Por favor, intenta nuevamente más tarde.'}
-          </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+            mb={10}
+            sx={{
+              backgroundColor: colors.veryLightGray,
+              borderRadius: 2,
+              p: 5,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+              maxWidth: 500,
+              mx: 'auto',
+              textAlign: 'center',
+            }}
+          >
+            <Inventory2Icon
+              sx={{ fontSize: 80, color: 'primary.main', mb: 2 }}
+            />
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              No encontramos productos que coincidan con tu b&uacute;squeda.
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              mb={3}
+              display="block"
+            >
+              Prueba ajustando los filtros o el t&eacute;rmino.
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      </Fade>
+    );
+  }
+
+  if (error && error.status !== HttpStatusCode.NotFound) {
+    return (
+      <Fade in timeout={300}>
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          height="70vh"
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+            mb={10}
+            sx={{
+              backgroundColor: colors.veryLightGray,
+              borderRadius: 2,
+              p: 5,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+              maxWidth: 500,
+              mx: 'auto',
+              textAlign: 'center',
+            }}
+          >
+            <ErrorOutlineIcon
+              sx={{ fontSize: 80, color: 'error.main', mb: 2 }}
+            />
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Ocurrió un error al cargar los productos
+            </Typography>
+            <Typography variant="body1" color="text.secondary" mb={3}>
+              {error.userMessage ?? 'Por favor, intenta nuevamente más tarde.'}
+            </Typography>
+          </Box>
+        </Box>
+      </Fade>
     );
   }
 
   if (isEmpty) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="70vh"
-      >
+      <Fade in timeout={300}>
         <Box
           display="flex"
-          flexDirection="column"
           justifyContent="center"
           alignItems="center"
-          mt={10}
-          mb={10}
-          sx={{
-            backgroundColor: colors.veryLightGray,
-            borderRadius: 2,
-            p: 5,
-            boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-            maxWidth: 500,
-            mx: 'auto',
-            textAlign: 'center',
-          }}
+          height="70vh"
         >
-          <Inventory2Icon sx={{ fontSize: 80, color: 'primary.main', mb: 2 }} />
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            No hay productos disponibles
-          </Typography>
-          <Typography
-            variant="body1"
-            color="text.secondary"
-            mb={3}
-            display="block"
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            mt={10}
+            mb={10}
+            sx={{
+              backgroundColor: colors.veryLightGray,
+              borderRadius: 2,
+              p: 5,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+              maxWidth: 500,
+              mx: 'auto',
+              textAlign: 'center',
+            }}
           >
-            Parece que a&uacute;n no has agregado productos. ¡Comienza agregando
-            uno para verlos aqu&iacute;!
-          </Typography>
+            <Inventory2Icon
+              sx={{ fontSize: 80, color: 'primary.main', mb: 2 }}
+            />
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              No hay productos disponibles
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              mb={3}
+              display="block"
+            >
+              Parece que a&uacute;n no has agregado productos. ¡Comienza
+              agregando uno para verlos aqu&iacute;!
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      </Fade>
     );
   }
 
   return (
-    <Box>
-      <Grid container spacing={2}>
-        {products.map((product) => (
-          <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={product.productId}>
-            <ProductCard product={product} />
-          </Grid>
-        ))}
-      </Grid>
-      <Box mt={2} />
-      <CustomPagination
-        pagination={pagination}
-        handlePageChange={handlePageChange}
-        handleRowsPerPageChange={handleRowsPerPageChange}
-      />
-    </Box>
+    <Fade in timeout={300}>
+      <Box>
+        <Grid container spacing={2}>
+          {products.map((product) => (
+            <Grid
+              size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+              key={product.productId}
+            >
+              <ProductCard product={product} />
+            </Grid>
+          ))}
+        </Grid>
+        <Box mt={2} />
+        <CustomPagination
+          pagination={pagination}
+          handlePageChange={handlePageChange}
+          handleRowsPerPageChange={handleRowsPerPageChange}
+        />
+      </Box>
+    </Fade>
   );
 };
 

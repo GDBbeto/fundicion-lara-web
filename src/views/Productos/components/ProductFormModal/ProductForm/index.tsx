@@ -30,11 +30,12 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
     resolver: yupResolver(schema) as any,
     defaultValues: product ?? {
       name: '',
+      client: '',
       description: '',
-      unidad: '',
-      stock: 0,
-      purchasePrice: 0,
-      sellingPrice: 0,
+      unidad: null,
+      stock: null,
+      purchasePrice: null,
+      sellingPrice: null,
     },
   });
 
@@ -52,6 +53,21 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 label="Nombre del producto"
                 error={!!errors.name}
                 helperText={errors.name?.message}
+              />
+            )}
+          />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
+          <Controller
+            name="client"
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                {...field}
+                label="Cliente"
+                error={!!errors.client}
+                helperText={errors.client?.message}
               />
             )}
           />

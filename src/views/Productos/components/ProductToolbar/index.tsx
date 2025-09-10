@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Button, Grid, useMediaQuery, useTheme } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -25,12 +25,16 @@ const ProductToolbar = () => {
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const { showSnackbar } = useSnackbar();
 
-  const { handleSearch, error, isLoading, handleRefetch } = useProductos();
+  const { handleSearch, error, handleRefetch } = useProductos();
   const { mutate: saveProduct, isPending } = useSaveProduct();
 
   const handleAddProduct = () => {
     setOpen(true);
   };
+
+  const handleSearchInputChange = useCallback((value: string) => {
+    setSearchTerm(value);
+  }, []);
 
   const handleSubmit = (productData: Product) => {
     saveProduct(productData, {
@@ -52,16 +56,15 @@ const ProductToolbar = () => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
 
-  console.log({ error });
   return (
     <Box mb={3}>
       <Grid container spacing={2} alignItems="center">
         <Grid size={{ xs: 12, sm: 8 }}>
           <SearchInput
             value={searchTerm}
-            onChange={setSearchTerm}
+            onChange={handleSearchInputChange}
             placeholder="Buscar productos..."
-            disabled={isLoading || (!!error && error.status !== 404)}
+            disabled={!!error && error.status !== 404}
           />
         </Grid>
 
