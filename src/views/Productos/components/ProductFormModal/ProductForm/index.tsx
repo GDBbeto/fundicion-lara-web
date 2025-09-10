@@ -113,8 +113,11 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             control={control}
             render={({ field }) => (
               <NumericFormat
-                {...field}
                 required
+                value={field.value}
+                onValueChange={({ floatValue }) => {
+                  field.onChange(floatValue ?? '');
+                }}
                 customInput={CustomTextField}
                 label="Precio de compra"
                 thousandSeparator
@@ -133,8 +136,11 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             control={control}
             render={({ field }) => (
               <NumericFormat
-                {...field}
                 required
+                value={field.value}
+                onValueChange={({ floatValue }) => {
+                  field.onChange(floatValue ?? '');
+                }}
                 customInput={CustomTextField}
                 label="Precio de venta"
                 thousandSeparator

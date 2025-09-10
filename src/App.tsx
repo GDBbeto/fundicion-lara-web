@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import theme from 'theme';
 
+import NotistackProvider from 'providers/NotistackProvider';
+
 import AuthProvider from 'context/auth';
 
 import AppRoutes from 'router/AppRoutes';
@@ -25,11 +27,13 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <Router>
-            <AppRoutes />
-          </Router>
-        </AuthProvider>
+        <NotistackProvider>
+          <AuthProvider>
+            <Router>
+              <AppRoutes />
+            </Router>
+          </AuthProvider>
+        </NotistackProvider>
       </QueryClientProvider>
     </ThemeProvider>
   );

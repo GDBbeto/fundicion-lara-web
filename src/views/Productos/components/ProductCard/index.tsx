@@ -1,9 +1,20 @@
 import React, { useState } from 'react';
 import { Card } from '@mui/material';
 
-import type { Product } from 'types/api';
+import type { CommonError, Product } from 'types/api';
 
-import DeleteConfirmationModal from 'components/shared/DeleteConfirmationModal';
+import { CustomSpinner, DeleteConfirmationModal } from 'components/shared';
+
+import {
+  useUpdateProduct,
+  useProductos,
+  useDeleteProduct,
+  useUploadProductImage,
+} from 'views/Productos/hooks';
+
+import { useSnackbar } from 'hooks';
+
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
 import ProductFormModal from '../ProductFormModal';
 
@@ -18,19 +29,54 @@ interface Props {
 }
 
 const ProductCard = ({ product }: Props) => {
+  const { showSnackbar } = useSnackbar();
+  const { handleRefetch } = useProductos();
+  const { mutate: updateProduct, isPending: isPendingUpdate } =
+    useUpdateProduct();
+  const { mutate: deleteProduct, isPending: isPendingDelete } =
+    useDeleteProduct();
+  const { mutate: uploadImage, isPending: isPendingUpload } =
+    useUploadProductImage();
+
   const [open, setOpen] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
-  /*const handleEdit = () => {
-    alert(`Editar producto ${product.name}`);
-  };*/
+  const isPending = isPendingUpdate || isPendingDelete || isPendingUpload;
 
-  const handleDelete = () => {
-    console.log('Eliminar');
+  const processError = (error: CommonError, defaultError: string) => {
+    showSnackbar(error.userMessage || defaultError, 'error');
+  };
+
+  const processSuccess = (message: string) => {
+    handleRefetch();
+    showSnackbar(message, 'success');
   };
 
   const handleUpload = async (file: File) => {
-    console.log({ file });
+    uploadImage({ productId: product.productId, file } as any, {
+      onSuccess: () => processSuccess(SUCCESS_MESSAGES.IMAGE_UPLOADED),
+      onError: (error) => processError(error, ERROR_MESSAGES.UPLOAD_IMAGE),
+    });
+  };
+
+  const handleSubmit = (updatedProduct: Product) => {
+    updateProduct(updatedProduct, {
+      onSuccess: () => {
+        setOpen(false);
+        processSuccess(SUCCESS_MESSAGES.UPDATED);
+      },
+      onError: (error) => processError(error, ERROR_MESSAGES.UPDATE),
+    });
+  };
+
+  const handleDelete = () => {
+    deleteProduct(product.productId, {
+      onSuccess: () => {
+        processSuccess(SUCCESS_MESSAGES.DELETED);
+        setOpenDeleteModal(false);
+      },
+      onError: (error) => processError(error, ERROR_MESSAGES.DELETE),
+    });
   };
 
   return (
@@ -59,10 +105,7 @@ const ProductCard = ({ product }: Props) => {
           open={open}
           product={product}
           handleClose={() => setOpen(false)}
-          onSubmit={(data) => {
-            console.log('Guardar', data);
-            setOpen(false);
-          }}
+          onSubmit={handleSubmit}
         />
       ) : null}
       {openDeleteModal ? (
@@ -74,6 +117,8 @@ const ProductCard = ({ product }: Props) => {
           confirmMessage={`¿Estás seguro de que deseas eliminar el producto "${product.name}"?`}
         />
       ) : null}
+
+      {isPending ? <CustomSpinner open /> : null}
     </Card>
   );
 };

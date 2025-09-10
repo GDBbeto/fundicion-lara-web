@@ -2,7 +2,9 @@ import React, { useState, createContext, useEffect } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { ApiResponse, CommonError, Pagination, Product } from 'types/api';
+import type { ApiResponse, CommonError, Product } from 'types/api';
+
+import { useTableData } from 'hooks';
 
 import { getProducts } from 'services/productService';
 
@@ -18,13 +20,21 @@ const paginationDefault = {
   page: 1,
   pageSize: 10,
   totalElements: 0,
-  totalPages: 1,
+  totalPages: 0,
 };
 
 const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const [search, setSearch] = useState('');
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pagination, setPagination] = useState<Pagination>(paginationDefault);
+
+  const {
+    pagination,
+    rows,
+    setPagination,
+    setRows,
+    cleanTable,
+    handlePageChange,
+    handleRowsPerPageChange,
+  } = useTableData<Product>();
 
   const { data, isLoading, isError, error, refetch } = useQuery<
     ApiResponse<Product[]>,
@@ -42,7 +52,9 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const handleSearch = (value: string) => {
-    setPagination(paginationDefault);
+    if (value) {
+      setPagination(paginationDefault);
+    }
     setSearch(value);
   };
 
@@ -50,18 +62,16 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     refetch();
   };
 
-  const setPage = (page: number) => {
-    setPagination((prev) => ({ ...prev, page }));
-  };
-
   useEffect(() => {
     if (data) {
-      setProducts(data.data);
-      setPagination(data.pagination ?? paginationDefault);
+      setRows(data.data);
+      if (data.pagination) {
+        setPagination({ ...data.pagination });
+      }
     } else {
-      setProducts([]);
+      cleanTable();
     }
-  }, [data]);
+  }, [data, setRows, setPagination, cleanTable]);
 
   useEffect(() => {
     if (isError) {
@@ -73,12 +83,14 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     <ProductContext.Provider
       value={{
         search,
-        products,
+        products: rows,
         isLoading,
+        error,
         pagination,
-        setPage,
         handleSearch,
         handleRefetch,
+        handlePageChange,
+        handleRowsPerPageChange,
       }}
     >
       {children}

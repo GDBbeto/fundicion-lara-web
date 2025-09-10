@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Pagination } from 'types/api';
 
 const paginationDefault = {
   page: 1,
-  pageSize: 50,
+  pageSize: 10,
   totalElements: 0,
+  totalPages: 0,
 };
 
 function useTableData<T>() {
@@ -12,31 +13,31 @@ function useTableData<T>() {
   const [pagination, setPagination] = useState<Pagination>(paginationDefault);
   const [rows, setRows] = useState<T[]>([]);
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    value: number,
-  ) => {
-    setPagination({ ...pagination, page: value + 1 });
-  };
+  const handlePageChange = useCallback((_: unknown, value: number) => {
+    setPagination((prev) => ({ ...prev, page: value + 1 }));
+  }, []);
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<any>) => {
-    setPagination({
-      ...pagination,
-      page: 1,
-      pageSize: event.target.value,
-    });
-  };
+  const handleRowsPerPageChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setPagination((prev) => ({
+        ...prev,
+        page: 1,
+        pageSize: parseInt(event.target.value, 10),
+      }));
+    },
+    [],
+  );
 
-  const cleanTable = () => {
+  const cleanTable = useCallback(() => {
     setLoading(false);
     setPagination(paginationDefault);
     setRows([]);
-  };
+  }, []);
 
-  const startService = () => {
+  const startService = useCallback(() => {
     setLoading(true);
     setRows([]);
-  };
+  }, []);
 
   return {
     loading,
@@ -48,8 +49,8 @@ function useTableData<T>() {
     cleanTable,
     startService,
     paginationDefault,
-    handleChangePage,
-    handleChangeRowsPerPage,
+    handlePageChange,
+    handleRowsPerPageChange,
   };
 }
 

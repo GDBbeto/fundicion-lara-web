@@ -35,8 +35,8 @@ const ProductCardImage = ({
     [hasImage, imageError],
   );
 
-  const handleUpload = (file: File) => {
-    onUpload(file);
+  const handleUpload = async (file: File) => {
+    await onUpload(file);
     setModalOpen(false);
   };
 

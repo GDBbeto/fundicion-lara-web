@@ -5,29 +5,54 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { useDebounce } from 'use-debounce';
 
-import SearchInput from 'components/shared/SearchInput';
+import { useSnackbar } from 'hooks';
 
-import useProductos from 'views/Productos/hooks/useProductos';
+import { CustomSpinner, SearchInput } from 'components/shared';
+
+import { useProductos, useSaveProduct } from 'views/Productos/hooks';
+
+import type { Product } from 'types/api';
+
 import ProductFormModal from '../ProductFormModal';
 
 const ProductToolbar = () => {
   const theme = useTheme();
+
   const isExactSm = useMediaQuery(theme.breakpoints.only('sm'));
   const [open, setOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
+  const { showSnackbar } = useSnackbar();
 
-  const { handleSearch, products } = useProductos();
+  const { handleSearch, error, isLoading, handleRefetch } = useProductos();
+  const { mutate: saveProduct, isPending } = useSaveProduct();
 
   const handleAddProduct = () => {
     setOpen(true);
+  };
+
+  const handleSubmit = (productData: Product) => {
+    saveProduct(productData, {
+      onSuccess: () => {
+        setOpen(false);
+        handleRefetch();
+        showSnackbar('Se guardó corretamente', 'success');
+      },
+      onError: (customError) => {
+        showSnackbar(
+          customError?.userMessage || 'Ocurrió un error inesperado.',
+          'error',
+        );
+      },
+    });
   };
 
   useEffect(() => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
 
+  console.log({ error });
   return (
     <Box mb={3}>
       <Grid container spacing={2} alignItems="center">
@@ -36,7 +61,7 @@ const ProductToolbar = () => {
             value={searchTerm}
             onChange={setSearchTerm}
             placeholder="Buscar productos..."
-            disabled={products.length === 0}
+            disabled={isLoading || (!!error && error.status !== 404)}
           />
         </Grid>
 
@@ -48,6 +73,7 @@ const ProductToolbar = () => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={handleAddProduct}
+            disabled={!!error && error.status !== 404}
           >
             {isExactSm ? 'Agregar' : ' Agregar producto'}
           </Button>
@@ -58,12 +84,10 @@ const ProductToolbar = () => {
           open={open}
           product={null}
           handleClose={() => setOpen(false)}
-          onSubmit={(data) => {
-            console.log('Guardar', data);
-            setOpen(false);
-          }}
+          onSubmit={handleSubmit}
         />
       ) : null}
+      {isPending ? <CustomSpinner open /> : null}
     </Box>
   );
 };
