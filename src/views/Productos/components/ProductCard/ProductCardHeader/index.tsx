@@ -6,12 +6,14 @@ import {
   Menu,
   MenuItem,
   Tooltip,
-  Chip,
+  Stack,
+  useTheme,
 } from '@mui/material';
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PersonIcon from '@mui/icons-material/Person'; // Icono decorativo para el chip
 
 import { productNameStyles } from '../styles';
 
@@ -23,6 +25,7 @@ interface Props {
 }
 
 const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
+  const { palette } = useTheme();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -51,27 +54,36 @@ const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
       pt={1}
       pb={1}
     >
-      <Tooltip title={name} arrow placement="top">
-        <Typography variant="h6" sx={productNameStyles}>
-          {name}
-        </Typography>
-      </Tooltip>
-
-      {client && (
-        <Tooltip title="Cliente" arrow placement="top">
-          <Chip
-            label={client}
-            color="primary"
-            size="small"
-            sx={{
-              fontWeight: 500,
-              backgroundColor: 'primary.light',
-              color: 'white',
-              textTransform: 'uppercase',
-            }}
-          />
+      <Stack
+        spacing={0}
+        maxWidth="80%"
+        width={'80%'}
+        direction="column"
+        justifyContent="center"
+      >
+        <Tooltip title={name} arrow>
+          <Typography variant="subtitle1" sx={productNameStyles}>
+            {name}
+          </Typography>
         </Tooltip>
-      )}
+
+        <Box display="flex" alignItems="center" gap={0.5}>
+          <PersonIcon
+            fontSize="small"
+            color={client ? 'inherit' : 'disabled'}
+            sx={{ padding: 0, margin: 0 }}
+          />
+          <Typography
+            variant="button"
+            noWrap
+            sx={{
+              color: client ? palette.text.primary : 'text.disabled',
+            }}
+          >
+            {client || 'Sin cliente'}
+          </Typography>
+        </Box>
+      </Stack>
 
       <IconButton
         aria-label="more"

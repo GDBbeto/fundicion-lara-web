@@ -8,6 +8,7 @@ export const colors = {
   darkText: '#1C1C1C',
   blueGreyLight: '#cfd8dc',
   veryLightGray: '#f5f7fa',
+  lightSurface: '#F1F5FB',
 };
 
 export const BACKGROUND_COLOR = 'rgba(27, 38, 59, 0.5)';

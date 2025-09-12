@@ -35,7 +35,7 @@ const ProductList = () => {
     if (isSm) return 4;
     if (isMd) return 8;
     if (isLg) return 10;
-    return 8; // fallback
+    return 8;
   }, [isXs, isSm, isMd, isLg]);
 
   const skeletonArray = useMemo(

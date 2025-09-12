@@ -18,7 +18,7 @@ const ProductCardContent = ({ product }: Props) => {
     <CardContent>
       {/* Descripción */}
       <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 1 }}>
-        {product.description}
+        {product.description || 'Sin descripción'}
       </Typography>
 
       <Divider sx={{ mb: 1 }} />

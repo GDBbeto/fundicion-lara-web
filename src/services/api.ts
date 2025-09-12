@@ -67,7 +67,6 @@ api.interceptors.response.use(
       }
     }
 
-    // 🎯 NUEVO: Manejo de errores general y Network Error
     if (!error.response) {
       return Promise.reject({
         userMessage: ERROR_MESSAGES.NETWORK,

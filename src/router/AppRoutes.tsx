@@ -1,5 +1,8 @@
-import React, { lazy, Suspense } from 'react';
+import React, { JSX, lazy, Suspense } from 'react';
+
 import { Routes, Route, Navigate } from 'react-router-dom';
+
+import { Box, CircularProgress } from '@mui/material';
 
 import PublicRoute from 'router/PublicRoute';
 import PrivateRoute from 'router/PrivateRoute';
@@ -8,6 +11,25 @@ import Layout from 'components/Layout';
 const Login = lazy(() => import('views/Login'));
 const Home = lazy(() => import('views/Home'));
 const Productos = lazy(() => import('views/Productos'));
+
+const withSuspense = (
+  Component: React.LazyExoticComponent<() => JSX.Element>,
+) => (
+  <Suspense
+    fallback={
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="50vh"
+      >
+        <CircularProgress />
+      </Box>
+    }
+  >
+    <Component />
+  </Suspense>
+);
 
 const AppRoutes = () => {
   return (
@@ -21,9 +43,9 @@ const AppRoutes = () => {
         {/* Rutas privadas (autenticado) */}
         <Route element={<PrivateRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/inicio" element={<Home />} />
-            <Route path="/productos" element={<Productos />} />
+            <Route path="/" element={withSuspense(Home)} />
+            <Route path="/inicio" element={withSuspense(Home)} />
+            <Route path="/productos" element={withSuspense(Productos)} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Route>
         </Route>

@@ -1,4 +1,3 @@
-// useUploadProductImage.ts
 import { useMutation } from '@tanstack/react-query';
 import { uploadProductImage } from 'services/productService';
 import type { CommonError, ApiResponse } from 'types/api';
