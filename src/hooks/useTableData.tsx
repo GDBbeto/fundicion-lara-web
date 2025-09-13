@@ -12,6 +12,8 @@ function useTableData<T>() {
   const [loading, setLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState<Pagination>(paginationDefault);
   const [rows, setRows] = useState<T[]>([]);
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [orderBy, setOrderBy] = useState<keyof T>();
 
   const handlePageChange = useCallback((_: unknown, value: number) => {
     setPagination((prev) => ({ ...prev, page: value + 1 }));
@@ -29,6 +31,12 @@ function useTableData<T>() {
     [],
   );
 
+  const handleSort = (property: keyof T) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+
   const cleanTable = useCallback(() => {
     setLoading(false);
     setPagination(paginationDefault);
@@ -41,15 +49,18 @@ function useTableData<T>() {
   }, []);
 
   return {
-    loading,
-    pagination,
     rows,
+    order,
+    loading,
+    orderBy,
+    pagination,
+    paginationDefault,
+    setRows,
     setLoading,
     setPagination,
-    setRows,
     cleanTable,
     startService,
-    paginationDefault,
+    handleSort,
     handlePageChange,
     handleRowsPerPageChange,
   };

@@ -16,6 +16,7 @@ import {
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
   CategoryOutlined as CategoryOutlinedIcon,
+  Sell as SellIcon,
 } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
@@ -33,6 +34,12 @@ const menuItems = [
     path: '/productos',
     text: 'Productos',
     icon: CategoryOutlinedIcon,
+  },
+  {
+    id: 'sales',
+    path: '/ventas',
+    text: 'Ventas',
+    icon: SellIcon,
   },
 ];
 

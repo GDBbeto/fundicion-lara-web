@@ -11,6 +11,7 @@ import Layout from 'components/Layout';
 const Login = lazy(() => import('views/Login'));
 const Home = lazy(() => import('views/Home'));
 const Productos = lazy(() => import('views/Productos'));
+const AluminumWorksSales = lazy(() => import('views/AluminumWorksSales'));
 
 const withSuspense = (
   Component: React.LazyExoticComponent<() => JSX.Element>,
@@ -46,6 +47,7 @@ const AppRoutes = () => {
             <Route path="/" element={withSuspense(Home)} />
             <Route path="/inicio" element={withSuspense(Home)} />
             <Route path="/productos" element={withSuspense(Productos)} />
+            <Route path="/ventas" element={withSuspense(AluminumWorksSales)} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Route>
         </Route>
