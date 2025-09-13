@@ -4,9 +4,12 @@ import { Outlet } from 'react-router-dom';
 
 import SideBarMenu from 'components/SideBarMenu';
 
+import GlobalScrollStyles from '../GlobalScrollStyles';
+
 const Layout = () => {
   return (
     <Box sx={{ display: 'flex' }}>
+      <GlobalScrollStyles />
       {/* Menú lateral + AppBar */}
       <SideBarMenu />
 
