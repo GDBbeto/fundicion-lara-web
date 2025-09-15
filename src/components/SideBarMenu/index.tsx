@@ -30,9 +30,9 @@ import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles';
 const menuItems = [
   { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
   {
-    id: 'products',
-    path: '/productos',
-    text: 'Productos',
+    id: 'inventory',
+    path: '/inventario',
+    text: 'Inventario',
     icon: CategoryOutlinedIcon,
   },
   {

@@ -3,7 +3,7 @@ import ProductProvider from './context';
 import ProductList from './components/ProductList';
 import ProductToolbar from './components/ProductToolbar';
 
-const ProductPage = () => {
+const InventoryPage = () => {
   return (
     <ProductProvider>
       <ProductToolbar />
@@ -12,4 +12,4 @@ const ProductPage = () => {
   );
 };
 
-export default ProductPage;
+export default InventoryPage;

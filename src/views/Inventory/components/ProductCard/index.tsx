@@ -10,7 +10,7 @@ import {
   useProductos,
   useDeleteProduct,
   useUploadProductImage,
-} from 'views/Productos/hooks';
+} from 'views/Inventory/hooks';
 
 import { useSnackbar } from 'hooks';
 

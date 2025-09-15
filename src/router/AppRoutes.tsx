@@ -10,7 +10,7 @@ import Layout from 'components/Layout';
 
 const Login = lazy(() => import('views/Login'));
 const Home = lazy(() => import('views/Home'));
-const Productos = lazy(() => import('views/Productos'));
+const Inventory = lazy(() => import('views/Inventory'));
 const AluminumWorksSales = lazy(() => import('views/AluminumWorksSales'));
 
 const withSuspense = (
@@ -44,9 +44,9 @@ const AppRoutes = () => {
         {/* Rutas privadas (autenticado) */}
         <Route element={<PrivateRoute />}>
           <Route element={<Layout />}>
-            <Route path="/" element={withSuspense(Home)} />
+            <Route index element={withSuspense(Home)} />
             <Route path="/inicio" element={withSuspense(Home)} />
-            <Route path="/productos" element={withSuspense(Productos)} />
+            <Route path="/inventario" element={withSuspense(Inventory)} />
             <Route path="/ventas" element={withSuspense(AluminumWorksSales)} />
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Route>

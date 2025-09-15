@@ -9,7 +9,7 @@ import { useSnackbar } from 'hooks';
 
 import { CustomSpinner, SearchInput } from 'components/shared';
 
-import { useProductos, useSaveProduct } from 'views/Productos/hooks';
+import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 
 import type { Product } from 'types/api';
 

@@ -8,7 +8,7 @@ import { HttpStatusCode } from 'commons/global';
 
 import { useDevice } from 'hooks';
 
-import useProductos from 'views/Productos/hooks/useProductos';
+import useProductos from 'views/Inventory/hooks/useProductos';
 
 import { CustomSpinner, CustomPagination } from 'components/shared';
 
