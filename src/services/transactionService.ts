@@ -10,6 +10,7 @@ export interface TransactionQueryParams {
   startDate: string; // ISO date string (YYYY-MM-DD)
   endDate: string;
   type: 'SALE' | 'PURCHASE' | 'EXPENSE';
+  search?: string;
 }
 
 // Obtener lista de transacciones con filtros

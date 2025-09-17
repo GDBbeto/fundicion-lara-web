@@ -6,6 +6,7 @@ import useTransactions from './transaction/useTransactions';
 import useDeleteTransaction from './transaction/useDeleteTransaction';
 import useSaveTransaction from './transaction/useSaveTransaction';
 import useUpdateTransaction from './transaction/useUpdateTransaction';
+import useValidatedDateRange from './useValidatedDateRange';
 
 export {
   useAuth,
@@ -16,4 +17,5 @@ export {
   useDeleteTransaction,
   useSaveTransaction,
   useUpdateTransaction,
+  useValidatedDateRange,
 };

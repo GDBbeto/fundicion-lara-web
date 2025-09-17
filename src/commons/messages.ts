@@ -2,6 +2,9 @@ export const validationMessages = {
   required: 'El campo es obligatorio',
   minZero: 'Debe ser mayor o igual a 0',
   numberType: 'Debe ser un número',
+  invalidDate: 'Fecha inválida',
+  startDateAfterEndDate: 'La fecha inicial no puede ser mayor que la final',
+  endDateBeforeStartDate: 'La fecha final no puede ser menor que la inicial',
 };
 
 export const ERROR_MESSAGES = {

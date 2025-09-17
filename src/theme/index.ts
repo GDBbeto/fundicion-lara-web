@@ -31,6 +31,9 @@ const theme = createTheme({
           boxShadow: 'none',
           transition: 'all 0.25s ease-in-out',
         },
+        outlined: {
+          backgroundColor: colors.white,
+        },
       },
     },
     MuiTooltip: {
