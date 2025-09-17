@@ -51,7 +51,6 @@ export const deleteProduct = async (productId: number) => {
 };
 
 export const uploadProductImage = async (productId: number, file: File) => {
-  console.log({ file });
   const formData = new FormData();
   formData.append('file', file);
 

@@ -5,19 +5,20 @@ import { colors } from 'commons/colors';
 interface CustomDatePickerProps extends DatePickerProps<any> {
   error?: boolean;
   helperText?: React.ReactNode;
-  allowManualInput?: boolean;
 }
 
 const CustomDatePicker = ({
   error,
   helperText,
-  allowManualInput = false,
   ...props
 }: CustomDatePickerProps) => {
   return (
     <DatePicker
       {...props}
       slotProps={{
+        field: {
+          readOnly: true,
+        },
         textField: () => ({
           fullWidth: true,
           size: 'small',
@@ -25,9 +26,6 @@ const CustomDatePicker = ({
           helperText,
           sx: {
             backgroundColor: colors.white,
-          },
-          inputProps: {
-            readOnly: !allowManualInput, // ❗ Esto evita edición manual
           },
         }),
       }}

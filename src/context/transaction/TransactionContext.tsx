@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect, createContext, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 import { Transaction, ApiResponse, CommonError } from 'types/api';
@@ -21,6 +21,13 @@ interface TransactionProviderProps {
   type: 'SALE' | 'PURCHASE' | 'EXPENSE';
 }
 
+const paginationDefault = {
+  page: 1,
+  pageSize: 20,
+  totalElements: 0,
+  totalPages: 0,
+};
+
 const getDefaultMonthDates = () => {
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -35,6 +42,15 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
 
   const [startDate, setStartDate] = useState<Date>(firstDay);
   const [endDate, setEndDate] = useState<Date>(lastDay);
+
+  const formattedStartDate = React.useMemo(
+    () => formatDateToDefault(startDate),
+    [startDate],
+  );
+  const formattedEndDate = React.useMemo(
+    () => formatDateToDefault(endDate),
+    [endDate],
+  );
 
   const {
     order,
@@ -61,6 +77,8 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       order,
       orderBy,
       search,
+      formattedStartDate,
+      formattedEndDate,
     ],
     queryFn: () =>
       getTransactions({
@@ -68,13 +86,25 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
         pageSize: pagination.pageSize,
         order,
         orderBy,
-        startDate: formatDateToDefault(startDate),
-        endDate: formatDateToDefault(endDate),
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
         type,
       }),
   });
 
-  const handleRefetch = () => refetch();
+  const handleRefetch = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  const handleSearch = useCallback(
+    (value: string) => {
+      if (value) {
+        setPagination(paginationDefault);
+      }
+      setSearch(value);
+    },
+    [setPagination, setSearch],
+  );
 
   useEffect(() => {
     if (data) {
@@ -89,32 +119,52 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
     if (isError) {
       cleanTable();
       if (error.status !== HttpStatusCode.NotFound) {
-        //  showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
+        showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
       }
     }
   }, [isError, error, cleanTable, showSnackbar]);
 
+  const contextValue: TransactionContextType = React.useMemo(
+    () => ({
+      order,
+      orderBy,
+      search,
+      transactions: rows,
+      isLoading,
+      error,
+      pagination,
+      startDate,
+      endDate,
+      setStartDate,
+      setEndDate,
+      handleSearch,
+      handleRefetch,
+      handlePageChange,
+      handleSort,
+      handleRowsPerPageChange,
+    }),
+    [
+      order,
+      orderBy,
+      search,
+      rows,
+      isLoading,
+      error,
+      pagination,
+      startDate,
+      endDate,
+      setStartDate,
+      setEndDate,
+      handleRefetch,
+      handlePageChange,
+      handleSort,
+      handleRowsPerPageChange,
+      handleSearch,
+    ],
+  );
+
   return (
-    <TransactionContext.Provider
-      value={{
-        order,
-        orderBy,
-        search,
-        transactions: rows,
-        isLoading,
-        error,
-        pagination,
-        startDate,
-        endDate,
-        setStartDate,
-        setEndDate,
-        handleSearch: setSearch,
-        handleRefetch,
-        handlePageChange,
-        handleSort,
-        handleRowsPerPageChange,
-      }}
-    >
+    <TransactionContext.Provider value={contextValue}>
       {children}
     </TransactionContext.Provider>
   );

@@ -1,7 +1,7 @@
 // src/views/AluminumWorksSales/components/AluminumWorksSalesToolbar.tsx
 
 import React, { useEffect, useState } from 'react';
-import { Box, Grid, Button, useTheme, useMediaQuery } from '@mui/material';
+import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useDebounce } from 'use-debounce';
 
@@ -23,10 +23,8 @@ const SalesToolbar = () => {
     endDate: ctxEndDate,
     setStartDate: setCtxStartDate,
     setEndDate: setCtxEndDate,
-    handleRefetch,
   } = useTransactions();
 
-  // Hook de rango de fechas con validación
   const {
     startDate,
     endDate,
@@ -40,7 +38,6 @@ const SalesToolbar = () => {
     onValidRangeChange: (start, end) => {
       setCtxStartDate(start);
       setCtxEndDate(end);
-      handleRefetch();
     },
   });
 
