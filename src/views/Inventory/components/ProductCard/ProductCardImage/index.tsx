@@ -83,8 +83,8 @@ const ProductCardImage = ({
             Imagen en proceso de carga
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            La imagen puede tardar unos minutos en mostrarse. Se está cargando
-            desde la nube.
+            La imagen puede tardar unos minutos en mostrarse. Se est&aacute;
+            cargando desde la nube.
           </Typography>
         </Box>
       )}
@@ -104,7 +104,7 @@ const ProductCardImage = ({
             Sin imagen.
           </Typography>
           <Typography variant="body2" color="text.secondary" px={2}>
-            Sube una desde el botón de imagen.
+            Sube una desde el bot&oacute;n de imagen.
           </Typography>
         </Box>
       )}

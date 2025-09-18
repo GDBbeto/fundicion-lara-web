@@ -50,7 +50,7 @@ const SearchInput = memo(
           endAdornment: value && (
             <InputAdornment position="end">
               <IconButton
-                aria-label="Limpiar búsqueda"
+                aria-label={'Limpiar b\u00FAsqueda'}
                 onClick={handleClear}
                 edge="end"
                 size="small"

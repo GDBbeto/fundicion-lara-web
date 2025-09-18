@@ -1,6 +1,7 @@
 export * from './product';
 export * from './transaction';
 export * from './transaction-summary';
+export * from './/invoice';
 
 export interface ApiResponse<T> {
   status: string;

@@ -80,7 +80,7 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             render={({ field }) => (
               <CustomTextField
                 {...field}
-                label="Descripción"
+                label={'Descripci\u00F3n'}
                 multiline
                 rows={2}
               />
@@ -115,6 +115,7 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 required
                 customInput={CustomTextField}
                 label="Stock"
+                decimalScale={2}
                 allowNegative={false}
                 error={!!errors.stock}
                 helperText={errors.stock?.message}
@@ -138,6 +139,7 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 label="Precio de compra"
                 thousandSeparator
                 prefix="$"
+                decimalScale={2}
                 allowNegative={false}
                 error={!!errors.purchasePrice}
                 helperText={errors.purchasePrice?.message}
@@ -161,6 +163,7 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 label="Precio de venta"
                 thousandSeparator
                 prefix="$"
+                decimalScale={2}
                 allowNegative={false}
                 error={!!errors.sellingPrice}
                 helperText={errors.sellingPrice?.message}

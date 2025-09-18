@@ -16,9 +16,8 @@ interface Props {
 const ProductCardContent = ({ product }: Props) => {
   return (
     <CardContent>
-      {/* Descripción */}
       <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 1 }}>
-        {product.description || 'Sin descripción'}
+        {product.description || 'Sin descripci\u00F3n'}
       </Typography>
 
       <Divider sx={{ mb: 1 }} />

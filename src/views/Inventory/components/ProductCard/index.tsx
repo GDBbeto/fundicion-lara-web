@@ -115,7 +115,7 @@ const ProductCard = ({ product }: Props) => {
           handleClose={() => setOpenDeleteModal(false)}
           onConfirm={handleDelete}
           title="Eliminar producto"
-          confirmMessage={`¿Estás seguro de que deseas eliminar el producto "${product.name}"?`}
+          confirmMessage={`¿Est\u00E1s seguro de que deseas eliminar el producto "${product.name}"?`}
         />
       ) : null}
 

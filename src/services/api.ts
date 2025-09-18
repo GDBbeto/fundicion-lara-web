@@ -3,7 +3,7 @@
 import axios from 'axios';
 import { ERROR_MESSAGES } from 'commons/messages';
 
-// Aquí luego puedes obtener el token desde un storage más seguro o cookie
+// Aqui luego puedes obtener el token desde un storage mas seguro o cookie
 const getToken = () => {
   return localStorage.getItem('accessToken');
 };

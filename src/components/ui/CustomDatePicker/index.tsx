@@ -5,11 +5,13 @@ import { colors } from 'commons/colors';
 interface CustomDatePickerProps extends DatePickerProps<any> {
   error?: boolean;
   helperText?: React.ReactNode;
+  required?: boolean;
 }
 
 const CustomDatePicker = ({
   error,
   helperText,
+  required,
   ...props
 }: CustomDatePickerProps) => {
   return (
@@ -24,6 +26,7 @@ const CustomDatePicker = ({
           size: 'small',
           error,
           helperText,
+          required,
           sx: {
             backgroundColor: colors.white,
           },

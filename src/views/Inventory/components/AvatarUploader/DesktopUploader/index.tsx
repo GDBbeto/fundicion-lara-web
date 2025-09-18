@@ -23,7 +23,7 @@ const DesktopUploader = ({ imageUrl, onUpload, loading = false }: Props) => {
       onUpload={onUpload}
       loading={loading}
       validateFile={validateImageFile}
-      dragText={'Arrastra y suelta una imagen aquí'}
+      dragText={'Arrastra y suelta una imagen aqu\u00ED'}
       buttonText={'Seleccionar imagen'}
     >
       {imageUrl && (

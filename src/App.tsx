@@ -19,7 +19,7 @@ import AppRoutes from 'router/AppRoutes';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false, // No reintenta fallos automáticamente
+      retry: false, // No reintenta fallos automaticamente
     },
   },
 });

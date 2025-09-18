@@ -24,7 +24,7 @@ const FileUploadLayout = ({
   loading = false,
   children,
   validateFile,
-  dragText = 'Arrastra y suelta un archivo aquí',
+  dragText = 'Arrastra y suelta un archivo aqu\u00ED',
   buttonText = 'Seleccionar archivo',
 }: Props) => {
   const [isDragging, setIsDragging] = useState(false);

@@ -44,7 +44,6 @@ const TableToolbar = ({
 
   return (
     <Box sx={toolbarContainer(theme)}>
-      {/* Título y botón de refrescar */}
       <Box display="flex" alignItems="center" gap={1}>
         <Typography variant="h6" fontWeight={600} sx={titleStyles(theme)}>
           {title}
@@ -61,7 +60,6 @@ const TableToolbar = ({
         )}
       </Box>
 
-      {/* Botón de densidad */}
       <ToggleButtonGroup
         size="small"
         value={dense ? 'compact' : 'comfortable'}
@@ -70,7 +68,7 @@ const TableToolbar = ({
         aria-label="Modo de tabla"
         sx={toggleGroupStyles(theme)}
       >
-        <ToggleButton value="comfortable" aria-label="Cómoda">
+        <ToggleButton value="comfortable" aria-label="Comoda">
           <ViewStreamIcon fontSize="small" />
         </ToggleButton>
         <ToggleButton value="compact" aria-label="Compacta">

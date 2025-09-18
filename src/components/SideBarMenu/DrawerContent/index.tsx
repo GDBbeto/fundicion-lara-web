@@ -104,7 +104,7 @@ const DrawerContent = ({
           item={{
             id: 'logOut',
             path: '',
-            text: 'Cerrar sesión',
+            text: 'Cerrar sesi\u00F3n',
             icon: ExitToAppIcon,
           }}
           index={-1}

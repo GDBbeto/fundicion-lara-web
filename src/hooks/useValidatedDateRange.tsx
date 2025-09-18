@@ -1,4 +1,3 @@
-// hooks/useValidatedDateRange.ts
 import { useState, useEffect, useRef } from 'react';
 import { validationMessages } from 'commons/messages';
 
@@ -18,7 +17,6 @@ const useValidatedDateRange = ({
 
   const hasInteracted = useRef(false);
 
-  // Guardamos el último rango para comparar
   const lastValidRange = useRef<{ start: Date; end: Date } | null>(null);
 
   useEffect(() => {
@@ -26,7 +24,6 @@ const useValidatedDateRange = ({
 
     let isValid = true;
 
-    // Validación fecha inicial
     if (startDate === null || startDate === undefined) {
       setStartDateError(validationMessages.required);
       isValid = false;
@@ -37,7 +34,6 @@ const useValidatedDateRange = ({
       setStartDateError(null);
     }
 
-    // Validación fecha final
     if (endDate === null || endDate === undefined) {
       setEndDateError(validationMessages.required);
       isValid = false;
@@ -48,7 +44,6 @@ const useValidatedDateRange = ({
       setEndDateError(null);
     }
 
-    // Validación rango de fechas
     if (startDate && endDate && startDate.getTime() > endDate.getTime()) {
       setStartDateError(validationMessages.startDateAfterEndDate);
       setEndDateError(validationMessages.endDateBeforeStartDate);
@@ -72,7 +67,7 @@ const useValidatedDateRange = ({
   const handleStartDateChange = (date: Date | null) => {
     hasInteracted.current = true;
     setStartDate(date);
-    setEndDate(null); // Limpiar fecha final para forzar nueva selección
+    setEndDate(null);
   };
 
   const handleEndDateChange = (date: Date | null) => {

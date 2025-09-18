@@ -141,10 +141,11 @@ const ProductList = () => {
               sx={{ fontSize: 80, color: 'error.main', mb: 2 }}
             />
             <Typography variant="h5" fontWeight="bold" gutterBottom>
-              Ocurrió un error al cargar los productos
+              Ocurri&oacute; un error al cargar los productos
             </Typography>
             <Typography variant="body1" color="text.secondary" mb={3}>
-              {error.userMessage ?? 'Por favor, intenta nuevamente más tarde.'}
+              {error.userMessage ??
+                'Por favor, intenta nuevamente m\u00E1s tarde.'}
             </Typography>
           </Box>
         </Box>

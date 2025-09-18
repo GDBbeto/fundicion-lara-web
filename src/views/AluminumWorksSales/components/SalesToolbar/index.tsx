@@ -1,5 +1,3 @@
-// src/views/AluminumWorksSales/components/AluminumWorksSalesToolbar.tsx
-
 import React, { useEffect, useState } from 'react';
 import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -9,12 +7,14 @@ import { SearchInput } from 'components/shared';
 import { CustomDatePicker } from 'components/ui';
 
 import { useDevice, useTransactions, useValidatedDateRange } from 'hooks';
+import SaleFormModal from '../SaleFormModal';
 
 const SalesToolbar = () => {
   const { isSm } = useDevice();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
+  const [openModal, setOpenModal] = useState(false);
 
   const {
     error,
@@ -46,13 +46,12 @@ const SalesToolbar = () => {
   }, [debouncedSearch, handleSearch]);
 
   const handleAddSale = () => {
-    console.log('Registrar venta clicked');
+    setOpenModal(true);
   };
 
   return (
     <Box mb={3}>
       <Grid container spacing={2} alignItems="flex-start">
-        {/* Search Input */}
         <Grid size={{ xs: 12, sm: 3 }}>
           <SearchInput
             value={searchTerm}
@@ -62,7 +61,6 @@ const SalesToolbar = () => {
           />
         </Grid>
 
-        {/* Start Date Picker */}
         <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <CustomDatePicker
             label="Fecha inicial"
@@ -73,7 +71,6 @@ const SalesToolbar = () => {
           />
         </Grid>
 
-        {/* End Date Picker */}
         <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <CustomDatePicker
             label="Fecha final"
@@ -84,7 +81,6 @@ const SalesToolbar = () => {
           />
         </Grid>
 
-        {/* Botón de acción */}
         <Grid
           display="flex"
           justifyContent={{ xs: 'center', sm: 'flex-end' }}
@@ -99,6 +95,13 @@ const SalesToolbar = () => {
           >
             {isSm ? 'Venta' : 'Registrar venta'}
           </Button>
+          {openModal ? (
+            <SaleFormModal
+              open={openModal}
+              handleClose={() => setOpenModal(false)}
+              onSubmit={(data) => console.log(data)}
+            />
+          ) : null}
         </Grid>
       </Grid>
     </Box>

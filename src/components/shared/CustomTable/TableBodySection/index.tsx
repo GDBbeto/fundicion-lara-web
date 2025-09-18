@@ -7,7 +7,7 @@ import {
   Box,
   Typography,
 } from '@mui/material';
-import InboxIcon from '@mui/icons-material/Inbox'; // Ícono para estado vacío
+import InboxIcon from '@mui/icons-material/Inbox';
 
 import type { Column } from 'types/column';
 import { colors } from 'commons/colors';
@@ -59,7 +59,7 @@ const TableBodySection = <T,>({
                 variant="body1"
                 sx={{ mt: 1, color: colors.darkText }}
               >
-                No hay información para mostrar
+                No hay informaci&oacute;n para mostrar
               </Typography>
             </Box>
           </TableCell>

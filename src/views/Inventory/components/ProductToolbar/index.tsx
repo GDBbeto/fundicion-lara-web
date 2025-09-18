@@ -14,6 +14,7 @@ import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 import type { Product } from 'types/api';
 
 import ProductFormModal from '../ProductFormModal';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
 const ProductToolbar = () => {
   const theme = useTheme();
@@ -41,11 +42,11 @@ const ProductToolbar = () => {
       onSuccess: () => {
         setOpen(false);
         handleRefetch();
-        showSnackbar('Se guardó corretamente', 'success');
+        showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
       },
       onError: (customError) => {
         showSnackbar(
-          customError?.userMessage || 'Ocurrió un error inesperado.',
+          customError?.userMessage || ERROR_MESSAGES.DEFAULT,
           'error',
         );
       },

@@ -70,7 +70,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
         >
           {title}
         </DialogTitle>
-        {/* Solo mostramos el botón de cerrar si el título NO está centrado */}
+
         {titleAlign !== 'center' && (
           <IconButton aria-label="close" onClick={handleClose} color="primary">
             <CloseIcon />

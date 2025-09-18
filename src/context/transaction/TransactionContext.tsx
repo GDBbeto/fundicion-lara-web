@@ -31,7 +31,7 @@ const paginationDefault = {
 const getDefaultMonthDates = () => {
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
-  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0); // último día del mes
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0); // Ultimo dia del mes
   return { firstDay, lastDay };
 };
 

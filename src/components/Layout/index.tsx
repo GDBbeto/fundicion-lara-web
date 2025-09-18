@@ -10,7 +10,7 @@ const Layout = () => {
   return (
     <Box sx={{ display: 'flex' }}>
       <GlobalScrollStyles />
-      {/* Menú lateral + AppBar */}
+      {/* Menu lateral + AppBar */}
       <SideBarMenu />
 
       {/* Contenido principal */}
