@@ -92,7 +92,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       }),
   });
 
-  const handleRefetch = useCallback(() => {
+  const handleRefresh = useCallback(() => {
     refetch();
   }, [refetch]);
 
@@ -138,7 +138,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       setStartDate,
       setEndDate,
       handleSearch,
-      handleRefetch,
+      handleRefresh,
       handlePageChange,
       handleSort,
       handleRowsPerPageChange,
@@ -155,7 +155,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       endDate,
       setStartDate,
       setEndDate,
-      handleRefetch,
+      handleRefresh,
       handlePageChange,
       handleSort,
       handleRowsPerPageChange,

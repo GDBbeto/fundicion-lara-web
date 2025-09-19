@@ -2,7 +2,7 @@ import type { CommonError, Pagination, Transaction } from 'types/api';
 
 export interface TransactionContextType {
   search: string;
-  order: string;
+  order: 'asc' | 'desc';
   orderBy?: keyof Transaction;
   transactions: Transaction[];
   isLoading: boolean;
@@ -14,7 +14,7 @@ export interface TransactionContextType {
   setEndDate: (date: Date) => void;
   handleSort: (property: keyof Transaction) => void;
   handleSearch: (value: string) => void;
-  handleRefetch: () => void;
+  handleRefresh: () => void;
   handlePageChange: (_: unknown, newPage: number) => void;
   handleRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

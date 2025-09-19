@@ -10,7 +10,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-// Estilo cuando el Drawer está abierto
+// Estilo cuando el Drawer esta abierto
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -20,7 +20,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
   overflowX: 'hidden',
 });
 
-// Estilo cuando el Drawer está cerrado
+// Estilo cuando el Drawer esta cerrado
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,

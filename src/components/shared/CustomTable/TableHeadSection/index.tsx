@@ -36,7 +36,7 @@ const TableHeadSection = <T,>({
               top: 0,
             }}
           >
-            {onSort ? (
+            {onSort && col.sort ? (
               <TableSortLabel
                 active={orderBy === col.apiField}
                 direction={orderBy === col.apiField ? order : 'asc'}
