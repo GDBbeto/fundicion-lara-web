@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from '@mui/material';
 
-import type { CommonError, Product } from 'types/api';
+import type { Product } from 'types/api';
 
 import { CustomSpinner, DeleteConfirmationModal } from 'components/shared';
 
@@ -12,7 +12,7 @@ import {
   useUploadProductImage,
 } from 'views/Inventory/hooks';
 
-import { useSnackbar } from 'hooks';
+import { useErrorHandler, useSnackbar } from 'hooks';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
@@ -30,7 +30,9 @@ interface Props {
 
 const ProductCard = ({ product }: Props) => {
   const { showSnackbar } = useSnackbar();
-  const { handleRefetch } = useProductos();
+  const { showError } = useErrorHandler();
+
+  const { handleRefresh } = useProductos();
   const { mutate: updateProduct, isPending: isPendingUpdate } =
     useUpdateProduct();
   const { mutate: deleteProduct, isPending: isPendingDelete } =
@@ -43,19 +45,15 @@ const ProductCard = ({ product }: Props) => {
 
   const isPending = isPendingUpdate || isPendingDelete || isPendingUpload;
 
-  const processError = (error: CommonError, defaultError: string) => {
-    showSnackbar(error.userMessage || defaultError, 'error');
-  };
-
   const processSuccess = (message: string) => {
-    handleRefetch();
+    handleRefresh();
     showSnackbar(message, 'success');
   };
 
   const handleUpload = async (file: File) => {
     uploadImage({ productId: product.productId, file } as any, {
       onSuccess: () => processSuccess(SUCCESS_MESSAGES.IMAGE_UPLOADED),
-      onError: (error) => processError(error, ERROR_MESSAGES.UPLOAD_IMAGE),
+      onError: (error) => showError(error, ERROR_MESSAGES.UPLOAD_IMAGE),
     });
   };
 
@@ -65,7 +63,7 @@ const ProductCard = ({ product }: Props) => {
         setOpen(false);
         processSuccess(SUCCESS_MESSAGES.UPDATED);
       },
-      onError: (error) => processError(error, ERROR_MESSAGES.UPDATE),
+      onError: (error) => showError(error, ERROR_MESSAGES.UPDATE),
     });
   };
 
@@ -75,7 +73,7 @@ const ProductCard = ({ product }: Props) => {
         processSuccess(SUCCESS_MESSAGES.DELETED);
         setOpenDeleteModal(false);
       },
-      onError: (error) => processError(error, ERROR_MESSAGES.DELETE),
+      onError: (error) => showError(error, ERROR_MESSAGES.DELETE),
     });
   };
 

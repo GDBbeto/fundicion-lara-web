@@ -21,13 +21,6 @@ interface TransactionProviderProps {
   type: 'SALE' | 'PURCHASE' | 'EXPENSE';
 }
 
-const paginationDefault = {
-  page: 1,
-  pageSize: 20,
-  totalElements: 0,
-  totalPages: 0,
-};
-
 const getDefaultMonthDates = () => {
   const now = new Date();
   const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -59,6 +52,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
     rows,
     setPagination,
     setRows,
+    paginationDefault,
     cleanTable,
     handleSort,
     handlePageChange,
@@ -89,6 +83,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         type,
+        search,
       }),
   });
 
@@ -103,6 +98,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       }
       setSearch(value);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [setPagination, setSearch],
   );
 

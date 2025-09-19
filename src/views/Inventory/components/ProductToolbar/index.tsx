@@ -26,7 +26,7 @@ const ProductToolbar = () => {
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const { showSnackbar } = useSnackbar();
 
-  const { handleSearch, error, handleRefetch } = useProductos();
+  const { handleSearch, error, handleRefresh } = useProductos();
   const { mutate: saveProduct, isPending } = useSaveProduct();
 
   const handleAddProduct = () => {
@@ -41,7 +41,7 @@ const ProductToolbar = () => {
     saveProduct(productData, {
       onSuccess: () => {
         setOpen(false);
-        handleRefetch();
+        handleRefresh();
         showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
       },
       onError: (customError) => {

@@ -7,7 +7,7 @@ export interface ProductContextType {
   pagination: Pagination;
   error: CommonError | null;
   handleSearch: (value: string) => void;
-  handleRefetch: () => void;
+  handleRefresh: () => void;
   handlePageChange: (_: unknown, newPage: number) => void;
   handleRowsPerPageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }

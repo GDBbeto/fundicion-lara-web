@@ -3,10 +3,21 @@ import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useDebounce } from 'use-debounce';
 
-import { SearchInput } from 'components/shared';
+import { CustomSpinner, SearchInput } from 'components/shared';
 import { CustomDatePicker } from 'components/ui';
 
-import { useDevice, useTransactions, useValidatedDateRange } from 'hooks';
+import type { Transaction } from 'types/api';
+
+import {
+  useDevice,
+  useSaveTransaction,
+  useSnackbar,
+  useTransactions,
+  useValidatedDateRange,
+} from 'hooks';
+
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+
 import SaleFormModal from '../SaleFormModal';
 
 const SalesToolbar = () => {
@@ -23,7 +34,10 @@ const SalesToolbar = () => {
     endDate: ctxEndDate,
     setStartDate: setCtxStartDate,
     setEndDate: setCtxEndDate,
+    handleRefresh,
   } = useTransactions();
+  const { mutate: saveTransaction, isPending } = useSaveTransaction();
+  const { showSnackbar } = useSnackbar();
 
   const {
     startDate,
@@ -47,6 +61,22 @@ const SalesToolbar = () => {
 
   const handleAddSale = () => {
     setOpenModal(true);
+  };
+
+  const handleSubmit = (productData: Transaction) => {
+    saveTransaction(productData, {
+      onSuccess: () => {
+        setOpenModal(false);
+        handleRefresh();
+        showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
+      },
+      onError: (customError) => {
+        showSnackbar(
+          customError?.userMessage || ERROR_MESSAGES.DEFAULT,
+          'error',
+        );
+      },
+    });
   };
 
   return (
@@ -99,9 +129,10 @@ const SalesToolbar = () => {
             <SaleFormModal
               open={openModal}
               handleClose={() => setOpenModal(false)}
-              onSubmit={(data) => console.log(data)}
+              onSubmit={handleSubmit}
             />
           ) : null}
+          {isPending ? <CustomSpinner open /> : null}
         </Grid>
       </Grid>
     </Box>

@@ -22,6 +22,7 @@ export const createSalesColumns = ({
     apiField: 'transactionId',
     align: 'center',
     sort: true,
+    hiddenOnMobile: true,
   },
   {
     label: 'Fecha',
@@ -86,14 +87,21 @@ export const createSalesColumns = ({
           variant="outlined"
         />
       ) : (
-        <Box sx={{ color: 'text.secondary', fontStyle: 'italic' }}>
-          Sin orden
+        <Box
+          sx={{
+            color: 'text.secondary',
+            fontStyle: 'italic',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          Sin # pedido
         </Box>
       ),
   },
   {
     label: 'Descripción',
     apiField: 'description',
+    hiddenOnMobile: true,
     render: (row) => (
       <Box
         sx={{

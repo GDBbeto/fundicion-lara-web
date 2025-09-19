@@ -17,13 +17,6 @@ export const ProductContext = createContext<ProductContextType>(
   {} as ProductContextType,
 );
 
-const paginationDefault = {
-  page: 1,
-  pageSize: 10,
-  totalElements: 0,
-  totalPages: 0,
-};
-
 const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const { showSnackbar } = useSnackbar();
 
@@ -34,6 +27,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     rows,
     setPagination,
     setRows,
+    paginationDefault,
     cleanTable,
     handlePageChange,
     handleRowsPerPageChange,
@@ -61,7 +55,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     setSearch(value);
   };
 
-  const handleRefetch = () => {
+  const handleRefresh = () => {
     refetch();
   };
 
@@ -93,7 +87,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
         error,
         pagination,
         handleSearch,
-        handleRefetch,
+        handleRefresh,
         handlePageChange,
         handleRowsPerPageChange,
       }}
