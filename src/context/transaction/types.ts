@@ -1,6 +1,7 @@
 import type { CommonError, Pagination, Transaction } from 'types/api';
 
 export interface TransactionContextType {
+  type: 'SALE' | 'PURCHASE' | 'EXPENSE';
   search: string;
   order: 'asc' | 'desc';
   orderBy?: keyof Transaction;
@@ -13,6 +14,7 @@ export interface TransactionContextType {
   pagination: Pagination;
   startDate: Date;
   endDate: Date;
+  label: string;
   setStartDate: (date: Date) => void;
   setEndDate: (date: Date) => void;
   handleSort: (property: keyof Transaction) => void;

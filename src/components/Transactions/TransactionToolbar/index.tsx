@@ -6,8 +6,6 @@ import { useDebounce } from 'use-debounce';
 import { CustomSpinner, SearchInput } from 'components/shared';
 import { CustomDatePicker } from 'components/ui';
 
-import type { Transaction } from 'types/api';
-
 import {
   useDevice,
   useSaveTransaction,
@@ -17,17 +15,17 @@ import {
 } from 'hooks';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+import type { Transaction } from 'types/api';
+import TransactionFormModal from '../TransactionFormModal';
 
-import SaleFormModal from '../SaleFormModal';
-
-const SalesToolbar = () => {
+const TransactionToolbar = () => {
   const { isSm } = useDevice();
-
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const [openModal, setOpenModal] = useState(false);
 
   const {
+    label,
     error,
     handleSearch,
     startDate: ctxStartDate,
@@ -36,6 +34,7 @@ const SalesToolbar = () => {
     setEndDate: setCtxEndDate,
     handleRefresh,
   } = useTransactions();
+
   const { mutate: saveTransaction, isPending } = useSaveTransaction();
   const { showSnackbar } = useSnackbar();
 
@@ -59,12 +58,8 @@ const SalesToolbar = () => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
 
-  const handleAddSale = () => {
-    setOpenModal(true);
-  };
-
-  const handleSubmit = (productData: Transaction) => {
-    saveTransaction(productData, {
+  const handleSubmit = (transactionData: Transaction) => {
+    saveTransaction(transactionData, {
       onSuccess: () => {
         setOpenModal(false);
         handleRefresh();
@@ -86,7 +81,7 @@ const SalesToolbar = () => {
           <SearchInput
             value={searchTerm}
             onChange={setSearchTerm}
-            placeholder="Buscar ventas..."
+            placeholder={`Buscar ${label.toLowerCase()}s...`}
             disabled={!!error && error.status !== 404}
           />
         </Grid>
@@ -121,22 +116,24 @@ const SalesToolbar = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={handleAddSale}
+            onClick={() => setOpenModal(true)}
           >
-            {isSm ? 'Venta' : 'Registrar venta'}
+            {isSm ? label : `Registrar ${label.toLowerCase()}`}
           </Button>
-          {openModal ? (
-            <SaleFormModal
+
+          {openModal && (
+            <TransactionFormModal
               open={openModal}
               handleClose={() => setOpenModal(false)}
               onSubmit={handleSubmit}
             />
-          ) : null}
-          {isPending ? <CustomSpinner open /> : null}
+          )}
+
+          {isPending && <CustomSpinner open />}
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default SalesToolbar;
+export default TransactionToolbar;

@@ -1,22 +1,13 @@
 import React from 'react';
 
-import { Box, Chip, IconButton } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import { Box, Chip } from '@mui/material';
 
 import { NumericFormat } from 'react-number-format';
 
 import type { Transaction } from 'types/api';
 import type { Column } from 'types/column';
 
-interface CreateSalesColumnsProps {
-  onEdit: (transaction: Transaction) => void;
-  onDelete: (transaction: Transaction) => void;
-}
-
-export const createSalesColumns = ({
-  onEdit,
-  onDelete,
-}: CreateSalesColumnsProps): Column<Transaction>[] => [
+export const columns: Column<Transaction>[] = [
   {
     label: 'ID',
     apiField: 'transactionId',
@@ -75,30 +66,6 @@ export const createSalesColumns = ({
       ),
   },
   {
-    label: '# Pedido',
-    apiField: 'orderTransactionId',
-    align: 'center',
-    render: (row) =>
-      row.orderTransactionId ? (
-        <Chip
-          label={`#${row.orderTransactionId}`}
-          size="small"
-          color="primary"
-          variant="outlined"
-        />
-      ) : (
-        <Box
-          sx={{
-            color: 'text.secondary',
-            fontStyle: 'italic',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          Sin # pedido
-        </Box>
-      ),
-  },
-  {
     label: 'Descripci\u00F3n',
     apiField: 'description',
     hiddenOnMobile: true,
@@ -113,21 +80,6 @@ export const createSalesColumns = ({
         title={row.description || 'Sin descripci\u00F3n'}
       >
         {row.description || 'Sin descripci\u00F3n'}
-      </Box>
-    ),
-  },
-  {
-    label: 'Acciones',
-    apiField: 'transactionId',
-    align: 'center',
-    render: (row) => (
-      <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
-        <IconButton size="small" onClick={() => onEdit(row)} color="primary">
-          <Edit fontSize="small" />
-        </IconButton>
-        <IconButton size="small" onClick={() => onDelete(row)} color="error">
-          <Delete fontSize="small" />
-        </IconButton>
       </Box>
     ),
   },

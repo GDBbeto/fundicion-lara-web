@@ -1,6 +1,7 @@
+// src/views/Transactions/components/TransactionList.tsx
 import React, { useMemo, useState } from 'react';
-
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material';
 
 import {
   CustomSpinner,
@@ -16,15 +17,19 @@ import {
   useTransactions,
   useUpdateTransaction,
 } from 'hooks';
-import type { Transaction } from 'types/api';
 
+import type { Transaction } from 'types/api';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
-import SaleFormModal from '../SaleFormModal';
+import { Column } from 'types/column';
 
-import { createSalesColumns } from './Columns';
+import TransactionFormModal from '../TransactionFormModal';
 
-const SalesList = () => {
+interface TransactionListProps {
+  columns: Column<Transaction>[];
+}
+
+const TransactionList = (props: TransactionListProps) => {
   const {
     transactions,
     isLoading,
@@ -35,7 +40,9 @@ const SalesList = () => {
     handlePageChange,
     handleRowsPerPageChange,
     handleSort,
+    label,
   } = useTransactions();
+
   const { isScreenSmall } = useDevice();
   const { showSnackbar } = useSnackbar();
   const { showError } = useErrorHandler();
@@ -44,15 +51,15 @@ const SalesList = () => {
   const { mutate: updateTransaction, isPending: isPendingUpdate } =
     useUpdateTransaction();
 
-  const [showSaleModal, setShowSaleModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
+
   const isPending = isPendingDelete || isPendingUpdate;
 
-  const handleOpenSaleModal = (transaction: Transaction) => {
-    setShowSaleModal(true);
+  const handleOpenFormModal = (transaction: Transaction) => {
+    setShowFormModal(true);
     setSelectedTransaction(transaction);
   };
 
@@ -61,12 +68,34 @@ const SalesList = () => {
     setSelectedTransaction(transaction);
   };
 
-  const columns = useMemo(() => {
-    return createSalesColumns({
-      onEdit: handleOpenSaleModal,
-      onDelete: handleOpenDeleteModal,
-    }).filter((col) => !(isScreenSmall && col.hiddenOnMobile));
-  }, [isScreenSmall]);
+  const columns = useMemo<Column<Transaction>[]>(() => {
+    return [
+      ...props.columns,
+      {
+        label: 'Acciones',
+        apiField: 'transactionId',
+        align: 'center',
+        render: (row: Transaction) => (
+          <Box sx={{ display: 'flex', gap: 0.5, justifyContent: 'center' }}>
+            <IconButton
+              size="small"
+              onClick={() => handleOpenFormModal(row)}
+              color="primary"
+            >
+              <Edit fontSize="small" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => handleOpenDeleteModal(row)}
+              color="error"
+            >
+              <Delete fontSize="small" />
+            </IconButton>
+          </Box>
+        ),
+      } as Column<Transaction>,
+    ].filter((col) => !(isScreenSmall && col.hiddenOnMobile));
+  }, [props.columns, isScreenSmall]);
 
   const processSuccess = (message: string) => {
     handleRefresh();
@@ -93,7 +122,7 @@ const SalesList = () => {
       },
       onError: (error) => showError(error, ERROR_MESSAGES.UPDATE),
     });
-    setShowSaleModal(false);
+    setShowFormModal(false);
     setSelectedTransaction(null);
   };
 
@@ -114,11 +143,12 @@ const SalesList = () => {
         orderBy={orderBy}
         onSort={handleSort}
       />
-      {showSaleModal && selectedTransaction ? (
-        <SaleFormModal
-          open={showSaleModal}
-          sale={selectedTransaction}
-          handleClose={() => setShowSaleModal(false)}
+
+      {showFormModal && selectedTransaction ? (
+        <TransactionFormModal
+          open={showFormModal}
+          transaction={selectedTransaction}
+          handleClose={() => setShowFormModal(false)}
           onSubmit={handleSubmit}
         />
       ) : null}
@@ -128,13 +158,14 @@ const SalesList = () => {
           open={showDeleteModal}
           handleClose={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
-          title={`Eliminar venta`}
-          confirmMessage={`¿Est\u00E1s seguro de que deseas eliminar la venta?`}
+          title={`Eliminar ${label.toLowerCase()}`}
+          confirmMessage={`¿Est\u00E1s seguro de que deseas eliminar la ${label.toLowerCase()}?`}
         />
       ) : null}
+
       {isPending ? <CustomSpinner open /> : null}
     </Box>
   );
 };
 
-export default SalesList;
+export default TransactionList;

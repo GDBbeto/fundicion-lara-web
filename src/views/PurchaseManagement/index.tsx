@@ -1,6 +1,6 @@
 import React from 'react';
-
 import TransactionProvider from 'context/transaction/TransactionContext';
+
 import {
   TransactionList,
   TransactionToolbar,
@@ -9,9 +9,9 @@ import {
 
 import { columns } from './Columns';
 
-const AluminumWorksSales = () => {
+const PurchaseManagement = () => {
   return (
-    <TransactionProvider type="SALE" label="Venta">
+    <TransactionProvider type="PURCHASE" label="Compra">
       <TransactionTotalCard />
       <TransactionToolbar />
       <TransactionList columns={columns} />
@@ -19,4 +19,4 @@ const AluminumWorksSales = () => {
   );
 };
 
-export default AluminumWorksSales;
+export default PurchaseManagement;

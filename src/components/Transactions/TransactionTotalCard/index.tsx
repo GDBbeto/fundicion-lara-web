@@ -34,16 +34,9 @@ import {
   iconStyles,
 } from './styles';
 
-interface Props {
-  title: string;
-  errorMessage?: string;
-}
-
-const TransactionTotalCard: React.FC<Props> = ({
-  title,
-  errorMessage = 'Ocurri\u00F3 un error al obtener la informaci\u00F3n.',
-}) => {
-  const { totalAmount, isSummaryLoading, isSummaryError } = useTransactions();
+const TransactionTotalCard = () => {
+  const { totalAmount, isSummaryLoading, isSummaryError, label } =
+    useTransactions();
 
   const renderContent = () => {
     if (isSummaryLoading) {
@@ -61,7 +54,11 @@ const TransactionTotalCard: React.FC<Props> = ({
             <Typography variant="h4" sx={errorAmountTextStyles}>
               $0.00
             </Typography>
-            <Tooltip title={errorMessage} arrow placement="bottom-end">
+            <Tooltip
+              title={`Ocurrió un error al obtener la información.`}
+              arrow
+              placement="bottom-end"
+            >
               <IconButton size="small" color="error" sx={errorIconStyles}>
                 <ErrorOutlineIcon fontSize="small" />
               </IconButton>
@@ -98,7 +95,7 @@ const TransactionTotalCard: React.FC<Props> = ({
             {/* Contenido principal */}
             <Box sx={contentSectionStyles}>
               <Typography variant="body1" sx={titleStyles}>
-                {title}
+                {`Total de ${label.toLowerCase()}s en el periodo seleccionado`}
               </Typography>
               {renderContent()}
             </Box>

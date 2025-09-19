@@ -1,28 +1,28 @@
+// src/views/Transactions/components/TransactionForm.tsx
 import React from 'react';
-
 import { useForm, Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-
 import { Box, Grid, Button } from '@mui/material';
-
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CustomTextField, CustomDatePicker } from 'components/ui';
 import type { Transaction, InvoiceData } from 'types/api';
 
 import { formatDateToDefault, parseDefaultToDate } from 'utils/dateUtils';
+import { useTransactions } from 'hooks';
 
 import InvoiceFileUpload from '../InvoiceFileUpload';
-
 import schema from './schema';
 
 interface Props {
-  sale?: Transaction | null;
+  transaction?: Transaction | null;
   onSubmit: (data: Transaction) => void;
   onCancel: () => void;
 }
 
-const SaleForm = ({ sale, onSubmit, onCancel }: Props) => {
+const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
+  const { type } = useTransactions();
+
   const {
     control,
     handleSubmit,
@@ -30,13 +30,13 @@ const SaleForm = ({ sale, onSubmit, onCancel }: Props) => {
     formState: { errors },
   } = useForm<Transaction>({
     resolver: yupResolver(schema) as any,
-    defaultValues: sale ?? {
+    defaultValues: transaction ?? {
       orderTransactionId: null,
       amount: null,
       description: '',
       invoiceNumber: '',
       issuerRfc: '',
-      type: 'SALE',
+      type,
       status: null,
       operationDate: formatDateToDefault(new Date()),
     },
@@ -172,4 +172,4 @@ const SaleForm = ({ sale, onSubmit, onCancel }: Props) => {
   );
 };
 
-export default SaleForm;
+export default TransactionForm;

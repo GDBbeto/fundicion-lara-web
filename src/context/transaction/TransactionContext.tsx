@@ -27,6 +27,7 @@ export const TransactionContext = createContext<TransactionContextType>(
 interface TransactionProviderProps {
   children: React.ReactNode;
   type: 'SALE' | 'PURCHASE' | 'EXPENSE';
+  label: string;
 }
 
 const getDefaultMonthDates = () => {
@@ -36,7 +37,11 @@ const getDefaultMonthDates = () => {
   return { firstDay, lastDay };
 };
 
-const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
+const TransactionProvider = ({
+  children,
+  type,
+  label,
+}: TransactionProviderProps) => {
   const { showSnackbar } = useSnackbar();
   const [search, setSearch] = useState('');
   const { firstDay, lastDay } = getDefaultMonthDates();
@@ -101,6 +106,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
     data: summaryData,
     isError: isSummaryError,
     isLoading: isSummaryLoading,
+    refetch: refetchSummary,
   } = useQuery<ApiResponse<TransactionSummary>, CommonError>({
     queryKey: ['transactionSummary', formattedStartDate, formattedEndDate],
     queryFn: () => getTransactionSummary(formattedStartDate, formattedEndDate),
@@ -108,7 +114,8 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
 
   const handleRefresh = useCallback(() => {
     refetch();
-  }, [refetch]);
+    refetchSummary();
+  }, [refetch, refetchSummary]);
 
   const handleSearch = useCallback(
     (value: string) => {
@@ -160,6 +167,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
 
   const contextValue: TransactionContextType = React.useMemo(
     () => ({
+      type,
       order,
       orderBy,
       search,
@@ -168,6 +176,7 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       totalAmount,
       isSummaryLoading,
       error,
+      label,
       isSummaryError,
       pagination,
       startDate,
@@ -181,12 +190,14 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       handleRowsPerPageChange,
     }),
     [
+      type,
       order,
       orderBy,
       search,
       rows,
       isLoading,
       error,
+      label,
       isSummaryError,
       totalAmount,
       isSummaryLoading,
