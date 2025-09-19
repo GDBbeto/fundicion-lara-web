@@ -40,8 +40,8 @@ const ProductCard = ({ product }: Props) => {
   const { mutate: uploadImage, isPending: isPendingUpload } =
     useUploadProductImage();
 
-  const [open, setOpen] = useState(false);
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [showProductModal, setShowProductModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const isPending = isPendingUpdate || isPendingDelete || isPendingUpload;
 
@@ -60,7 +60,7 @@ const ProductCard = ({ product }: Props) => {
   const handleSubmit = (updatedProduct: Product) => {
     updateProduct(updatedProduct, {
       onSuccess: () => {
-        setOpen(false);
+        setShowProductModal(false);
         processSuccess(SUCCESS_MESSAGES.UPDATED);
       },
       onError: (error) => showError(error, ERROR_MESSAGES.UPDATE),
@@ -71,7 +71,7 @@ const ProductCard = ({ product }: Props) => {
     deleteProduct(product.productId, {
       onSuccess: () => {
         processSuccess(SUCCESS_MESSAGES.DELETED);
-        setOpenDeleteModal(false);
+        setShowDeleteModal(false);
       },
       onError: (error) => showError(error, ERROR_MESSAGES.DELETE),
     });
@@ -83,8 +83,8 @@ const ProductCard = ({ product }: Props) => {
       <ProductCardHeader
         name={product.name}
         client={product.client}
-        onEdit={() => setOpen(true)}
-        onDelete={() => setOpenDeleteModal(true)}
+        onEdit={() => setShowProductModal(true)}
+        onDelete={() => setShowDeleteModal(true)}
       />
 
       {/* Imagen */}
@@ -99,18 +99,18 @@ const ProductCard = ({ product }: Props) => {
       {/* Contenido */}
       <ProductCardContent product={product} />
 
-      {open ? (
+      {showProductModal ? (
         <ProductFormModal
-          open={open}
+          open={showProductModal}
           product={product}
-          handleClose={() => setOpen(false)}
+          handleClose={() => setShowProductModal(false)}
           onSubmit={handleSubmit}
         />
       ) : null}
-      {openDeleteModal ? (
+      {showDeleteModal ? (
         <DeleteConfirmationModal
-          open={openDeleteModal}
-          handleClose={() => setOpenDeleteModal(false)}
+          open={showDeleteModal}
+          handleClose={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
           title="Eliminar producto"
           confirmMessage={`¿Est\u00E1s seguro de que deseas eliminar el producto "${product.name}"?`}

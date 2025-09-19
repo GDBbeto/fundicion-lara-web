@@ -45,11 +45,10 @@ const SalesList = () => {
     useUpdateTransaction();
 
   const [showSaleModal, setShowSaleModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
-
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-
   const isPending = isPendingDelete || isPendingUpdate;
 
   const handleOpenSaleModal = (transaction: Transaction) => {
@@ -58,7 +57,7 @@ const SalesList = () => {
   };
 
   const handleOpenDeleteModal = (transaction: Transaction) => {
-    setOpenDeleteModal(true);
+    setShowDeleteModal(true);
     setSelectedTransaction(transaction);
   };
 
@@ -80,7 +79,7 @@ const SalesList = () => {
     deleteTransaction(selectedTransaction.transactionId, {
       onSuccess: () => {
         processSuccess(SUCCESS_MESSAGES.DELETED);
-        setOpenDeleteModal(false);
+        setShowDeleteModal(false);
         setSelectedTransaction(null);
       },
       onError: (error) => showError(error, ERROR_MESSAGES.DELETE),
@@ -91,15 +90,15 @@ const SalesList = () => {
     updateTransaction(transaction, {
       onSuccess: () => {
         processSuccess(SUCCESS_MESSAGES.UPDATED);
-        setShowSaleModal(false);
-        setSelectedTransaction(null);
       },
       onError: (error) => showError(error, ERROR_MESSAGES.UPDATE),
     });
+    setShowSaleModal(false);
+    setSelectedTransaction(null);
   };
 
   return (
-    <Box sx={{ width: '100%', overflowX: 'auto' }}>
+    <Box sx={{ width: '100%' }}>
       <CustomTable<Transaction>
         key={columns.map((c) => c.apiField).join('-')}
         columns={columns}
@@ -107,7 +106,7 @@ const SalesList = () => {
         isLoading={isLoading}
         onRefresh={handleRefresh}
         pagination={pagination}
-        maxHeight="60vh"
+        maxHeight="70vh"
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
         rowKey="transactionId"
@@ -124,10 +123,10 @@ const SalesList = () => {
         />
       ) : null}
 
-      {openDeleteModal ? (
+      {showDeleteModal ? (
         <DeleteConfirmationModal
-          open={openDeleteModal}
-          handleClose={() => setOpenDeleteModal(false)}
+          open={showDeleteModal}
+          handleClose={() => setShowDeleteModal(false)}
           onConfirm={handleDelete}
           title={`Eliminar venta`}
           confirmMessage={`¿Est\u00E1s seguro de que deseas eliminar la venta?`}

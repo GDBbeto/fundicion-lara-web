@@ -75,7 +75,7 @@ export const createSalesColumns = ({
       ),
   },
   {
-    label: '# pedido',
+    label: '# Pedido',
     apiField: 'orderTransactionId',
     align: 'center',
     render: (row) =>
@@ -99,7 +99,7 @@ export const createSalesColumns = ({
       ),
   },
   {
-    label: 'Descripción',
+    label: 'Descripci\u00F3n',
     apiField: 'description',
     hiddenOnMobile: true,
     render: (row) => (
@@ -110,9 +110,9 @@ export const createSalesColumns = ({
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
         }}
-        title={row.description || 'Sin descripción'}
+        title={row.description || 'Sin descripci\u00F3n'}
       >
-        {row.description || 'Sin descripción'}
+        {row.description || 'Sin descripci\u00F3n'}
       </Box>
     ),
   },

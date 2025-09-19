@@ -18,15 +18,21 @@ const Layout = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
-          width: '100%',
+          p: { xs: 2, sm: 3 },
+          width: {
+            xs: '100%', // Movil: drawer temporal, contenido 100%
+            sm: 'calc(100% - 56px)', // sm: drawer cerrado (56px)
+          },
+          transition: 'width 0.3s ease',
+          minWidth: 0,
+          overflow: 'hidden',
         }}
       >
         {/* Este Toolbar ocupa el espacio del AppBar */}
         <Toolbar />
 
-        {/* Puedes envolver el contenido si deseas padding lateral responsivo */}
-        <Container maxWidth="xl" disableGutters>
+        {/* Container responsivo que se adapta al espacio disponible */}
+        <Container disableGutters maxWidth={false}>
           <Outlet />
         </Container>
       </Box>

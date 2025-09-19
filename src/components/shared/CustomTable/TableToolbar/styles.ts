@@ -4,7 +4,6 @@ export const toolbarContainer = (theme: Theme) => ({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: { xs: 'start', sm: 'center' },
-  flexDirection: { xs: 'column', sm: 'row' },
   gap: 2,
   marginBottom: theme.spacing(2),
 });

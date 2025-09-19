@@ -7,6 +7,9 @@ export interface TransactionContextType {
   transactions: Transaction[];
   isLoading: boolean;
   error: CommonError | null;
+  isSummaryError: boolean;
+  totalAmount: number;
+  isSummaryLoading: boolean;
   pagination: Pagination;
   startDate: Date;
   endDate: Date;

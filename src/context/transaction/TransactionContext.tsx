@@ -1,8 +1,16 @@
 import React, { useState, useEffect, createContext, useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import { Transaction, ApiResponse, CommonError } from 'types/api';
-import { getTransactions } from 'services/transactionService';
+import {
+  Transaction,
+  ApiResponse,
+  CommonError,
+  TransactionSummary,
+} from 'types/api';
+import {
+  getTransactionSummary,
+  getTransactions,
+} from 'services/transactionService';
 
 import { useSnackbar, useTableData } from 'hooks';
 import { ERROR_MESSAGES } from 'commons/messages';
@@ -35,6 +43,8 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
 
   const [startDate, setStartDate] = useState<Date>(firstDay);
   const [endDate, setEndDate] = useState<Date>(lastDay);
+
+  const [totalAmount, setTotalAmount] = useState<number>(0);
 
   const formattedStartDate = React.useMemo(
     () => formatDateToDefault(startDate),
@@ -87,6 +97,15 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       }),
   });
 
+  const {
+    data: summaryData,
+    isError: isSummaryError,
+    isLoading: isSummaryLoading,
+  } = useQuery<ApiResponse<TransactionSummary>, CommonError>({
+    queryKey: ['transactionSummary', formattedStartDate, formattedEndDate],
+    queryFn: () => getTransactionSummary(formattedStartDate, formattedEndDate),
+  });
+
   const handleRefresh = useCallback(() => {
     refetch();
   }, [refetch]);
@@ -120,6 +139,25 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
     }
   }, [isError, error, cleanTable, showSnackbar]);
 
+  useEffect(() => {
+    if (summaryData?.data) {
+      const { totalSales, totalPurchases, totalExpenses } = summaryData.data;
+      switch (type) {
+        case 'SALE':
+          setTotalAmount(totalSales);
+          break;
+        case 'PURCHASE':
+          setTotalAmount(totalPurchases);
+          break;
+        case 'EXPENSE':
+          setTotalAmount(totalExpenses);
+          break;
+        default:
+          setTotalAmount(0);
+      }
+    }
+  }, [summaryData, type]);
+
   const contextValue: TransactionContextType = React.useMemo(
     () => ({
       order,
@@ -127,7 +165,10 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       search,
       transactions: rows,
       isLoading,
+      totalAmount,
+      isSummaryLoading,
       error,
+      isSummaryError,
       pagination,
       startDate,
       endDate,
@@ -146,6 +187,9 @@ const TransactionProvider = ({ children, type }: TransactionProviderProps) => {
       rows,
       isLoading,
       error,
+      isSummaryError,
+      totalAmount,
+      isSummaryLoading,
       pagination,
       startDate,
       endDate,
