@@ -79,6 +79,7 @@ const TransactionToolbar = () => {
       <Grid container spacing={2} alignItems="flex-start">
         <Grid size={{ xs: 12, sm: 3 }}>
           <SearchInput
+            id="searchTerm"
             value={searchTerm}
             onChange={setSearchTerm}
             placeholder={`Buscar ${label.toLowerCase()}s...`}
@@ -88,6 +89,8 @@ const TransactionToolbar = () => {
 
         <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <CustomDatePicker
+            id="startDate"
+            name="startDate"
             label="Fecha inicial"
             value={startDate}
             onChange={setStartDate}
@@ -98,6 +101,8 @@ const TransactionToolbar = () => {
 
         <Grid size={{ xs: 12, sm: 3, md: 2 }}>
           <CustomDatePicker
+            id="endDate"
+            name="endDate"
             label="Fecha final"
             value={endDate}
             onChange={setEndDate}
@@ -113,6 +118,7 @@ const TransactionToolbar = () => {
           size={{ xs: 12, sm: 3, md: 5 }}
         >
           <Button
+            id="addButton"
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}

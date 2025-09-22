@@ -62,6 +62,7 @@ const ProductToolbar = () => {
       <Grid container spacing={2} alignItems="center">
         <Grid size={{ xs: 12, sm: 8 }}>
           <SearchInput
+            id="searchTerm"
             value={searchTerm}
             onChange={handleSearchInputChange}
             placeholder="Buscar productos..."
@@ -74,6 +75,7 @@ const ProductToolbar = () => {
           textAlign={{ xs: 'center', sm: 'right' }}
         >
           <Button
+            id="addButton"
             variant="contained"
             startIcon={<AddIcon />}
             onClick={handleAddProduct}

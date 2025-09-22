@@ -10,7 +10,7 @@ interface CustomSelectFieldProps
 
 const CustomSelectField = ({ options, ...rest }: CustomSelectFieldProps) => {
   return (
-    <CustomTextField fullWidth select {...rest}>
+    <CustomTextField id={rest.id || rest.name} fullWidth select {...rest}>
       {options.map((opt) => (
         <MenuItem key={opt.value} value={opt.value}>
           {opt.label}

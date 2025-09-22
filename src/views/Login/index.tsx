@@ -6,7 +6,7 @@ const Login = () => {
 
   return (
     <div>
-      <button onClick={login}>Iniciar sesión</button>
+      <button onClick={login}>Iniciar 0.0</button>
     </div>
   );
 };

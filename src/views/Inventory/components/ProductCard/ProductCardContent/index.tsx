@@ -51,6 +51,7 @@ const ProductCardContent = ({ product }: Props) => {
           </Box>
           <Typography component="span" fontWeight={600}>
             <NumericFormat
+              id="purchasePrice"
               value={product.purchasePrice}
               displayType="text"
               thousandSeparator
@@ -72,6 +73,7 @@ const ProductCardContent = ({ product }: Props) => {
 
           <Typography component="span" fontWeight={600}>
             <NumericFormat
+              id="sellingPrice"
               value={product.sellingPrice}
               displayType="text"
               thousandSeparator

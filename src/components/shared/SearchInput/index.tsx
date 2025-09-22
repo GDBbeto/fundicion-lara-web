@@ -9,10 +9,12 @@ interface Props {
   placeholder?: string;
   disabled?: boolean;
   autoFocus?: boolean;
+  id: string;
 }
 
 const SearchInput = memo(
   ({
+    id,
     value,
     onChange,
     placeholder = 'Buscar...',
@@ -25,6 +27,7 @@ const SearchInput = memo(
 
     return (
       <TextField
+        id={id}
         size="small"
         fullWidth
         value={value}

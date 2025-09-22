@@ -48,11 +48,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
         </Paper>
 
         <Box display="flex" justifyContent="center" gap={2} mt={2}>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button id="cancelButton" variant="outlined" onClick={handleClose}>
             Cancelar
           </Button>
 
           <Button
+            id="deleteButton"
             variant="contained"
             color="error"
             onClick={() => {

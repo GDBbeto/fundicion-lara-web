@@ -71,6 +71,7 @@ const TransactionTotalCard = () => {
     return (
       <Box sx={amountContainerStyles}>
         <NumericFormat
+          id="totalAmount"
           value={totalAmount}
           displayType="text"
           thousandSeparator=","

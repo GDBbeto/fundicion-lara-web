@@ -29,6 +29,7 @@ export const columns: Column<Transaction>[] = [
     render: (row) => (
       <Box sx={{ fontWeight: 600 }}>
         <NumericFormat
+          id="amount"
           value={row.amount ?? 0}
           displayType="text"
           thousandSeparator=","
@@ -44,7 +45,9 @@ export const columns: Column<Transaction>[] = [
     apiField: 'issuerRfc',
     sort: true,
     render: (row) => (
-      <Box sx={{ fontFamily: 'monospace' }}>{row.issuerRfc || 'Sin RFC'}</Box>
+      <Box sx={{ color: 'text.secondary', fontStyle: 'italic' }}>
+        {row.issuerRfc || 'Sin RFC'}
+      </Box>
     ),
   },
   {
@@ -100,6 +103,7 @@ export const columns: Column<Transaction>[] = [
           overflow: 'hidden',
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
+          fontStyle: row.description ? undefined : 'italic',
         }}
         title={row.description || 'Sin descripci\u00F3n'}
       >

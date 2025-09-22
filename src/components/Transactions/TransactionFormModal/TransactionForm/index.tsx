@@ -73,6 +73,8 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
             render={({ field }) => (
               <NumericFormat
                 required
+                id="amount"
+                name="amount"
                 value={field.value}
                 onValueChange={({ floatValue }) =>
                   field.onChange(floatValue ?? '')
@@ -97,6 +99,8 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
             render={({ field }) => (
               <CustomDatePicker
                 required
+                id="operationDate"
+                name="operationDate"
                 label={'Fecha de operaci\u00F3n'}
                 value={field.value ? parseDefaultToDate(field.value) : null}
                 onChange={(date: Date | null) => {
@@ -160,10 +164,10 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
           justifyContent="flex-end"
           gap={2}
         >
-          <Button variant="outlined" onClick={onCancel}>
+          <Button id="cancelButton" variant="outlined" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button id="saveButton" variant="contained" type="submit">
             Guardar
           </Button>
         </Grid>

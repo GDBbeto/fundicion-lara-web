@@ -6,6 +6,8 @@ interface CustomDatePickerProps extends DatePickerProps<any> {
   error?: boolean;
   helperText?: React.ReactNode;
   required?: boolean;
+  id: string;
+  name?: string;
 }
 
 const CustomDatePicker = ({
@@ -22,6 +24,7 @@ const CustomDatePicker = ({
           readOnly: true,
         },
         textField: () => ({
+          id: props.id || props.name,
           fullWidth: true,
           size: 'small',
           error,

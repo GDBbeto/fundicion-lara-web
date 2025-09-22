@@ -103,7 +103,11 @@ const FileUploadLayout = ({
             o
           </Typography>
 
-          <Button variant="outlined" onClick={() => inputRef.current?.click()}>
+          <Button
+            id="selectButton"
+            variant="outlined"
+            onClick={() => inputRef.current?.click()}
+          >
             {buttonText}
           </Button>
 

@@ -4,6 +4,7 @@ import { TextField, TextFieldProps } from '@mui/material';
 const CustomTextField = (props: TextFieldProps) => {
   return (
     <TextField
+      id={props.id || props.name}
       fullWidth={props.fullWidth ?? true}
       size={props.size ?? 'small'}
       autoComplete="off"

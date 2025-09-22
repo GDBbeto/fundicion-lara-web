@@ -131,6 +131,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             render={({ field }) => (
               <NumericFormat
                 required
+                id="purchasePrice"
+                name="purchasePrice"
                 value={field.value}
                 onValueChange={({ floatValue }) => {
                   field.onChange(floatValue ?? '');
@@ -155,6 +157,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             render={({ field }) => (
               <NumericFormat
                 required
+                id="sellingPrice"
+                name="sellingPrice"
                 value={field.value}
                 onValueChange={({ floatValue }) => {
                   field.onChange(floatValue ?? '');
@@ -178,10 +182,10 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
           justifyContent="flex-end"
           gap={2}
         >
-          <Button variant="outlined" onClick={onCancel}>
+          <Button id="cancelButton" variant="outlined" onClick={onCancel}>
             Cancelar
           </Button>
-          <Button variant="contained" type="submit">
+          <Button id="saveButton" variant="contained" type="submit">
             Guardar
           </Button>
         </Grid>
