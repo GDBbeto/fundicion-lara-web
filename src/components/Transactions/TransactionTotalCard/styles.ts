@@ -1,36 +1,5 @@
 import { colors } from 'commons/colors';
 
-// Fade animation styles
-export const fadeStyles = {
-  in: true,
-  timeout: 800,
-};
-
-// Main card styles
-export const cardStyles = {
-  position: 'relative',
-  overflow: 'hidden',
-  borderRadius: 4,
-  mb: 3,
-  background: `linear-gradient(135deg, ${colors.white} 0%, ${colors.veryLightGray} 100%)`,
-  border: `1px solid ${colors.lightSurface}`,
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 4,
-    background: `linear-gradient(90deg, ${colors.darkBlue} 0%, ${colors.lightBlue} 100%)`,
-  },
-};
-
-// Card content styles
-export const cardContentStyles = {
-  p: 3,
-};
-
 // Main content layout
 export const mainContentStyles = {
   display: 'flex',

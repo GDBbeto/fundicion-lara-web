@@ -10,3 +10,4 @@ export { default as CustomSelectField } from './CustomSelectField';
 export { default as CustomTextField } from './CustomTextField';
 export { default as CustomDatePicker } from './CustomDatePicker';
 export { default as ActionMenu } from './ActionMenu';
+export { default as CardLayout } from './Layouts/CardLayout';

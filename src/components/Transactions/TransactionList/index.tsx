@@ -43,7 +43,7 @@ const TransactionList = (props: TransactionListProps) => {
     label,
   } = useTransactions();
 
-  const { isScreenSmall } = useDevice();
+  const { isSmallScreen } = useDevice();
   const { showSnackbar } = useSnackbar();
   const { showError } = useErrorHandler();
   const { mutate: deleteTransaction, isPending: isPendingDelete } =
@@ -128,7 +128,7 @@ const TransactionList = (props: TransactionListProps) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {isScreenSmall ? (
+      {isSmallScreen ? (
         <TransactionListMobile
           handleOpenFormModal={handleOpenFormModal}
           handleOpenDeleteModal={handleOpenDeleteModal}

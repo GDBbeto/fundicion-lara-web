@@ -1,18 +1,9 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import {
-  Box,
-  Toolbar,
-  Typography,
-  useMediaQuery,
-  IconButton,
-  Drawer as MuiDrawer,
-  Divider,
-} from '@mui/material';
+import { Box, Drawer as MuiDrawer, Divider, IconButton } from '@mui/material';
 import {
   Home as HomeIcon,
-  Menu as MenuIcon,
   ChevronRight as ChevronRightIcon,
   ChevronLeft as ChevronLeftIcon,
   CategoryOutlined as CategoryOutlinedIcon,
@@ -24,9 +15,12 @@ import { useTheme } from '@mui/material/styles';
 
 import { colors } from 'commons/colors';
 
-import DrawerContent from './DrawerContent';
+import { useDevice } from 'hooks';
 
-import { DrawerHeader, AppBar, Drawer as CustomDrawer } from './styles';
+import DrawerContent from './DrawerContent';
+import AppToolbar from './AppToolbar';
+
+import { DrawerHeader, Drawer as CustomDrawer } from './styles';
 
 const menuItems = [
   { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
@@ -55,9 +49,8 @@ const SideBarMenu = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'), {
-    noSsr: true,
-  });
+  const { isSmallScreen } = useDevice();
+
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerOpen = useCallback(() => setDrawerOpen(true), []);
@@ -89,38 +82,11 @@ const SideBarMenu = () => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar position="fixed" open={drawerOpen} elevation={0}>
-        <Toolbar>
-          {!drawerOpen && (
-            <IconButton
-              color="primary"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{ mr: 2 }}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-
-          <Typography
-            variant="h5"
-            noWrap
-            component="div"
-            color="primary"
-            sx={{
-              ml: !drawerOpen && !isSmallScreen ? 3 : 0,
-              fontWeight: 600,
-              letterSpacing: 0.5,
-              textTransform: 'capitalize',
-              flexGrow: 1,
-              transition: 'margin-left 0.3s ease',
-            }}
-          >
-            {menuItems[selectedIndex]?.text ?? ''}
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppToolbar
+        drawerOpen={drawerOpen}
+        selectedMenuText={menuItems[selectedIndex]?.text ?? ''}
+        onDrawerOpen={handleDrawerOpen}
+      />
 
       {isSmallScreen ? (
         <MuiDrawer

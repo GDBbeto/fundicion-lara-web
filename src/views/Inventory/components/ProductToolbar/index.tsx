@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Button, Grid, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import { useDebounce } from 'use-debounce';
 
-import { useSnackbar } from 'hooks';
+import { useDevice, useSnackbar } from 'hooks';
 
 import { CustomSpinner, SearchInput } from 'components/shared';
 
@@ -13,13 +13,12 @@ import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 
 import type { Product } from 'types/api';
 
-import ProductFormModal from '../ProductFormModal';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
-const ProductToolbar = () => {
-  const theme = useTheme();
+import ProductFormModal from '../ProductFormModal';
 
-  const isExactSm = useMediaQuery(theme.breakpoints.only('sm'));
+const ProductToolbar = () => {
+  const { isXs } = useDevice();
   const [open, setOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -81,7 +80,7 @@ const ProductToolbar = () => {
             onClick={handleAddProduct}
             disabled={!!error && error.status !== 404}
           >
-            {isExactSm ? 'Agregar' : ' Agregar producto'}
+            {isXs ? 'Agregar' : ' Agregar producto'}
           </Button>
         </Grid>
       </Grid>

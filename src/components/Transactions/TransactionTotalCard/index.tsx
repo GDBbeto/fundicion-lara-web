@@ -1,24 +1,14 @@
 import React from 'react';
-import {
-  Card,
-  CardContent,
-  Typography,
-  Tooltip,
-  Skeleton,
-  IconButton,
-  Box,
-  Fade,
-} from '@mui/material';
+import { Typography, Tooltip, Skeleton, IconButton, Box } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 import { useTransactions } from 'hooks';
 
+import { CardLayout } from 'components/shared';
+
 import {
-  fadeStyles,
-  cardStyles,
-  cardContentStyles,
   mainContentStyles,
   contentSectionStyles,
   titleStyles,
@@ -89,28 +79,35 @@ const TransactionTotalCard = () => {
   };
 
   return (
-    <Fade {...fadeStyles}>
-      <Card elevation={0} sx={cardStyles}>
-        <CardContent sx={cardContentStyles}>
-          <Box sx={mainContentStyles}>
-            {/* Contenido principal */}
-            <Box sx={contentSectionStyles}>
-              <Typography variant="body1" sx={titleStyles}>
-                {`Total de ${label.toLowerCase()}s en el periodo seleccionado`}
-              </Typography>
-              {renderContent()}
-            </Box>
+    <CardLayout
+      variant="outlined"
+      padding={3}
+      borderRadius={4}
+      elevation={0}
+      gradient={true}
+      topBorder={true}
+      hoverEffect={false}
+      fadeIn={true}
+      fadeDelay={0}
+      sx={{ mb: 3 }}
+    >
+      <Box sx={mainContentStyles}>
+        {/* Contenido principal */}
+        <Box sx={contentSectionStyles}>
+          <Typography variant="body1" sx={titleStyles}>
+            {`Total de ${label.toLowerCase()}s en el periodo seleccionado`}
+          </Typography>
+          {renderContent()}
+        </Box>
 
-            {/* Ícono decorativo mejorado */}
-            <Box sx={iconContainerStyles}>
-              <Box sx={iconWrapperStyles}>
-                <MonetizationOnIcon sx={iconStyles} />
-              </Box>
-            </Box>
+        {/* Ícono decorativo mejorado */}
+        <Box sx={iconContainerStyles}>
+          <Box sx={iconWrapperStyles}>
+            <MonetizationOnIcon sx={iconStyles} />
           </Box>
-        </CardContent>
-      </Card>
-    </Fade>
+        </Box>
+      </Box>
+    </CardLayout>
   );
 };
 

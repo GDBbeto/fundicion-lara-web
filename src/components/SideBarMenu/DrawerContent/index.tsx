@@ -14,6 +14,8 @@ import { ExitToApp as ExitToAppIcon } from '@mui/icons-material';
 
 import { useAuth } from 'hooks';
 
+import logo from 'assets/images/logo.png';
+
 import ItemMenu from '../ItemMenu';
 import { MenuItem } from '../types';
 
@@ -41,26 +43,30 @@ const DrawerContent = ({
         sx={{
           display: 'flex',
           alignItems: 'center',
+          gap: 1.5,
           px: 2,
           paddingLeft: '12px',
           paddingBottom: 0,
           paddingTop: 0,
-          marginTop: 2,
+          mt: 2,
         }}
       >
         <Avatar
+          variant="circular"
           sx={{
+            width: 36,
+            height: 36,
             bgcolor: theme.palette.common.white,
-            color: theme.palette.primary.main,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
           }}
-        >
-          RA
-        </Avatar>
+          imgProps={{ style: { objectFit: 'contain' } }}
+          src={logo}
+          alt="Fundición Lara"
+        />
         <ListItemText
-          primary="Roberto Aguilar"
-          secondary="Administrador"
+          primary="Fundición"
+          secondary="Lara"
           sx={{
-            ml: open ? 2 : 0,
             opacity: open ? 1 : 0,
             transition: 'opacity 0.3s ease',
           }}
@@ -68,13 +74,16 @@ const DrawerContent = ({
             primary: {
               sx: {
                 color: theme.palette.common.white,
-                fontWeight: 500,
+                fontWeight: 700,
+                letterSpacing: 0.5,
               },
             },
             secondary: {
               sx: {
                 color: theme.palette.common.white,
                 opacity: 0.8,
+                mt: -0.3,
+                fontWeight: 500,
               },
             },
           }}

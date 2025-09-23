@@ -17,11 +17,13 @@ interface ActionMenuProps {
   size?: 'small' | 'medium' | 'large';
   iconColor?: string;
   hoverColor?: string;
+  alignItems?: 'flex-start' | 'center';
 }
 
 const ActionMenu: React.FC<ActionMenuProps> = ({
   actions,
   size = 'small',
+  alignItems = 'center',
   iconColor = colors.darkText,
   hoverColor = colors.darkBlue,
 }) => {
@@ -95,6 +97,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
                   ? `${action.color}10`
                   : `${hoverColor}10`,
               },
+              alignItems,
             }}
           >
             <Box sx={{ mr: 1.5, color: action.color || hoverColor }}>

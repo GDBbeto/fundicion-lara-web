@@ -14,7 +14,7 @@ const InvoiceFileUpload = ({ onExtract }: Props) => {
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const { showError } = useErrorHandler();
-  const { isScreenSmall } = useDevice();
+  const { isSmallScreen } = useDevice();
 
   const handleUpload = async (file: File) => {
     setLoading(true);
@@ -55,12 +55,12 @@ const InvoiceFileUpload = ({ onExtract }: Props) => {
           return null;
         }}
         dragText={
-          isScreenSmall
+          isSmallScreen
             ? undefined
             : 'Arrastra y suelta un archivo PDF aqu\u00ED'
         }
         buttonText="Seleccionar PDF"
-        disableDragAndDrop={isScreenSmall}
+        disableDragAndDrop={isSmallScreen}
       />
 
       {uploadError && (
