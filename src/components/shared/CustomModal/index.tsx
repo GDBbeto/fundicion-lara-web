@@ -7,6 +7,7 @@ import {
   IconButton,
   Box,
   useTheme,
+  DialogActions,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -20,6 +21,8 @@ interface CustomModalProps {
   maxWidth?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   fullWidth?: boolean;
   titleAlign?: 'left' | 'center';
+  actions?: (props: { onClose: () => void }) => React.ReactNode;
+  scrollable?: boolean;
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({
@@ -30,6 +33,8 @@ const CustomModal: React.FC<CustomModalProps> = ({
   titleAlign,
   maxWidth = 'sm',
   fullWidth = true,
+  scrollable = false,
+  actions,
 }) => {
   const theme = useTheme();
 
@@ -78,9 +83,30 @@ const CustomModal: React.FC<CustomModalProps> = ({
         )}
       </Box>
 
-      <DialogContent dividers sx={{ mt: 1 }}>
+      <DialogContent
+        dividers
+        sx={{ mt: 1, flex: 1, overflowY: scrollable ? 'auto' : 'visible' }}
+      >
         {children}
       </DialogContent>
+      {actions && (
+        <DialogActions
+          sx={{
+            position: 'sticky',
+            bottom: 0,
+            backgroundColor: theme.palette.background.paper,
+            borderTop: `1px solid ${theme.palette.divider}`,
+            pt: 2,
+            pb: 0,
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 2,
+            margin: 0,
+          }}
+        >
+          {actions({ onClose: handleClose })}
+        </DialogActions>
+      )}
     </Dialog>
   );
 };

@@ -10,8 +10,7 @@ export const validationMessages = {
 };
 
 export const ERROR_MESSAGES = {
-  NETWORK:
-    'No se pudo conectar con el servidor. Verifica tu conexi\u00F3n a Internet.',
+  NETWORK: 'No se pudo conectar con el servidor.',
   UNKNOWN: 'Ocurri\u00F3 un error inesperado. Intenta nuevamente.',
   GENERIC: 'Error desconocido.',
   DEFAULT: 'Ocurri\u00F3 un error inesperado.',

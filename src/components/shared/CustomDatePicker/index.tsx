@@ -18,6 +18,11 @@ const CustomDatePicker = ({
 }: CustomDatePickerProps) => {
   return (
     <DatePicker
+      localeText={{
+        okButtonLabel: 'Aceptar',
+        cancelButtonLabel: 'Cancelar',
+        toolbarTitle: 'Seleccionar fecha',
+      }}
       {...props}
       slotProps={{
         field: {

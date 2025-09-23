@@ -2,10 +2,15 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { Box, Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CustomTextField, CustomDatePicker } from 'components/ui';
+import {
+  CustomTextField,
+  CustomDatePicker,
+  FormLayout,
+} from 'components/shared';
+
 import type { Transaction, InvoiceData } from 'types/api';
 
 import { formatDateToDefault, parseDefaultToDate } from 'utils/dateUtils';
@@ -15,12 +20,12 @@ import InvoiceFileUpload from '../InvoiceFileUpload';
 import schema from './schema';
 
 interface Props {
+  id?: string;
   transaction?: Transaction | null;
   onSubmit: (data: Transaction) => void;
-  onCancel: () => void;
 }
 
-const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
+const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
   const { type } = useTransactions();
 
   const {
@@ -60,7 +65,7 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate>
+    <FormLayout id={id} onSubmit={handleSubmit(handleFormSubmit)}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
           <InvoiceFileUpload onExtract={handleExtractedData} />
@@ -75,6 +80,8 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
                 required
                 id="amount"
                 name="amount"
+                inputMode="decimal"
+                type="text"
                 value={field.value}
                 onValueChange={({ floatValue }) =>
                   field.onChange(floatValue ?? '')
@@ -157,22 +164,8 @@ const TransactionForm = ({ transaction, onSubmit, onCancel }: Props) => {
             )}
           />
         </Grid>
-
-        <Grid
-          size={{ xs: 12 }}
-          display="flex"
-          justifyContent="flex-end"
-          gap={2}
-        >
-          <Button id="cancelButton" variant="outlined" onClick={onCancel}>
-            Cancelar
-          </Button>
-          <Button id="saveButton" variant="contained" type="submit">
-            Guardar
-          </Button>
-        </Grid>
       </Grid>
-    </Box>
+    </FormLayout>
   );
 };
 

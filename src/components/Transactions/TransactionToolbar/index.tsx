@@ -3,8 +3,11 @@ import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useDebounce } from 'use-debounce';
 
-import { CustomSpinner, SearchInput } from 'components/shared';
-import { CustomDatePicker } from 'components/ui';
+import {
+  CustomSpinner,
+  CustomDatePicker,
+  SearchInput,
+} from 'components/shared';
 
 import {
   useDevice,

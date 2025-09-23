@@ -13,7 +13,8 @@ const getRefreshToken = () => {
   return localStorage.getItem('refreshToken');
 };
 
-const baseURL = 'http://localhost:8080';
+// const baseURL = 'http://localhost:8080';
+const baseURL = 'http://192.168.0.67:8080';
 
 const api = axios.create({
   baseURL: baseURL,

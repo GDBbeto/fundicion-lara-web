@@ -1,13 +1,17 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import { Box, Grid, Button } from '@mui/material';
+import { Grid } from '@mui/material';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { NumericFormat } from 'react-number-format';
 
-import { CustomTextField, CustomSelectField } from 'components/ui';
+import {
+  CustomTextField,
+  CustomSelectField,
+  FormLayout,
+} from 'components/shared';
 
 import type { Product } from 'types/api';
 
@@ -16,12 +20,12 @@ import { CAT_UNITS } from 'commons/catalogs';
 import schema from './schema';
 
 interface Props {
+  id?: string;
   product?: Product | null;
   onSubmit: (data: Product) => void;
-  onCancel: () => void;
 }
 
-const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
+const ProductForm = ({ id, product, onSubmit }: Props) => {
   const {
     control,
     handleSubmit,
@@ -40,7 +44,7 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
   });
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate>
+    <FormLayout id={id} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12 }}>
           <Controller
@@ -113,6 +117,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
               <NumericFormat
                 {...field}
                 required
+                inputMode="decimal"
+                type="text"
                 customInput={CustomTextField}
                 label="Stock"
                 decimalScale={2}
@@ -133,6 +139,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 required
                 id="purchasePrice"
                 name="purchasePrice"
+                inputMode="decimal"
+                type="text"
                 value={field.value}
                 onValueChange={({ floatValue }) => {
                   field.onChange(floatValue ?? '');
@@ -159,6 +167,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
                 required
                 id="sellingPrice"
                 name="sellingPrice"
+                inputMode="decimal"
+                type="text"
                 value={field.value}
                 onValueChange={({ floatValue }) => {
                   field.onChange(floatValue ?? '');
@@ -175,22 +185,8 @@ const ProductForm = ({ product, onSubmit, onCancel }: Props) => {
             )}
           />
         </Grid>
-
-        <Grid
-          size={{ xs: 12 }}
-          display="flex"
-          justifyContent="flex-end"
-          gap={2}
-        >
-          <Button id="cancelButton" variant="outlined" onClick={onCancel}>
-            Cancelar
-          </Button>
-          <Button id="saveButton" variant="contained" type="submit">
-            Guardar
-          </Button>
-        </Grid>
       </Grid>
-    </Box>
+    </FormLayout>
   );
 };
 

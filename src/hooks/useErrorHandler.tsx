@@ -1,9 +1,10 @@
+import React from 'react';
 import { useSnackbar } from 'notistack';
 import { ERROR_MESSAGES } from 'commons/messages';
 import { CommonError } from 'types/api';
 
 const useErrorHandler = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const showError = (
     error: unknown,
@@ -13,6 +14,23 @@ const useErrorHandler = () => {
 
     enqueueSnackbar(typedError?.userMessage || fallbackMessage, {
       variant: 'error',
+      autoHideDuration: 8000,
+      persist: true,
+      action: (key) => (
+        <button
+          style={{
+            background: 'transparent',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            fontSize: '14px',
+          }}
+          onClick={() => closeSnackbar(key)}
+        >
+          ✕
+        </button>
+      ),
     });
   };
 
