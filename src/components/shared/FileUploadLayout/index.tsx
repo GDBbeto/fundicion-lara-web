@@ -1,4 +1,3 @@
-// src/components/shared/FileUploadLayout.tsx
 import React, { useCallback, useRef, useState } from 'react';
 import {
   Box,

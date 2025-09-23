@@ -1,4 +1,3 @@
-// src/views/Transactions/components/TransactionFormModal.tsx
 import React from 'react';
 
 import { Button } from '@mui/material';

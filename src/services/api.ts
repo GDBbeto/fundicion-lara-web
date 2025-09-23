@@ -1,5 +1,3 @@
-// src/services/api.ts
-
 import axios from 'axios';
 import { ERROR_MESSAGES } from 'commons/messages';
 

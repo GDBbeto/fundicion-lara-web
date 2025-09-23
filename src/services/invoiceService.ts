@@ -1,5 +1,3 @@
-// src/services/invoiceService.ts
-
 import { InvoiceData, ApiResponse } from 'types/api';
 import api from './api';
 import { INVOICE_API_BASE } from './apiRoutes';

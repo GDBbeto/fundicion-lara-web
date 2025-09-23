@@ -1,4 +1,3 @@
-// src/views/Transactions/components/TransactionList.tsx
 import React, { useMemo, useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
