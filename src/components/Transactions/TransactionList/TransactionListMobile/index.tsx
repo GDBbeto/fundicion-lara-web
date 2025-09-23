@@ -1,0 +1,327 @@
+import React, { useCallback } from 'react';
+import {
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Stack,
+  Skeleton,
+  Fade,
+} from '@mui/material';
+import {
+  Edit,
+  Delete,
+  Description,
+  CalendarToday,
+  Receipt,
+  Business,
+  ReceiptLong,
+} from '@mui/icons-material';
+import { NumericFormat } from 'react-number-format';
+
+import { useTransactions } from 'hooks';
+import type { Transaction } from 'types/api';
+import { CustomPagination, ActionMenu } from 'components/shared';
+import type { ActionItem } from 'components/shared/ActionMenu';
+import { colors } from 'commons/colors';
+import { formatDateToDisplay } from 'utils/dateUtils';
+
+interface Props {
+  handleOpenFormModal: (transaction: Transaction) => void;
+  handleOpenDeleteModal: (transaction: Transaction) => void;
+}
+
+const TransactionListMobile = ({
+  handleOpenFormModal,
+  handleOpenDeleteModal,
+}: Props) => {
+  const {
+    transactions,
+    isLoading,
+    pagination,
+    handlePageChange,
+    handleRowsPerPageChange,
+  } = useTransactions();
+
+  // Memorizar los handlers para evitar recreaciones innecesarias
+  const handleEditTransaction = useCallback(
+    (transaction: Transaction) => {
+      handleOpenFormModal(transaction);
+    },
+    [handleOpenFormModal],
+  );
+
+  const handleDeleteTransaction = useCallback(
+    (transaction: Transaction) => {
+      handleOpenDeleteModal(transaction);
+    },
+    [handleOpenDeleteModal],
+  );
+
+  // Memorizar la función que genera las acciones
+  const getTransactionActions = useCallback(
+    (transaction: Transaction): ActionItem[] => [
+      {
+        id: 'edit',
+        label: 'Editar',
+        icon: <Edit fontSize="small" />,
+        onClick: () => handleEditTransaction(transaction),
+        color: colors.darkBlue,
+      },
+      {
+        id: 'delete',
+        label: 'Eliminar',
+        icon: <Delete fontSize="small" />,
+        onClick: () => handleDeleteTransaction(transaction),
+        color: colors.red,
+      },
+    ],
+    [handleEditTransaction, handleDeleteTransaction],
+  );
+
+  if (isLoading) {
+    return (
+      <Box display="flex" flexDirection="column" gap={2} mt={2}>
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Card key={index} variant="outlined" sx={{ borderRadius: 3 }}>
+            <CardContent>
+              <Stack spacing={2}>
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Skeleton variant="text" width={120} height={20} />
+                  <Skeleton
+                    variant="rectangular"
+                    width={60}
+                    height={24}
+                    sx={{ borderRadius: 1 }}
+                  />
+                </Stack>
+                <Skeleton variant="text" width={100} height={32} />
+                <Stack spacing={1}>
+                  <Skeleton variant="text" width="80%" height={16} />
+                  <Skeleton variant="text" width="60%" height={16} />
+                  <Skeleton variant="text" width="90%" height={16} />
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    );
+  }
+
+  if (!transactions.length) {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        py={8}
+        sx={{
+          background: `linear-gradient(135deg, ${colors.veryLightGray} 0%, ${colors.white} 100%)`,
+          borderRadius: 3,
+          border: `1px solid ${colors.lightSurface}`,
+        }}
+      >
+        <ReceiptLong
+          sx={{ fontSize: 48, color: colors.blueGreyLight, mb: 2 }}
+        />
+        <Typography variant="h6" color="text.secondary" fontWeight={500} mb={1}>
+          No hay transacciones
+        </Typography>
+        <Typography variant="body2" color="text.secondary" textAlign="center">
+          No se encontraron transacciones para el período seleccionado.
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <>
+      <Box display="flex" flexDirection="column" gap={2} mt={2}>
+        {transactions.map((transaction, index) => (
+          <Fade in timeout={300 + index * 100} key={transaction.transactionId}>
+            <Card
+              variant="outlined"
+              sx={{
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${colors.white} 0%, ${colors.veryLightGray} 100%)`,
+                border: `1px solid ${colors.lightSurface}`,
+                position: 'relative',
+                overflow: 'hidden',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 3,
+                  background: `linear-gradient(90deg, ${colors.darkBlue} 0%, ${colors.lightBlue} 100%)`,
+                },
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: `0 8px 25px rgba(0,0,0,0.15)`,
+                },
+              }}
+            >
+              <CardContent sx={{ p: 2 }}>
+                {/* Header con fecha y menú */}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  mb={1.5}
+                >
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <CalendarToday
+                      fontSize="small"
+                      sx={{ color: colors.darkBlue }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      fontWeight={500}
+                    >
+                      {formatDateToDisplay(transaction.operationDate)}
+                    </Typography>
+                  </Stack>
+
+                  <ActionMenu
+                    actions={getTransactionActions(transaction)}
+                    size="small"
+                    iconColor={colors.darkText}
+                    hoverColor={colors.darkBlue}
+                  />
+                </Stack>
+
+                {/* Monto principal */}
+                <Box mb={1.5}>
+                  <NumericFormat
+                    value={transaction.amount || 0}
+                    displayType="text"
+                    thousandSeparator=","
+                    prefix="$"
+                    decimalScale={2}
+                    fixedDecimalScale
+                    renderText={(value) => (
+                      <Typography
+                        variant="h6"
+                        fontWeight={700}
+                        sx={{
+                          color: colors.darkBlue,
+                          background: `linear-gradient(135deg, ${colors.darkBlue} 0%, ${colors.lightBlue} 100%)`,
+                          backgroundClip: 'text',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }}
+                      >
+                        {value}
+                      </Typography>
+                    )}
+                  />
+                </Box>
+
+                <Divider sx={{ mb: 1.5, opacity: 0.3 }} />
+
+                {/* Información detallada compacta */}
+                <Stack spacing={1}>
+                  {/* Folio */}
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Receipt
+                      fontSize="small"
+                      sx={{ color: colors.darkBlue, minWidth: 16 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.primary"
+                      fontWeight={500}
+                    >
+                      Folio:{' '}
+                      <span style={{ color: colors.darkBlue }}>
+                        {transaction.invoiceNumber || 'Sin folio'}
+                      </span>
+                    </Typography>
+                  </Stack>
+
+                  {/* RFC */}
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Business
+                      fontSize="small"
+                      sx={{ color: colors.darkBlue, minWidth: 16 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.primary"
+                      sx={{ fontFamily: 'monospace', fontSize: '0.75rem' }}
+                    >
+                      RFC:{' '}
+                      <span style={{ color: colors.darkBlue }}>
+                        {transaction.issuerRfc || 'Sin RFC'}
+                      </span>
+                    </Typography>
+                  </Stack>
+
+                  {/* Pedido */}
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <ReceiptLong
+                      fontSize="small"
+                      sx={{ color: colors.darkBlue, minWidth: 16 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.primary"
+                      fontWeight={500}
+                    >
+                      Pedido:{' '}
+                      <span style={{ color: colors.darkBlue }}>
+                        {transaction.orderTransactionId
+                          ? `#${transaction.orderTransactionId}`
+                          : 'Sin # pedido'}
+                      </span>
+                    </Typography>
+                  </Stack>
+
+                  {/* Descripción */}
+                  <Stack direction="row" spacing={1} alignItems="flex-start">
+                    <Description
+                      fontSize="small"
+                      sx={{ color: colors.darkBlue, minWidth: 16, mt: 0.5 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{
+                        lineHeight: 1.3,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                        fontSize: '0.8rem',
+                      }}
+                    >
+                      {transaction.description || 'Sin descripción'}
+                    </Typography>
+                  </Stack>
+                </Stack>
+              </CardContent>
+            </Card>
+          </Fade>
+        ))}
+      </Box>
+
+      <CustomPagination
+        pagination={pagination}
+        handlePageChange={handlePageChange}
+        handleRowsPerPageChange={handleRowsPerPageChange}
+      />
+    </>
+  );
+};
+
+export default TransactionListMobile;

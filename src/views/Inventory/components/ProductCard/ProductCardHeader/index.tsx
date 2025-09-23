@@ -1,21 +1,14 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Typography,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Stack,
-  useTheme,
-} from '@mui/material';
+import React, { useCallback } from 'react';
+import { Box, Typography, Tooltip, Stack, useTheme } from '@mui/material';
 
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonIcon from '@mui/icons-material/Person'; // Icono decorativo para el chip
 
+import { ActionMenu } from 'components/shared';
+import type { ActionItem } from 'components/shared/ActionMenu';
 import { productNameStyles } from '../styles';
+import { colors } from 'commons/colors';
 
 interface Props {
   name: string;
@@ -26,24 +19,27 @@ interface Props {
 
 const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
   const { palette } = useTheme();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
 
-  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => setAnchorEl(null);
-
-  const handleEdit = () => {
-    onEdit();
-    handleClose();
-  };
-
-  const handleDelete = () => {
-    onDelete();
-    handleClose();
-  };
+  // Memorizar las acciones para evitar recreaciones innecesarias
+  const productActions: ActionItem[] = useCallback(
+    () => [
+      {
+        id: 'edit',
+        label: 'Editar',
+        icon: <EditIcon fontSize="small" />,
+        onClick: onEdit,
+        color: colors.darkBlue,
+      },
+      {
+        id: 'delete',
+        label: 'Eliminar',
+        icon: <DeleteIcon fontSize="small" />,
+        onClick: onDelete,
+        color: colors.red,
+      },
+    ],
+    [onEdit, onDelete],
+  )();
 
   return (
     <Box
@@ -85,31 +81,12 @@ const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
         </Box>
       </Stack>
 
-      <IconButton
-        aria-label="more"
-        aria-controls={open ? 'product-menu' : undefined}
-        aria-haspopup="true"
-        onClick={handleMenuClick}
+      <ActionMenu
+        actions={productActions}
         size="small"
-      >
-        <MoreVertIcon fontSize="small" />
-      </IconButton>
-
-      <Menu
-        id="product-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-      >
-        <MenuItem onClick={handleEdit}>
-          <EditIcon fontSize="small" sx={{ mr: 1 }} />
-          Editar
-        </MenuItem>
-        <MenuItem onClick={handleDelete}>
-          <DeleteIcon fontSize="small" sx={{ mr: 1 }} />
-          Eliminar
-        </MenuItem>
-      </Menu>
+        iconColor={palette.text.secondary}
+        hoverColor={colors.darkBlue}
+      />
     </Box>
   );
 };

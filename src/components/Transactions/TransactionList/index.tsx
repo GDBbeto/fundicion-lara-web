@@ -23,6 +23,7 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 import { Column } from 'types/column';
 
 import TransactionFormModal from '../TransactionFormModal';
+import TransactionListMobile from './TransactionListMobile';
 
 interface TransactionListProps {
   columns: Column<Transaction>[];
@@ -93,8 +94,8 @@ const TransactionList = (props: TransactionListProps) => {
           </Box>
         ),
       } as Column<Transaction>,
-    ].filter((col) => !(isScreenSmall && col.hiddenOnMobile));
-  }, [props.columns, isScreenSmall]);
+    ];
+  }, [props.columns]);
 
   const processSuccess = (message: string) => {
     handleRefresh();
@@ -127,21 +128,27 @@ const TransactionList = (props: TransactionListProps) => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <CustomTable<Transaction>
-        key={columns.map((c) => c.apiField).join('-')}
-        columns={columns}
-        rows={transactions}
-        isLoading={isLoading}
-        onRefresh={handleRefresh}
-        pagination={pagination}
-        maxHeight="70vh"
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-        rowKey="transactionId"
-        order={order}
-        orderBy={orderBy}
-        onSort={handleSort}
-      />
+      {isScreenSmall ? (
+        <TransactionListMobile
+          handleOpenFormModal={handleOpenFormModal}
+          handleOpenDeleteModal={handleOpenDeleteModal}
+        />
+      ) : (
+        <CustomTable<Transaction>
+          columns={columns}
+          rows={transactions}
+          isLoading={isLoading}
+          onRefresh={handleRefresh}
+          pagination={pagination}
+          maxHeight="70vh"
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleRowsPerPageChange}
+          rowKey="transactionId"
+          order={order}
+          orderBy={orderBy}
+          onSort={handleSort}
+        />
+      )}
 
       {showFormModal && selectedTransaction ? (
         <TransactionFormModal
