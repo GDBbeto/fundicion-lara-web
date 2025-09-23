@@ -42,12 +42,11 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
       issuerRfc: '',
       type,
       status: null,
-      operationDate: formatDateToDefault(new Date()),
     },
   });
 
   const handleExtractedData = (data: InvoiceData) => {
-    setValue('invoiceNumber', String(data.invoiceNumber));
+    setValue('invoiceNumber', data.invoiceNumber);
     setValue('amount', data.amount);
     setValue('issuerRfc', data.issuerRfc);
   };

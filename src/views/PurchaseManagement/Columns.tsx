@@ -9,13 +9,6 @@ import type { Column } from 'types/column';
 
 export const columns: Column<Transaction>[] = [
   {
-    label: 'ID',
-    apiField: 'transactionId',
-    align: 'center',
-    sort: true,
-    hiddenOnMobile: true,
-  },
-  {
     label: 'Fecha',
     apiField: 'operationDate',
     sort: true,
@@ -71,7 +64,6 @@ export const columns: Column<Transaction>[] = [
   {
     label: 'Descripci\u00F3n',
     apiField: 'description',
-    hiddenOnMobile: true,
     render: (row) => (
       <Box
         sx={{

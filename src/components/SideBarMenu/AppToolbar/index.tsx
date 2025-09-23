@@ -76,6 +76,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
           component="div"
           color="primary"
           sx={{
+            ml: drawerOpen ? 0 : 2,
             fontWeight: 600,
             letterSpacing: 0.5,
             textTransform: 'capitalize',

@@ -1,5 +1,5 @@
 export interface InvoiceData {
-  invoiceNumber: number;
+  invoiceNumber: string;
   amount: number;
   issuerRfc: string;
 }

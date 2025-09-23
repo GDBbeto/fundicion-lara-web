@@ -93,8 +93,8 @@ const TransactionProvider = ({
       getTransactions({
         page: pagination.page,
         pageSize: pagination.pageSize,
-        order,
-        orderBy,
+        order: order ?? 'desc',
+        orderBy: orderBy ?? 'transactionId',
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         type,
@@ -144,7 +144,8 @@ const TransactionProvider = ({
         showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
       }
     }
-  }, [isError, error, cleanTable, showSnackbar]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isError, error]);
 
   useEffect(() => {
     if (summaryData?.data) {

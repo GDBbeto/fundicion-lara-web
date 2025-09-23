@@ -3,7 +3,7 @@ import type { CommonError, Pagination, Transaction } from 'types/api';
 export interface TransactionContextType {
   type: 'SALE' | 'PURCHASE' | 'EXPENSE';
   search: string;
-  order: 'asc' | 'desc';
+  order?: 'asc' | 'desc';
   orderBy?: keyof Transaction;
   transactions: Transaction[];
   isLoading: boolean;

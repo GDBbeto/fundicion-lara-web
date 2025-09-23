@@ -12,7 +12,7 @@ function useTableData<T>() {
   const [loading, setLoading] = useState<boolean>(false);
   const [pagination, setPagination] = useState<Pagination>(paginationDefault);
   const [rows, setRows] = useState<T[]>([]);
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>();
   const [orderBy, setOrderBy] = useState<keyof T>();
 
   const handlePageChange = useCallback((_: unknown, value: number) => {

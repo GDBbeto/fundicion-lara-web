@@ -27,7 +27,6 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     rows,
     setPagination,
     setRows,
-    paginationDefault,
     cleanTable,
     handlePageChange,
     handleRowsPerPageChange,
@@ -42,15 +41,15 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
       getProducts({
         page: pagination.page,
         pageSize: pagination.pageSize,
-        order: 'asc',
-        orderBy: 'name',
+        order: 'desc',
+        orderBy: 'productId',
         search,
       }),
   });
 
   const handleSearch = (value: string) => {
     if (value) {
-      setPagination(paginationDefault);
+      setPagination((prev) => ({ ...prev, page: 1 }));
     }
     setSearch(value);
   };
@@ -63,10 +62,11 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     if (data) {
       setRows(data.data);
       if (data.pagination) {
-        setPagination({ ...data.pagination });
+        setPagination((prev) => ({ ...prev, ...data.pagination }));
       }
     }
-  }, [data, setRows, setPagination]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   useEffect(() => {
     if (isError) {
