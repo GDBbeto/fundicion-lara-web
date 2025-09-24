@@ -28,7 +28,6 @@ interface AppToolbarProps {
 }
 
 const AppToolbar: React.FC<AppToolbarProps> = ({
-  drawerOpen,
   selectedMenuText,
   onDrawerOpen,
 }) => {
@@ -56,19 +55,30 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
   )();
 
   return (
-    <AppBar position="fixed" open={drawerOpen} elevation={0}>
+    <AppBar
+      position="fixed"
+      open={false}
+      elevation={0}
+      sx={{
+        backgroundColor: 'transparent',
+        backdropFilter: 'blur(20px)',
+        borderBottom: `1px solid rgba(255, 255, 255, 0.1)`,
+        background: `linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)`,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+      }}
+    >
       <Toolbar>
-        {!drawerOpen && (
-          <IconButton
-            color="primary"
-            aria-label="open drawer"
-            onClick={onDrawerOpen}
-            edge="start"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
+        <IconButton
+          color="primary"
+          aria-label="open drawer"
+          onClick={onDrawerOpen}
+          edge="start"
+          sx={{
+            mr: isSmallScreen ? 1 : 4,
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
 
         <Typography
           variant="h5"
@@ -76,14 +86,13 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
           component="div"
           color="primary"
           sx={{
-            ml: drawerOpen ? 0 : 2,
             fontWeight: 600,
             letterSpacing: 0.5,
             textTransform: 'capitalize',
             flexGrow: 1,
             transition: 'margin-left 0.3s ease',
-            // color: colors.darkBlue,
-            color: 'primary.main',
+            color: colors.darkBlue,
+            // color: 'primary.main',
           }}
         >
           {selectedMenuText}
@@ -103,8 +112,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
                 variant="body2"
                 sx={{
                   fontWeight: 600,
-                  //color: colors.darkText,
-                  color: 'primary.main',
+                  color: colors.darkText,
+                  // color: 'primary.main',
                   lineHeight: 1.2,
                   fontSize: '0.85rem',
                 }}
@@ -129,8 +138,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
               ml: 1,
               width: 36,
               height: 36,
-              //bgcolor: colors.darkBlue,
-              bgcolor: 'primary.main',
+              bgcolor: colors.darkBlue,
+              //bgcolor: 'primary.main',
               color: '#fff',
               fontWeight: 700,
               fontSize: '0.9rem',

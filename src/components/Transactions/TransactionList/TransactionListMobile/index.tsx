@@ -177,6 +177,7 @@ const TransactionListMobile = ({
                 size="small"
                 iconColor={colors.darkText}
                 hoverColor={colors.darkBlue}
+                alignItems="flex-start"
               />
             </Stack>
 

@@ -8,6 +8,10 @@ import {
 } from '@mui/material';
 import UploadIcon from '@mui/icons-material/PhotoCamera';
 
+import { MAX_FILE_SIZE } from 'commons/global';
+import { ERROR_MESSAGES } from 'commons/messages';
+import { useSnackbar } from 'hooks';
+
 interface Props {
   onUpload: (file: File) => void;
   handleOpenModal?: () => void;
@@ -21,6 +25,7 @@ const MobileUploader = ({
 }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
+  const { showSnackbar } = useSnackbar();
 
   const handleClick = () => {
     if (handleOpenModal) {
@@ -32,6 +37,14 @@ const MobileUploader = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    if (file.size > MAX_FILE_SIZE) {
+      showSnackbar(ERROR_MESSAGES.UPLOAD_IMAGE_MAX_SIZE, 'warning');
+      return;
+    }
+
     if (file) {
       onUpload(file);
     }

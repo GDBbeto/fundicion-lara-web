@@ -86,6 +86,7 @@ const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
         size="small"
         iconColor={palette.text.secondary}
         hoverColor={colors.darkBlue}
+        alignItems="flex-start"
       />
     </Box>
   );

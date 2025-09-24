@@ -8,7 +8,7 @@ import {
   ChevronLeft as ChevronLeftIcon,
   CategoryOutlined as CategoryOutlinedIcon,
   Sell as SellIcon,
-  // ShoppingCartOutlined as ShoppingCartOutlinedIcon,
+  ShoppingCartOutlined as ShoppingCartOutlinedIcon,
 } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
@@ -36,12 +36,12 @@ const menuItems = [
     text: 'Ventas',
     icon: SellIcon,
   },
-  /* {
+  {
     id: 'purchases',
     path: '/compras',
     text: 'Compras',
     icon: ShoppingCartOutlinedIcon,
-  }, */
+  },
 ];
 
 const SideBarMenu = () => {

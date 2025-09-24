@@ -8,6 +8,9 @@ import {
 } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
+import { MAX_FILE_SIZE } from 'commons/global';
+import { ERROR_MESSAGES } from 'commons/messages';
+
 interface Props {
   onUpload: (file: File) => void;
   accept?: string;
@@ -36,6 +39,11 @@ const FileUploadLayout = ({
 
   const handleFile = useCallback(
     (file: File) => {
+      if (file.size > MAX_FILE_SIZE) {
+        setError(ERROR_MESSAGES.UPLOAD_IMAGE_MAX_SIZE);
+        return;
+      }
+
       const validationError = validateFile?.(file);
 
       if (validationError) {
@@ -133,6 +141,14 @@ const FileUploadLayout = ({
           >
             {buttonText}
           </Button>
+
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ mt: 1, fontStyle: 'italic' }}
+          >
+            Tamaño máximo: 100 KB
+          </Typography>
 
           {error && (
             <Typography color="error" mt={2} variant="caption">

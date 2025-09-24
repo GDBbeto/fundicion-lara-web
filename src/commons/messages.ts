@@ -19,6 +19,8 @@ export const ERROR_MESSAGES = {
   DELETE: 'Ocurri\u00F3 un error al eliminar.',
   UPLOAD: 'Ocurri\u00F3 un error al subir.',
   UPLOAD_IMAGE: 'Error al subir la imagen.',
+  UPLOAD_IMAGE_MAX_SIZE:
+    'El archivo excede el tamaño máximo permitido (100 KB).',
 };
 
 export const SUCCESS_MESSAGES = {

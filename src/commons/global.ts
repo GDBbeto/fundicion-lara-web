@@ -10,3 +10,5 @@ export const HttpStatusCode = {
   UnprocessableEntity: 422,
   TimeOut: 524,
 };
+
+export const MAX_FILE_SIZE = 100 * 1024;
