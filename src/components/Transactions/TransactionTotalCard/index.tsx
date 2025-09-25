@@ -3,6 +3,8 @@ import { Typography, Tooltip, Skeleton, IconButton, Box } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { useTransactions } from 'hooks';
 
@@ -25,8 +27,41 @@ import {
 } from './styles';
 
 const TransactionTotalCard = () => {
-  const { totalAmount, isSummaryLoading, isSummaryError, label } =
+  const { totalAmount, isSummaryLoading, isSummaryError, label, type } =
     useTransactions();
+
+  // Configuración visual por tipo de transacción
+  const getTransactionConfig = () => {
+    switch (type) {
+      case 'SALE':
+        return {
+          icon: TrendingUpIcon,
+          color: '#4caf50', // Verde para ventas
+          gradient: 'linear-gradient(135deg, #4caf50 0%, #81c784 100%)',
+        };
+      case 'PURCHASE':
+        return {
+          icon: ShoppingCartIcon,
+          color: '#2196f3', // Azul para compras
+          gradient: 'linear-gradient(135deg, #2196f3 0%, #64b5f6 100%)',
+        };
+      case 'EXPENSE':
+        return {
+          icon: MonetizationOnIcon,
+          color: '#9c27b0', // Púrpura para gastos
+          gradient: 'linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%)',
+        };
+      default:
+        return {
+          icon: MonetizationOnIcon,
+          color: '#9e9e9e',
+          gradient: 'linear-gradient(135deg, #9e9e9e 0%, #bdbdbd 100%)',
+        };
+    }
+  };
+
+  const config = getTransactionConfig();
+  const IconComponent = config.icon;
 
   const renderContent = () => {
     if (isSummaryLoading) {
@@ -101,9 +136,22 @@ const TransactionTotalCard = () => {
         </Box>
 
         {/* Ícono decorativo mejorado */}
-        <Box sx={iconContainerStyles}>
-          <Box sx={iconWrapperStyles}>
-            <MonetizationOnIcon sx={iconStyles} />
+        <Box
+          sx={{
+            ...iconContainerStyles,
+            '&::before': {
+              ...iconContainerStyles['&::before'],
+              background: `${config.color}20`,
+            },
+          }}
+        >
+          <Box
+            sx={{
+              ...iconWrapperStyles,
+              background: config.gradient,
+            }}
+          >
+            <IconComponent sx={iconStyles} />
           </Box>
         </Box>
       </Box>

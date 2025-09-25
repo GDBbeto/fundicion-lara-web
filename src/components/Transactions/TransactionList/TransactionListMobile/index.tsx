@@ -28,6 +28,7 @@ const TransactionListMobile = ({
   handleOpenDeleteModal,
 }: Props) => {
   const {
+    type,
     transactions,
     isLoading,
     pagination,
@@ -249,24 +250,26 @@ const TransactionListMobile = ({
               </Stack>
 
               {/* Pedido */}
-              <Stack direction="row" spacing={1} alignItems="center">
-                <ReceiptLong
-                  fontSize="small"
-                  sx={{ color: colors.darkBlue, minWidth: 16 }}
-                />
-                <Typography
-                  variant="body2"
-                  color="text.primary"
-                  fontWeight={500}
-                >
-                  Pedido:{' '}
-                  <span style={{ color: colors.darkBlue }}>
-                    {transaction.orderTransactionId
-                      ? `#${transaction.orderTransactionId}`
-                      : 'Sin # pedido'}
-                  </span>
-                </Typography>
-              </Stack>
+              {type === 'SALE' ? (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <ReceiptLong
+                    fontSize="small"
+                    sx={{ color: colors.darkBlue, minWidth: 16 }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color="text.primary"
+                    fontWeight={500}
+                  >
+                    Pedido:{' '}
+                    <span style={{ color: colors.darkBlue }}>
+                      {transaction.orderTransactionId
+                        ? `#${transaction.orderTransactionId}`
+                        : 'Sin # pedido'}
+                    </span>
+                  </Typography>
+                </Stack>
+              ) : null}
 
               {/* Descripción */}
               <Stack direction="row" spacing={1} alignItems="flex-start">

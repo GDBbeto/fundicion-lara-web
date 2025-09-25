@@ -9,6 +9,7 @@ import {
   CategoryOutlined as CategoryOutlinedIcon,
   Sell as SellIcon,
   ShoppingCartOutlined as ShoppingCartOutlinedIcon,
+  AttachMoneyOutlined as AttachMoneyOutlinedIcon,
 } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
@@ -41,6 +42,12 @@ const menuItems = [
     path: '/compras',
     text: 'Compras',
     icon: ShoppingCartOutlinedIcon,
+  },
+  {
+    id: 'expenses',
+    path: '/gastos',
+    text: 'Gastos Generales',
+    icon: AttachMoneyOutlinedIcon,
   },
 ];
 

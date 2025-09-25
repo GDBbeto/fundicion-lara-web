@@ -65,9 +65,11 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
   return (
     <FormLayout id={id} onSubmit={handleSubmit(handleFormSubmit)}>
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <InvoiceFileUpload onExtract={handleExtractedData} />
-        </Grid>
+        {type !== 'EXPENSE' ? (
+          <Grid size={{ xs: 12 }}>
+            <InvoiceFileUpload onExtract={handleExtractedData} />
+          </Grid>
+        ) : null}
 
         <Grid size={{ xs: 12, sm: 6 }}>
           <Controller
