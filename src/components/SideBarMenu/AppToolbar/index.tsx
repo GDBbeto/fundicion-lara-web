@@ -38,7 +38,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
     () => [
       {
         id: 'profile',
-        label: 'Perfil',
+        label: 'Mi perfil',
         icon: <PersonIcon fontSize="small" />,
         onClick: () => console.log('Perfil'),
         color: colors.darkBlue,
