@@ -13,7 +13,7 @@ const CustomSpinner: React.FC<CustomSpinnerProps> = ({ open }) => {
       sx={{
         color: '#fff',
         zIndex: (theme) => theme.zIndex.modal + 1,
-        backgroundColor: BACKGROUND_COLOR, // Usamos darkBlue con opacidad
+        backgroundColor: BACKGROUND_COLOR,
       }}
     >
       <Fade in={open} timeout={300}>

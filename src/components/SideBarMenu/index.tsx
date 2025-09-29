@@ -100,7 +100,6 @@ const SideBarMenu = () => {
           variant="temporary"
           open={drawerOpen}
           onClose={handleDrawerClose}
-          ModalProps={{ keepMounted: true }}
           slotProps={{
             paper: {
               sx: {

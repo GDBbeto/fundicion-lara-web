@@ -34,7 +34,6 @@ export function formatDateToDisplay(dateStr: string | Date): string {
 
   let date: Date;
   if (typeof dateStr === 'string') {
-    // Si es string, parsearlo desde formato 'yyyy-MM-dd'
     date = parse(dateStr, 'yyyy-MM-dd', new Date());
   } else {
     date = dateStr;

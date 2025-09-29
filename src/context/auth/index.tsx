@@ -5,7 +5,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Cargar estado de autenticacion desde localStorage al iniciar
   React.useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);

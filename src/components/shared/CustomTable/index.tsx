@@ -53,11 +53,11 @@ const CustomTable = <T,>({
       const isEnd =
         container.scrollHeight - container.scrollTop <=
         container.clientHeight + 10;
-      setShowShadow(!isEnd); // Si no está en el final, mostramos la sombra
+      setShowShadow(!isEnd);
     };
 
     container.addEventListener('scroll', handleScroll);
-    handleScroll(); // verificar posición inicial
+    handleScroll();
 
     // eslint-disable-next-line consistent-return
     return () => {

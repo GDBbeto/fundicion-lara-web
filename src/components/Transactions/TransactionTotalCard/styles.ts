@@ -1,6 +1,5 @@
 import { colors } from 'commons/colors';
 
-// Main content layout
 export const mainContentStyles = {
   display: 'flex',
   alignItems: 'center',
@@ -8,12 +7,10 @@ export const mainContentStyles = {
   justifyItems: 'center',
 };
 
-// Content section styles
 export const contentSectionStyles = {
   flex: 1,
 };
 
-// Title styles
 export const titleStyles = {
   color: colors.darkText,
   fontWeight: 500,
@@ -22,47 +19,40 @@ export const titleStyles = {
   opacity: 0.8,
 };
 
-// Loading container styles
 export const loadingContainerStyles = {
   display: 'flex',
   flexDirection: 'column',
   gap: 1,
 };
 
-// Error container styles
 export const errorContainerStyles = {
   display: 'flex',
   flexDirection: 'column',
   gap: 1,
 };
 
-// Error amount layout
 export const errorAmountStyles = {
   display: 'flex',
   alignItems: 'center',
   gap: 1,
 };
 
-// Error amount text styles
 export const errorAmountTextStyles = {
   variant: 'h4',
   fontWeight: 700,
   color: 'error.main',
 };
 
-// Error icon styles
 export const errorIconStyles = {
   p: 0.5,
 };
 
-// Amount container styles
 export const amountContainerStyles = {
   display: 'flex',
   flexDirection: 'column',
   gap: 1,
 };
 
-// Amount text styles with gradient
 export const amountTextStyles = {
   variant: 'h4',
   fontWeight: 700,
@@ -74,7 +64,6 @@ export const amountTextStyles = {
   textShadow: '0 2px 4px rgba(0,0,0,0.1)',
 };
 
-// Icon container styles
 export const iconContainerStyles = {
   position: 'relative',
   ml: 3,
@@ -91,7 +80,6 @@ export const iconContainerStyles = {
   },
 };
 
-// Icon wrapper styles
 export const iconWrapperStyles = {
   position: 'relative',
   zIndex: 1,
@@ -108,7 +96,6 @@ export const iconWrapperStyles = {
   },
 };
 
-// Icon styles
 export const iconStyles = {
   color: colors.white,
   fontSize: 32,

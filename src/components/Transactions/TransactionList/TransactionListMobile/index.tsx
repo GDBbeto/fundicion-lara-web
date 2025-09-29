@@ -36,7 +36,6 @@ const TransactionListMobile = ({
     handleRowsPerPageChange,
   } = useTransactions();
 
-  // Memorizar los handlers para evitar recreaciones innecesarias
   const handleEditTransaction = useCallback(
     (transaction: Transaction) => {
       handleOpenFormModal(transaction);
@@ -51,7 +50,6 @@ const TransactionListMobile = ({
     [handleOpenDeleteModal],
   );
 
-  // Memorizar la función que genera las acciones
   const getTransactionActions = useCallback(
     (transaction: Transaction): ActionItem[] => [
       {

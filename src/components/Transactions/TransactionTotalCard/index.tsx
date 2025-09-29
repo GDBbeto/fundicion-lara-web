@@ -30,25 +30,24 @@ const TransactionTotalCard = () => {
   const { totalAmount, isSummaryLoading, isSummaryError, label, type } =
     useTransactions();
 
-  // Configuración visual por tipo de transacción
   const getTransactionConfig = () => {
     switch (type) {
       case 'SALE':
         return {
           icon: TrendingUpIcon,
-          color: '#4caf50', // Verde para ventas
+          color: '#4caf50',
           gradient: 'linear-gradient(135deg, #4caf50 0%, #81c784 100%)',
         };
       case 'PURCHASE':
         return {
           icon: ShoppingCartIcon,
-          color: '#2196f3', // Azul para compras
+          color: '#2196f3',
           gradient: 'linear-gradient(135deg, #2196f3 0%, #64b5f6 100%)',
         };
       case 'EXPENSE':
         return {
           icon: MonetizationOnIcon,
-          color: '#9c27b0', // Púrpura para gastos
+          color: '#9c27b0',
           gradient: 'linear-gradient(135deg, #9c27b0 0%, #ba68c8 100%)',
         };
       default:

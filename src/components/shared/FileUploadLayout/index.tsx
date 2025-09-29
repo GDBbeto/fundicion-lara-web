@@ -89,7 +89,7 @@ const FileUploadLayout = ({
       sx={{
         border: `2px dashed ${
           disableDragAndDrop
-            ? theme.palette.grey[300] // Borde suave en mobile
+            ? theme.palette.grey[300]
             : isDragging
               ? theme.palette.primary.main
               : theme.palette.grey[400]

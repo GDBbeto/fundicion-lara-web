@@ -34,7 +34,6 @@ api.interceptors.request.use(
   },
 );
 
-/// src/services/api.ts
 api.interceptors.response.use(
   (response) => response,
   async (error) => {

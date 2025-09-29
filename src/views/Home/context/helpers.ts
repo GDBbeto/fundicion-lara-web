@@ -1,7 +1,7 @@
 import Option from 'types/option';
 
 export const getCurrentMonth = (monthOptions: Option[]) => {
-  const currentMonth = new Date().getMonth(); // 0 = Enero
+  const currentMonth = new Date().getMonth();
   return monthOptions[currentMonth].value;
 };
 

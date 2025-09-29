@@ -31,7 +31,7 @@ const CustomPagination = ({
       <TablePagination
         component="div"
         count={pagination.totalElements}
-        page={pagination.page - 1} // Ajuste base-0
+        page={pagination.page - 1}
         onPageChange={handlePageChange}
         rowsPerPage={pagination.pageSize}
         onRowsPerPageChange={handleRowsPerPageChange}

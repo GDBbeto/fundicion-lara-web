@@ -3,7 +3,7 @@ import { Box, Typography, Tooltip, Stack, useTheme } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PersonIcon from '@mui/icons-material/Person'; // Icono decorativo para el chip
+import PersonIcon from '@mui/icons-material/Person';
 
 import { ActionMenu } from 'components/shared';
 import type { ActionItem } from 'components/shared/ActionMenu';
@@ -20,7 +20,6 @@ interface Props {
 const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
   const { palette } = useTheme();
 
-  // Memorizar las acciones para evitar recreaciones innecesarias
   const productActions: ActionItem[] = useCallback(
     () => [
       {
