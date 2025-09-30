@@ -1,7 +1,6 @@
 import React from 'react';
 import { Typography, Skeleton, Box } from '@mui/material';
 import { NumericFormat } from 'react-number-format';
-import CardLayout from 'components/shared/Layouts/CardLayout';
 import { colors } from 'commons/colors';
 
 interface SummaryCardProps {
@@ -29,11 +28,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
 }) => {
   if (isLoading) {
     return (
-      <CardLayout
-        padding={2}
-        borderRadius={2}
-        sx={{ height: '100%', minHeight: 80 }}
-      >
+      <Box sx={{ height: '100%', minHeight: 80 }}>
         <Box
           sx={{
             display: 'flex',
@@ -50,17 +45,13 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
           </Box>
           <Skeleton variant="text" width="60%" height={16} />
         </Box>
-      </CardLayout>
+      </Box>
     );
   }
 
   if (isError) {
     return (
-      <CardLayout
-        padding={2}
-        borderRadius={2}
-        sx={{ height: '100%', minHeight: 80 }}
-      >
+      <Box sx={{ height: '100%', minHeight: 80 }}>
         <Box
           sx={{
             display: 'flex',
@@ -88,16 +79,12 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
             {errorMessage}
           </Typography>
         </Box>
-      </CardLayout>
+      </Box>
     );
   }
 
   return (
-    <CardLayout
-      padding={2}
-      borderRadius={2}
-      sx={{ height: '100%', minHeight: 80 }}
-    >
+    <Box sx={{ height: '100%', minHeight: 80 }}>
       <Box
         sx={{
           display: 'flex',
@@ -184,7 +171,7 @@ const SummaryCard: React.FC<SummaryCardProps> = ({
           {subtitle}
         </Typography>
       </Box>
-    </CardLayout>
+    </Box>
   );
 };
 
