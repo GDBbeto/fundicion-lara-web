@@ -12,6 +12,9 @@ import {
   getTransactionSummary,
   getTransactions,
 } from 'services/transactionService';
+
+import { useDevice } from 'hooks';
+
 import { DashboardContextType } from './types';
 import { getCurrentMonth, getMonthDateRange } from './helpers';
 
@@ -40,6 +43,8 @@ export const DashboardContext = createContext<DashboardContextType>(
 );
 
 const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
+  const { isSmallScreen } = useDevice();
+
   const [selectedMonth, setSelectedMonth] = useState<string>(
     getCurrentMonth(monthOptions),
   );
@@ -74,7 +79,10 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         type: 'SALE',
+        page: 1,
+        pageSize: 10000,
       }),
+    enabled: !isSmallScreen,
   });
 
   const {
@@ -89,7 +97,10 @@ const DashboardProvider = ({ children }: { children: React.ReactNode }) => {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
         type: 'PURCHASE',
+        page: 1,
+        pageSize: 10000,
       }),
+    enabled: !isSmallScreen,
   });
 
   const value = useMemo(

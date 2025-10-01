@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { Warning, CheckCircle, Error } from '@mui/icons-material';
 
 import {
@@ -24,7 +24,6 @@ import {
   formatBalanceChartData,
   defaultBarChartConfig,
   formatTooltipValue,
-  getBalanceColor,
 } from '../utils';
 import ChartCard from '../ChartCard';
 import { chartColors } from '../ChartCard/styles';
@@ -34,13 +33,14 @@ const BalanceCard = () => {
   const { summaryData, isSummaryLoading, summaryError } = useDashboard();
 
   const hasError = summaryError && summaryError.status !== 404;
-  const errorMessage = hasError ? ERROR_MESSAGES.DEFAULT : '';
+  const errorMessage = hasError ? ERROR_MESSAGES.DISPLAY : '';
   const balance = summaryData?.difference || 0;
 
   const chartData = formatBalanceChartData(
     summaryData?.totalSales || null,
     summaryData?.totalPurchases || null,
     summaryData?.difference || null,
+    theme,
   );
 
   const hasData =
@@ -112,7 +112,9 @@ const BalanceCard = () => {
 
   const getBarColor = (entry: any) => {
     if (entry.name === 'Diferencia') {
-      return getBalanceColor(summaryData?.difference || null);
+      if (balance === 0) return theme.palette.success.main;
+      if (balance > 0) return theme.palette.warning.main;
+      return theme.palette.error.main;
     }
     return entry.fill;
   };
@@ -136,10 +138,12 @@ const BalanceCard = () => {
         isLoading={false}
         isError={hasErrorData ?? false}
         isEmpty={isEmpty}
-        errorMessage={hasErrorData ? 'Error al cargar datos del balance' : ''}
+        errorMessage={
+          hasErrorData ? 'No se pudo obtener la información del balance' : ''
+        }
         emptyMessage="No hay datos suficientes para mostrar el balance"
       >
-        <div style={{ width: '100%', height: 300 }}>
+        <Box sx={{ width: '100%', height: { md: 250, xl: 300 } }}>
           <ResponsiveContainer>
             <BarChart data={chartData} margin={defaultBarChartConfig.margin}>
               <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
@@ -166,7 +170,7 @@ const BalanceCard = () => {
               </Bar>
             </BarChart>
           </ResponsiveContainer>
-        </div>
+        </Box>
       </ChartCard>
     </CardLayout>
   );

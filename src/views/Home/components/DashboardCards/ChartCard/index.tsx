@@ -12,7 +12,7 @@ import { TrendingUp, ErrorOutline, Timeline } from '@mui/icons-material';
 
 import { useDevice } from 'hooks';
 
-import { chartCardStyles, mobileChartStyles } from './styles';
+import { chartCardStyles } from './styles';
 
 interface ChartCardProps {
   title: string;
@@ -29,14 +29,14 @@ const ChartCard: React.FC<ChartCardProps> = ({
   isLoading = false,
   isError = false,
   isEmpty = false,
-  errorMessage = 'Error al cargar datos',
+  errorMessage,
   emptyMessage = 'No hay datos para mostrar',
   children,
 }) => {
   const theme = useTheme();
   const { isSmallScreen } = useDevice();
 
-  const styles = isSmallScreen ? mobileChartStyles : chartCardStyles;
+  const styles = chartCardStyles;
 
   const renderContent = () => {
     if (isLoading) {
@@ -236,7 +236,7 @@ const ChartCard: React.FC<ChartCardProps> = ({
                   textAlign: 'center',
                 }}
               >
-                Error al cargar datos
+                Información no disponible.
               </Typography>
 
               <Typography

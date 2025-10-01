@@ -1,6 +1,8 @@
 import React from 'react';
-import { useTheme } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 import { AttachMoney } from '@mui/icons-material';
+
+import { parseISO, format } from 'date-fns';
 
 import {
   AreaChart,
@@ -23,6 +25,8 @@ import { chartColors } from '../ChartCard/styles';
 import ChartCard from '../ChartCard';
 import { defaultLineChartConfig, formatLineChartData } from '../utils';
 
+import { es } from 'date-fns/locale';
+
 const SalesCard = () => {
   const theme = useTheme();
   const {
@@ -35,7 +39,7 @@ const SalesCard = () => {
   } = useDashboard();
 
   const hasError = summaryError && summaryError.status !== 404;
-  const errorMessage = hasError ? ERROR_MESSAGES.DEFAULT : '';
+  const errorMessage = hasError ? ERROR_MESSAGES.DISPLAY : '';
 
   const chartData = formatLineChartData(dataSale);
   const hasData = chartData.length > 0;
@@ -56,13 +60,9 @@ const SalesCard = () => {
           }}
         >
           <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>
-            {new Date(label).toLocaleDateString('es-MX', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric',
-            })}
+            {format(parseISO(label), 'dd MMM yyyy', { locale: es })}
           </p>
-          <p style={{ margin: '0', color: chartColors.sales }}>
+          <p style={{ margin: '0', color: theme.palette.success.main }}>
             {`$${payload[0].value.toLocaleString()}`}
           </p>
         </div>
@@ -89,10 +89,14 @@ const SalesCard = () => {
         isLoading={isLoadingSale}
         isError={hasErrorData || false}
         isEmpty={isEmptyData}
-        errorMessage={hasErrorData ? 'Error al cargar datos de ventas' : ''}
+        errorMessage={
+          hasErrorData
+            ? 'No se pudieron obtener las ventas en este momento.'
+            : ''
+        }
         emptyMessage="No hay ventas registradas para este período"
       >
-        <div style={{ width: '100%', height: 300 }}>
+        <Box sx={{ width: '100%', height: { md: 250, xl: 300 }, p: 0, m: 0 }}>
           <ResponsiveContainer style={{ padding: 0 }}>
             <AreaChart data={chartData} margin={defaultLineChartConfig.margin}>
               <CartesianGrid strokeDasharray="3 3" stroke={chartColors.grid} />
@@ -100,10 +104,7 @@ const SalesCard = () => {
                 dataKey="operationDate"
                 tick={{ fontSize: 12 }}
                 tickFormatter={(date) =>
-                  new Date(date).toLocaleDateString('es-MX', {
-                    month: 'short',
-                    day: 'numeric',
-                  })
+                  format(parseISO(date), 'dd MMM', { locale: es })
                 }
               />
               <YAxis tick={{ fontSize: 12 }} />
@@ -111,14 +112,14 @@ const SalesCard = () => {
               <Area
                 type="monotone"
                 dataKey="amount"
-                stroke={chartColors.sales}
-                fill={chartColors.sales}
+                stroke={theme.palette.success.main}
+                fill={theme.palette.success.main}
                 fillOpacity={0.3}
                 activeDot={{ r: 6 }}
               />
             </AreaChart>
           </ResponsiveContainer>
-        </div>
+        </Box>
       </ChartCard>
     </CardLayout>
   );

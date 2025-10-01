@@ -7,13 +7,13 @@ import BalanceCard from './BalanceCard';
 
 const DashboardCards = () => {
   return (
-    <Box sx={{ my: 2 }}>
+    <Box sx={{ my: 2, mt: 4 }}>
       <Box
         sx={{
           display: 'grid',
           gridTemplateColumns: {
             xs: '1fr',
-            md: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
             lg: 'repeat(3, 1fr)',
           },
           gap: 2,

@@ -21,6 +21,8 @@ export const ERROR_MESSAGES = {
   UPLOAD_IMAGE: 'Error al subir la imagen.',
   UPLOAD_IMAGE_MAX_SIZE:
     'El archivo excede el tamaño máximo permitido (100 KB).',
+  DISPLAY:
+    'Ups... no pudimos mostrar la información. Por favor, inténtalo de nuevo más tarde.',
 };
 
 export const SUCCESS_MESSAGES = {
