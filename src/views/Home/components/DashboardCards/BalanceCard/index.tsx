@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { Warning, CheckCircle, Error } from '@mui/icons-material';
 
@@ -16,7 +16,6 @@ import {
 import useDashboard from 'views/Home/hooks/useDashboard';
 
 import { ERROR_MESSAGES } from 'commons/messages';
-
 import { CardLayout } from 'components/shared';
 
 import SummaryCard from '../SummaryCard';
@@ -32,22 +31,40 @@ const BalanceCard = () => {
   const theme = useTheme();
   const { summaryData, isSummaryLoading, summaryError } = useDashboard();
 
-  const hasError = summaryError && summaryError.status !== 404;
-  const errorMessage = hasError ? ERROR_MESSAGES.DISPLAY : '';
   const balance = summaryData?.difference || 0;
 
-  const chartData = formatBalanceChartData(
-    summaryData?.totalSales || null,
-    summaryData?.totalPurchases || null,
-    summaryData?.difference || null,
-    theme,
+  const hasError = summaryError && summaryError.status !== 404;
+  const errorMessage = useMemo(
+    () => (hasError ? ERROR_MESSAGES.DISPLAY : ''),
+    [hasError],
   );
 
-  const hasData =
-    summaryData &&
-    (summaryData.totalSales > 0 || summaryData.totalPurchases > 0);
-  const isEmpty = !hasData && !isSummaryLoading;
-  const hasErrorData = summaryError && summaryError.status !== 404;
+  const chartData = useMemo(
+    () =>
+      formatBalanceChartData(
+        summaryData?.totalSales || null,
+        summaryData?.totalPurchases || null,
+        summaryData?.difference || null,
+        theme,
+      ),
+    [summaryData, theme],
+  );
+
+  const hasData = useMemo(
+    () =>
+      summaryData &&
+      (summaryData.totalSales > 0 || summaryData.totalPurchases > 0),
+    [summaryData],
+  );
+
+  const isEmpty = useMemo(
+    () => !hasData && !isSummaryLoading,
+    [hasData, isSummaryLoading],
+  );
+  const hasErrorData = useMemo(
+    () => summaryError && summaryError.status !== 404,
+    [summaryError],
+  );
 
   const fiscalStatus = useMemo(() => {
     if (balance === 0) {
@@ -79,45 +96,50 @@ const BalanceCard = () => {
       subtitle:
         'Tus compras superan a tus ventas, revisa tus registros urgentemente',
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [balance]);
+  }, [balance, theme.palette]);
 
-  const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      let displayValue = formatTooltipValue(data.value);
+  const customTooltip = useCallback(
+    ({ active, payload, label }: any) => {
+      if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        let displayValue = formatTooltipValue(data.value);
 
-      if (label === 'Diferencia' && summaryData?.difference) {
-        displayValue = formatTooltipValue(Math.abs(summaryData.difference));
+        if (label === 'Diferencia' && summaryData?.difference) {
+          displayValue = formatTooltipValue(Math.abs(summaryData.difference));
+        }
+
+        return (
+          <div
+            style={{
+              backgroundColor: 'white',
+              border: '1px solid #ccc',
+              borderRadius: '4px',
+              padding: '8px',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              fontSize: '12px',
+            }}
+          >
+            <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>{label}</p>
+            <p style={{ margin: '0', color: data.fill }}>{displayValue}</p>
+          </div>
+        );
       }
+      return null;
+    },
+    [summaryData],
+  );
 
-      return (
-        <div
-          style={{
-            backgroundColor: 'white',
-            border: '1px solid #ccc',
-            borderRadius: '4px',
-            padding: '8px',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            fontSize: '12px',
-          }}
-        >
-          <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>{label}</p>
-          <p style={{ margin: '0', color: data.fill }}>{displayValue}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
-  const getBarColor = (entry: any) => {
-    if (entry.name === 'Diferencia') {
-      if (balance === 0) return theme.palette.success.main;
-      if (balance > 0) return theme.palette.warning.main;
-      return theme.palette.error.main;
-    }
-    return entry.fill;
-  };
+  const getBarColor = useCallback(
+    (entry: any) => {
+      if (entry.name === 'Diferencia') {
+        if (balance === 0) return theme.palette.success.main;
+        if (balance > 0) return theme.palette.warning.main;
+        return theme.palette.error.main;
+      }
+      return entry.fill;
+    },
+    [balance, theme.palette],
+  );
 
   return (
     <CardLayout padding={2} borderRadius={2} sx={{ height: '100%' }}>
@@ -176,4 +198,4 @@ const BalanceCard = () => {
   );
 };
 
-export default BalanceCard;
+export default React.memo(BalanceCard);

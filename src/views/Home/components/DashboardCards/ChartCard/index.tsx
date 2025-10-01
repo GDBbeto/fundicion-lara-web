@@ -12,7 +12,7 @@ import { TrendingUp, ErrorOutline, Timeline } from '@mui/icons-material';
 
 import { useDevice } from 'hooks';
 
-import { chartCardStyles } from './styles';
+import { chartCardStyles as styles } from './styles';
 
 interface ChartCardProps {
   title: string;
@@ -35,8 +35,6 @@ const ChartCard: React.FC<ChartCardProps> = ({
 }) => {
   const theme = useTheme();
   const { isSmallScreen } = useDevice();
-
-  const styles = chartCardStyles;
 
   const renderContent = () => {
     if (isLoading) {

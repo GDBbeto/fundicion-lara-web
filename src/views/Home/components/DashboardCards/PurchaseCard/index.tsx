@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { ShoppingCart } from '@mui/icons-material';
 
 import { parseISO, format } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 import {
   AreaChart,
@@ -17,7 +18,6 @@ import {
 import useDashboard from 'views/Home/hooks/useDashboard';
 
 import { CardLayout } from 'components/shared';
-
 import { ERROR_MESSAGES } from 'commons/messages';
 
 import SummaryCard from '../SummaryCard';
@@ -25,10 +25,9 @@ import { chartColors } from '../ChartCard/styles';
 import ChartCard from '../ChartCard';
 import { defaultLineChartConfig, formatLineChartData } from '../utils';
 
-import { es } from 'date-fns/locale';
-
 const PurchaseCard = () => {
   const theme = useTheme();
+
   const {
     summaryData,
     isSummaryLoading,
@@ -38,38 +37,53 @@ const PurchaseCard = () => {
     isLoadingPurchase,
   } = useDashboard();
 
-  const hasError = summaryError && summaryError.status !== 404;
-  const errorMessage = hasError ? ERROR_MESSAGES.DISPLAY : '';
+  const chartData = useMemo(
+    () => formatLineChartData(dataPurchase),
+    [dataPurchase],
+  );
 
-  const chartData = formatLineChartData(dataPurchase);
   const hasData = chartData.length > 0;
+  const isEmptyData = useMemo(
+    () => !hasData && !isLoadingPurchase,
+    [hasData, isLoadingPurchase],
+  );
+  const hasErrorData = useMemo(
+    () => errorPurchase && errorPurchase.status !== 404,
+    [errorPurchase],
+  );
 
-  const isEmptyData = !hasData && !isLoadingPurchase;
-  const hasErrorData = errorPurchase && errorPurchase.status !== 404;
+  const hasError = summaryError && summaryError.status !== 404;
+  const errorMessage = useMemo(
+    () => (hasError ? ERROR_MESSAGES.DISPLAY : ''),
+    [hasError],
+  );
 
-  const customTooltip = ({ active, payload, label }: any) => {
-    if (active && payload && payload.length) {
-      return (
-        <div
-          style={{
-            backgroundColor: chartColors.tooltipBg,
-            padding: '8px 12px',
-            border: `1px solid ${chartColors.tooltipBorder}`,
-            borderRadius: '4px',
-            color: chartColors.text,
-          }}
-        >
-          <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>
-            {format(parseISO(label), 'dd MMM yyyy', { locale: es })}
-          </p>
-          <p style={{ margin: '0', color: theme.palette.primary.main }}>
-            {`$${payload[0].value.toLocaleString()}`}
-          </p>
-        </div>
-      );
-    }
-    return null;
-  };
+  const customTooltip = useCallback(
+    ({ active, payload, label }: any) => {
+      if (active && payload && payload.length) {
+        return (
+          <div
+            style={{
+              backgroundColor: chartColors.tooltipBg,
+              padding: '8px 12px',
+              border: `1px solid ${chartColors.tooltipBorder}`,
+              borderRadius: '4px',
+              color: chartColors.text,
+            }}
+          >
+            <p style={{ margin: '0 0 4px 0', fontWeight: 'bold' }}>
+              {format(parseISO(label), 'dd MMM yyyy', { locale: es })}
+            </p>
+            <p style={{ margin: '0', color: theme.palette.primary.main }}>
+              {`$${payload[0].value.toLocaleString()}`}
+            </p>
+          </div>
+        );
+      }
+      return null;
+    },
+    [theme.palette.primary.main],
+  );
 
   return (
     <CardLayout padding={2} borderRadius={2} sx={{ height: '100%' }}>
@@ -127,4 +141,4 @@ const PurchaseCard = () => {
   );
 };
 
-export default PurchaseCard;
+export default React.memo(PurchaseCard);
