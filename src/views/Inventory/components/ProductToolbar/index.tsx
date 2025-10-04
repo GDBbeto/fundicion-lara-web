@@ -14,6 +14,7 @@ import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 import type { Product } from 'types/api';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+import { HttpStatusCode } from 'commons/global';
 
 import ProductFormModal from '../ProductFormModal';
 
@@ -65,7 +66,7 @@ const ProductToolbar = () => {
             value={searchTerm}
             onChange={handleSearchInputChange}
             placeholder="Buscar productos..."
-            disabled={!!error && error.status !== 404}
+            disabled={!!error && error.status !== HttpStatusCode.NotFound}
           />
         </Grid>
 
@@ -78,7 +79,7 @@ const ProductToolbar = () => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={handleAddProduct}
-            disabled={!!error && error.status !== 404}
+            disabled={!!error && error.status !== HttpStatusCode.NotFound}
           >
             {isXs ? 'Agregar' : ' Agregar producto'}
           </Button>

@@ -9,6 +9,7 @@ import CustomPagination from '../CustomPagination';
 import TableToolbar from './TableToolbar';
 import TableHeadSection from './TableHeadSection';
 import TableBodySection from './TableBodySection';
+import { shadowStyles } from './styles';
 
 interface Props<T> {
   columns: Column<T>[];
@@ -75,32 +76,7 @@ const CustomTable = <T,>({
       />
       <Box sx={{ position: 'relative' }}>
         {/* Professional Bottom Shadow */}
-        {showShadow && (
-          <Box
-            sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: '28px',
-              background: `
-                linear-gradient(
-                  to top,
-                  rgba(0, 0, 0, 0.18) 0%,
-                  rgba(0, 0, 0, 0.12) 25%,
-                  rgba(0, 0, 0, 0.06) 50%,
-                  rgba(0, 0, 0, 0.02) 75%,
-                  transparent 100%
-                )
-              `,
-              pointerEvents: 'none',
-              zIndex: 3,
-              borderRadius: '0 0 8px 8px',
-              boxShadow: 'inset 0 -2px 4px rgba(0, 0, 0, 0.08)',
-              backdropFilter: 'blur(1px)',
-            }}
-          />
-        )}
+        {showShadow && <Box sx={shadowStyles} />}
 
         <TableContainer
           ref={tableContainerRef}

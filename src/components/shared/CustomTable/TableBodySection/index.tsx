@@ -11,6 +11,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 
 import type { Column } from 'types/column';
 import { colors } from 'commons/colors';
+import { getTableBodySectionStyles } from '../styles';
 
 interface Props<T> {
   columns: Column<T>[];
@@ -31,7 +32,10 @@ const TableBodySection = <T,>({
         {Array.from({ length: 5 }).map((_, rowIdx) => (
           <TableRow key={rowIdx}>
             {columns.map((col, columnIndx) => (
-              <TableCell key={`${col.apiField as string}-${columnIndx}`}>
+              <TableCell
+                key={`${col.apiField as string}-${columnIndx}`}
+                sx={getTableBodySectionStyles(col)}
+              >
                 <Skeleton variant="text" width="80%" />
               </TableCell>
             ))}
@@ -84,6 +88,7 @@ const TableBodySection = <T,>({
             <TableCell
               key={`${col.apiField as string}-${columnIndx}`}
               align={col.align ?? 'left'}
+              sx={getTableBodySectionStyles(col)}
             >
               {col.render
                 ? col.render(row)

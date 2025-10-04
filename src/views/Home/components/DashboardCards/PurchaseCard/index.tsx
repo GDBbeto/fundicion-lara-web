@@ -18,7 +18,9 @@ import {
 import useDashboard from 'views/Home/hooks/useDashboard';
 
 import { CardLayout } from 'components/shared';
+
 import { ERROR_MESSAGES } from 'commons/messages';
+import { HttpStatusCode } from 'commons/global';
 
 import SummaryCard from '../SummaryCard';
 import { chartColors } from '../ChartCard/styles';
@@ -48,11 +50,12 @@ const PurchaseCard = () => {
     [hasData, isLoadingPurchase],
   );
   const hasErrorData = useMemo(
-    () => errorPurchase && errorPurchase.status !== 404,
+    () => errorPurchase && errorPurchase.status !== HttpStatusCode.NotFound,
     [errorPurchase],
   );
 
-  const hasError = summaryError && summaryError.status !== 404;
+  const hasError =
+    summaryError && summaryError.status !== HttpStatusCode.NotFound;
   const errorMessage = useMemo(
     () => (hasError ? ERROR_MESSAGES.DISPLAY : ''),
     [hasError],

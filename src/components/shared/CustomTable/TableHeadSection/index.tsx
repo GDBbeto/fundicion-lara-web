@@ -1,6 +1,7 @@
 import React from 'react';
 import { TableHead, TableRow, TableCell, TableSortLabel } from '@mui/material';
 import { Column } from 'types/column';
+import { getTableCellStyles } from '../styles';
 
 interface Props<T> {
   columns: Column<T>[];
@@ -34,6 +35,7 @@ const TableHeadSection = <T,>({
               backgroundColor: 'background.paper',
               zIndex: 1,
               top: 0,
+              ...getTableCellStyles(col),
             }}
           >
             {onSort && col.sort ? (

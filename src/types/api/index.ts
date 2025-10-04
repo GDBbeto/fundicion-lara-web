@@ -1,7 +1,8 @@
 export * from './product';
 export * from './transaction';
 export * from './transaction-summary';
-export * from './/invoice';
+export * from './invoice';
+export * from './order-transaction';
 
 export interface ApiResponse<T> {
   status: string;

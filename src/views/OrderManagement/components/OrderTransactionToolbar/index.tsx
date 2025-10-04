@@ -3,46 +3,27 @@ import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useDebounce } from 'use-debounce';
 
-import {
-  CustomSpinner,
-  CustomDatePicker,
-  SearchInput,
-} from 'components/shared';
+import { CustomDatePicker, SearchInput } from 'components/shared';
 
-import {
-  useDevice,
-  useSaveTransaction,
-  useSnackbar,
-  useTransactions,
-  useValidatedDateRange,
-} from 'hooks';
+import { useDevice, useValidatedDateRange } from 'hooks';
 
-import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 import { HttpStatusCode } from 'commons/global';
+import useOrderTransactions from 'views/OrderManagement/hooks/useOrderTransactios';
 
-import type { Transaction } from 'types/api';
-
-import TransactionFormModal from '../TransactionFormModal';
-
-const TransactionToolbar = () => {
+const OrderTransactionToolbar = () => {
   const { isSm } = useDevice();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const [openModal, setOpenModal] = useState(false);
 
   const {
-    label,
     error,
     handleSearch,
     startDate: ctxStartDate,
     endDate: ctxEndDate,
     setStartDate: setCtxStartDate,
     setEndDate: setCtxEndDate,
-    handleRefresh,
-  } = useTransactions();
-
-  const { mutate: saveTransaction, isPending } = useSaveTransaction();
-  const { showSnackbar } = useSnackbar();
+  } = useOrderTransactions();
 
   const {
     startDate,
@@ -64,22 +45,6 @@ const TransactionToolbar = () => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
 
-  const handleSubmit = (transactionData: Transaction) => {
-    saveTransaction(transactionData, {
-      onSuccess: () => {
-        setOpenModal(false);
-        handleRefresh();
-        showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
-      },
-      onError: (customError) => {
-        showSnackbar(
-          customError?.userMessage || ERROR_MESSAGES.DEFAULT,
-          'error',
-        );
-      },
-    });
-  };
-
   return (
     <Box mb={3}>
       <Grid container spacing={2} alignItems="flex-start">
@@ -88,7 +53,7 @@ const TransactionToolbar = () => {
             id="searchTerm"
             value={searchTerm}
             onChange={setSearchTerm}
-            placeholder={`Buscar ${label.toLowerCase()}s...`}
+            placeholder={`Buscar...`}
             disabled={!!error && error.status !== HttpStatusCode.NotFound}
           />
         </Grid>
@@ -130,22 +95,12 @@ const TransactionToolbar = () => {
             startIcon={<AddIcon />}
             onClick={() => setOpenModal(true)}
           >
-            {isSm ? label : `Registrar ${label.toLowerCase()}`}
+            {isSm ? 'Registrar' : `Registrar pedido`}
           </Button>
-
-          {openModal && (
-            <TransactionFormModal
-              open={openModal}
-              handleClose={() => setOpenModal(false)}
-              onSubmit={handleSubmit}
-            />
-          )}
-
-          {isPending && <CustomSpinner open />}
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-export default TransactionToolbar;
+export default OrderTransactionToolbar;

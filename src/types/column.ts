@@ -7,4 +7,6 @@ export interface Column<T> {
   rowSpan?: number;
   align?: 'left' | 'center' | 'right' | 'justify' | 'inherit';
   render?: (row: T) => ReactNode;
+  sticky?: 'left' | 'right';
+  width?: number | string;
 }

@@ -16,6 +16,8 @@ import {
 import useDashboard from 'views/Home/hooks/useDashboard';
 
 import { ERROR_MESSAGES } from 'commons/messages';
+import { HttpStatusCode } from 'commons/global';
+
 import { CardLayout } from 'components/shared';
 
 import SummaryCard from '../SummaryCard';
@@ -33,7 +35,8 @@ const BalanceCard = () => {
 
   const balance = summaryData?.difference || 0;
 
-  const hasError = summaryError && summaryError.status !== 404;
+  const hasError =
+    summaryError && summaryError.status !== HttpStatusCode.NotFound;
   const errorMessage = useMemo(
     () => (hasError ? ERROR_MESSAGES.DISPLAY : ''),
     [hasError],
@@ -62,7 +65,7 @@ const BalanceCard = () => {
     [hasData, isSummaryLoading],
   );
   const hasErrorData = useMemo(
-    () => summaryError && summaryError.status !== 404,
+    () => summaryError && summaryError.status !== HttpStatusCode.NotFound,
     [summaryError],
   );
 
