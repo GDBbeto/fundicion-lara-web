@@ -1,10 +1,12 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
 import { CustomTable } from 'components/shared';
 
 import useOrderTransactions from 'views/OrderManagement/hooks/useOrderTransactios';
 import type { OrderTransaction } from 'types/api';
 import { useDevice } from 'hooks';
+import OrderTransactionDetailModal from '../OrderTransactionDetailModal';
+import OrderTransactionListMobile from '../OrderTransactionListMobile';
 import { createColumns } from './Columns';
 
 const OrderTransactionList = () => {
@@ -21,6 +23,10 @@ const OrderTransactionList = () => {
   } = useOrderTransactions();
   const { isSmallScreen } = useDevice();
 
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<OrderTransaction | null>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+
   const handleOpenFormModal = (transaction: OrderTransaction) => {
     // TODO: Implement form modal
     console.log('Edit transaction:', transaction);
@@ -32,8 +38,13 @@ const OrderTransactionList = () => {
   };
 
   const handleOpenViewModal = (transaction: OrderTransaction) => {
-    // TODO: Implement view modal
-    console.log('View transaction:', transaction);
+    setSelectedTransaction(transaction);
+    setShowDetailModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDetailModal(false);
+    setSelectedTransaction(null);
   };
 
   const columns = useMemo(
@@ -48,7 +59,12 @@ const OrderTransactionList = () => {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {isSmallScreen ? null : (
+      {isSmallScreen ? (
+        <OrderTransactionListMobile
+          handleOpenFormModal={handleOpenFormModal}
+          handleOpenDeleteModal={handleOpenDeleteModal}
+        />
+      ) : (
         <CustomTable<OrderTransaction>
           columns={columns}
           rows={transactions}
@@ -62,6 +78,14 @@ const OrderTransactionList = () => {
           order={order}
           orderBy={orderBy}
           onSort={handleSort}
+        />
+      )}
+
+      {selectedTransaction && (
+        <OrderTransactionDetailModal
+          open={showDetailModal}
+          transaction={selectedTransaction}
+          onClose={handleCloseModal}
         />
       )}
     </Box>

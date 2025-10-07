@@ -26,6 +26,7 @@ export interface OrderTransaction {
   description: string;
   productId: number;
   productName: string;
+  productImageUrl?: string | null;
   itemCount: number;
   methodPayment: MethodPayment;
   invoiceNumber: string;

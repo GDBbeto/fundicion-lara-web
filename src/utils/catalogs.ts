@@ -1,6 +1,10 @@
 import Option from 'types/option';
-import { DeliveryStatus, PaymentStatus } from 'types/api';
-import { CAT_DELIVERY_STATUS, CAT_PAYMENT_STATUS } from 'commons/catalogs';
+import { DeliveryStatus, MethodPayment, PaymentStatus } from 'types/api';
+import {
+  CAT_DELIVERY_STATUS,
+  CAT_METHOD_PAYMENT,
+  CAT_PAYMENT_STATUS,
+} from 'commons/catalogs';
 
 export const getPaymentStatusOption = (
   status: PaymentStatus,
@@ -18,4 +22,12 @@ export const getDeliveryStatusOption = (
   );
 
   return deliveryStatus || null;
+};
+
+export const getMethodPaymentOption = (
+  method: MethodPayment,
+): Option | null => {
+  const methodPayment = CAT_METHOD_PAYMENT.find((cat) => cat.value === method);
+
+  return methodPayment || null;
 };
