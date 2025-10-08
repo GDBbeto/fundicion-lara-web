@@ -14,6 +14,19 @@ export const getPaymentStatusOption = (
   return paymentStatus || null;
 };
 
+export const getPaymentStatusColor = (status: PaymentStatus) => {
+  switch (status) {
+    case 'PAID':
+      return 'success';
+    case 'PENDING':
+      return 'warning';
+    case 'INCOMPLETE':
+      return 'error';
+    default:
+      return 'default';
+  }
+};
+
 export const getDeliveryStatusOption = (
   status: DeliveryStatus,
 ): Option | null => {
@@ -22,6 +35,23 @@ export const getDeliveryStatusOption = (
   );
 
   return deliveryStatus || null;
+};
+
+export const getDeliveryStatusColor = (status: DeliveryStatus) => {
+  switch (status) {
+    case 'DELIVERED':
+      return 'success';
+    case 'IN_TRANSIT':
+      return 'info';
+    case 'PENDING':
+      return 'warning';
+    case 'ON_HOLD':
+      return 'secondary';
+    case 'CANCELLED':
+      return 'error';
+    default:
+      return 'default';
+  }
 };
 
 export const getMethodPaymentOption = (

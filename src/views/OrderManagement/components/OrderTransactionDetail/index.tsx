@@ -30,6 +30,8 @@ import {
   getDeliveryStatusOption,
   getPaymentStatusOption,
   getMethodPaymentOption,
+  getPaymentStatusColor,
+  getDeliveryStatusColor,
 } from 'utils/catalogs';
 
 interface OrderTransactionDetailProps {
@@ -39,36 +41,6 @@ interface OrderTransactionDetailProps {
 const OrderTransactionDetail = ({
   transaction,
 }: OrderTransactionDetailProps) => {
-  const getPaymentStatusColor = (status: string) => {
-    switch (status) {
-      case 'PAID':
-        return 'success';
-      case 'PENDING':
-        return 'warning';
-      case 'INCOMPLETE':
-        return 'error';
-      default:
-        return 'default';
-    }
-  };
-
-  const getDeliveryStatusColor = (status: string) => {
-    switch (status) {
-      case 'DELIVERED':
-        return 'success';
-      case 'IN_TRANSIT':
-        return 'info';
-      case 'PENDING':
-        return 'warning';
-      case 'ON_HOLD':
-        return 'secondary';
-      case 'CANCELLED':
-        return 'error';
-      default:
-        return 'default';
-    }
-  };
-
   const InfoItem = ({
     icon,
     label,
@@ -387,7 +359,7 @@ const OrderTransactionDetail = ({
                   getPaymentStatusOption(transaction.paymentStatus)?.label ||
                   transaction.paymentStatus
                 }
-                color={getPaymentStatusColor(transaction.paymentStatus) as any}
+                color={getPaymentStatusColor(transaction.paymentStatus)}
                 variant="filled"
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               />
@@ -406,9 +378,7 @@ const OrderTransactionDetail = ({
                   getDeliveryStatusOption(transaction.deliveryStatus)?.label ||
                   transaction.deliveryStatus
                 }
-                color={
-                  getDeliveryStatusColor(transaction.deliveryStatus) as any
-                }
+                color={getDeliveryStatusColor(transaction.deliveryStatus)}
                 variant="outlined"
                 sx={{ fontWeight: 600, fontSize: '0.8rem' }}
               />

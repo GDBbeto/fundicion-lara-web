@@ -9,7 +9,9 @@ import type { OrderTransaction } from 'types/api';
 import type { Column } from 'types/column';
 
 import {
+  getDeliveryStatusColor,
   getDeliveryStatusOption,
+  getPaymentStatusColor,
   getPaymentStatusOption,
 } from 'utils/catalogs';
 
@@ -102,19 +104,6 @@ export const baseColumns: Column<OrderTransaction>[] = [
     align: 'center',
     sort: true,
     render: (row) => {
-      const getPaymentStatusColor = (status: string) => {
-        switch (status) {
-          case 'PAID':
-            return 'success';
-          case 'PENDING':
-            return 'warning';
-          case 'INCOMPLETE':
-            return 'error';
-          default:
-            return 'default';
-        }
-      };
-
       return (
         <Chip
           label={
@@ -122,7 +111,7 @@ export const baseColumns: Column<OrderTransaction>[] = [
             row.paymentStatus
           }
           size="small"
-          color={getPaymentStatusColor(row.paymentStatus) as any}
+          color={getPaymentStatusColor(row.paymentStatus)}
           variant="filled"
         />
       );
@@ -134,23 +123,6 @@ export const baseColumns: Column<OrderTransaction>[] = [
     align: 'center',
     sort: true,
     render: (row) => {
-      const getDeliveryStatusColor = (status: string) => {
-        switch (status) {
-          case 'DELIVERED':
-            return 'success';
-          case 'IN_TRANSIT':
-            return 'info';
-          case 'PENDING':
-            return 'warning';
-          case 'ON_HOLD':
-            return 'secondary';
-          case 'CANCELLED':
-            return 'error';
-          default:
-            return 'default';
-        }
-      };
-
       return (
         <Chip
           label={
@@ -158,7 +130,7 @@ export const baseColumns: Column<OrderTransaction>[] = [
             row.deliveryStatus
           }
           size="small"
-          color={getDeliveryStatusColor(row.deliveryStatus) as any}
+          color={getDeliveryStatusColor(row.deliveryStatus)}
           variant="outlined"
         />
       );
