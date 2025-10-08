@@ -14,6 +14,7 @@ const useDevice = () => {
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isSmallScreen = useMediaQuery(theme.breakpoints.between('xs', 'sm'));
+  const isSmallScreenV2 = useMediaQuery(theme.breakpoints.down('md'));
   const isTablet = useMediaQuery(theme.breakpoints.between('sm', 'md'));
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -27,6 +28,7 @@ const useDevice = () => {
     isTablet,
     isDesktop,
     isSmallScreen,
+    isSmallScreenV2,
   };
 };
 

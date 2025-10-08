@@ -1,10 +1,8 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
 
 import type { OrderTransaction } from 'types/api';
 import { CustomModal } from 'components/shared';
-import { colors } from 'commons/colors';
-import OrderTransactionDetail from '../OrderTransactionDetail';
+import OrderTransactionDetail from './OrderTransactionDetail';
 
 interface OrderTransactionDetailModalProps {
   open: boolean;
@@ -20,19 +18,12 @@ const OrderTransactionDetailModal = ({
   return (
     <CustomModal
       open={open}
-      title="Detalle del Pedido"
+      title={`Detalle del Pedido: #${transaction.orderTransactionId}`}
       handleClose={onClose}
       maxWidth="md"
       fullWidth
       scrollable
     >
-      <Box sx={{ mb: 2 }}>
-        {transaction.orderTransactionId && (
-          <Typography variant="body2" color="text.secondary" fontWeight={500}>
-            ID: #{transaction.orderTransactionId}
-          </Typography>
-        )}
-      </Box>
       <OrderTransactionDetail transaction={transaction} />
     </CustomModal>
   );

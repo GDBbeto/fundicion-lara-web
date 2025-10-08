@@ -107,7 +107,7 @@ const AmountsSection = ({ transaction }: AmountsSectionProps) => (
             color="text.secondary"
             sx={{ display: 'block', fontSize: '0.65rem', mb: 0.3 }}
           >
-            Extra
+            Monto Extra
           </Typography>
           <NumericFormat
             value={transaction.extraAmount}

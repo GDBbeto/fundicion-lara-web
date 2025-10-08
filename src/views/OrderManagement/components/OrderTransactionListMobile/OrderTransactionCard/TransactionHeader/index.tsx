@@ -31,7 +31,7 @@ const TransactionHeader = ({
     </Stack>
 
     <Stack direction="row" alignItems="center" spacing={1}>
-      {transaction.orderTransactionId && (
+      {transaction.orderTransactionId && actions.length ? (
         <Chip
           label={`#${transaction.orderTransactionId}`}
           size="small"
@@ -43,14 +43,16 @@ const TransactionHeader = ({
             color: colors.darkBlue,
           }}
         />
-      )}
-      <ActionMenu
-        actions={actions}
-        size="small"
-        iconColor={colors.darkText}
-        hoverColor={colors.darkBlue}
-        alignItems="flex-start"
-      />
+      ) : null}
+      {actions.length ? (
+        <ActionMenu
+          actions={actions}
+          size="small"
+          iconColor={colors.darkText}
+          hoverColor={colors.darkBlue}
+          alignItems="flex-start"
+        />
+      ) : null}
     </Stack>
   </Stack>
 );
