@@ -20,7 +20,6 @@ const FormLayout = ({ id, onSubmit, children }: FormLayoutProps) => {
         overflowY: 'hidden',
         pb: 4,
         [theme.breakpoints.down('sm')]: {
-          maxHeight: 'calc(100vh - 120px)',
           px: 1,
           pb: 12,
         },

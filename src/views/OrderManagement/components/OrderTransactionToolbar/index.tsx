@@ -9,12 +9,17 @@ import { useDevice, useValidatedDateRange } from 'hooks';
 
 import { HttpStatusCode } from 'commons/global';
 import useOrderTransactions from 'views/OrderManagement/hooks/useOrderTransactios';
+import OrderTransactionFormModal from '../OrderTransactionFormModal';
+
+import type { OrderTransactionRequest } from 'types/api';
 
 const OrderTransactionToolbar = () => {
   const { isSm } = useDevice();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const [openModal, setOpenModal] = useState(false);
+  const [selectedOrderTransaction, setSelectedOrderTransaction] =
+    useState<OrderTransactionRequest | null>(null);
 
   const {
     error,
@@ -44,6 +49,30 @@ const OrderTransactionToolbar = () => {
   useEffect(() => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
+
+  const handleOpenModal = () => {
+    console.log('Abriendo modal para nuevo pedido');
+    setSelectedOrderTransaction(null);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    console.log('Cerrando modal');
+    setOpenModal(false);
+    setSelectedOrderTransaction(null);
+  };
+
+  const handleSubmit = (data: OrderTransactionRequest) => {
+    console.log('===== DATOS DEL FORMULARIO =====');
+    console.log('Datos recibidos:', data);
+    console.log(
+      'Acción:',
+      selectedOrderTransaction ? 'ACTUALIZAR pedido' : 'CREAR nuevo pedido',
+    );
+    console.log('================================');
+    // TODO: Aquí se implementará la lógica de guardado con los servicios
+    handleCloseModal();
+  };
 
   return (
     <Box mb={3}>
@@ -93,12 +122,19 @@ const OrderTransactionToolbar = () => {
             variant="contained"
             color="primary"
             startIcon={<AddIcon />}
-            onClick={() => setOpenModal(true)}
+            onClick={handleOpenModal}
           >
             {isSm ? 'Registrar' : `Registrar pedido`}
           </Button>
         </Grid>
       </Grid>
+
+      <OrderTransactionFormModal
+        open={openModal}
+        orderTransaction={selectedOrderTransaction}
+        handleClose={handleCloseModal}
+        onSubmit={handleSubmit}
+      />
     </Box>
   );
 };

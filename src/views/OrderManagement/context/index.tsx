@@ -17,7 +17,6 @@ import { HttpStatusCode } from 'commons/global';
 import { formatDateToDefault } from 'utils/dateUtils';
 
 import { OrderTransactionContextType } from './types';
-import { MOCK_ORDER_TRANSACTIONS } from './moks';
 
 export const OrderTransactionContext =
   createContext<OrderTransactionContextType>({} as OrderTransactionContextType);
@@ -109,15 +108,13 @@ const OrderTransactionProvider = ({ children }: Props) => {
       if (data.pagination) {
         setPagination({ ...data.pagination });
       }
-    } else {
-      setRows(MOCK_ORDER_TRANSACTIONS);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
     if (isError) {
-      // cleanTable();
+      cleanTable();
       if (error?.status !== HttpStatusCode.NotFound) {
         showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
       }
