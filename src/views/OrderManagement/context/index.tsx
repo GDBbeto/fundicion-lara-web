@@ -35,6 +35,7 @@ const getDefaultMonthDates = () => {
 const OrderTransactionProvider = ({ children }: Props) => {
   const { showSnackbar } = useSnackbar();
   const [search, setSearch] = useState('');
+
   const { firstDay, lastDay } = getDefaultMonthDates();
 
   const [startDate, setStartDate] = useState<Date>(firstDay);

@@ -48,7 +48,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       PaperProps={{
         sx: {
           borderRadius: 3,
-          padding: 2,
+          padding: { xs: 1, sm: 2 },
           backgroundColor: theme.palette.background.paper,
         },
       }}
@@ -85,7 +85,11 @@ const CustomModal: React.FC<CustomModalProps> = ({
 
       <DialogContent
         dividers
-        sx={{ mt: 1, flex: 1, overflowY: scrollable ? 'auto' : 'visible' }}
+        sx={{
+          mt: 1,
+          flex: 1,
+          overflowY: scrollable ? 'auto' : 'visible',
+        }}
       >
         {children}
       </DialogContent>

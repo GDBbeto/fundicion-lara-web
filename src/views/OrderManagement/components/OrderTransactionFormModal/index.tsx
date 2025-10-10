@@ -26,8 +26,9 @@ const OrderTransactionFormModal = ({
   return (
     <CustomModal
       open={open}
-      title={orderTransaction ? 'Actualizar pedido' : 'Agregar pedido'}
+      title={orderTransaction ? 'Actualizar pedido' : 'Nuevo pedido'}
       handleClose={handleClose}
+      maxWidth="lg"
       scrollable
       actions={() => (
         <>
@@ -40,7 +41,7 @@ const OrderTransactionFormModal = ({
             type="submit"
             form={formId}
           >
-            Guardar
+            Guardar pedido
           </Button>
         </>
       )}
