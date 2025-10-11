@@ -1,14 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 
-import {
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  Box,
-  Typography,
-  Paper,
-} from '@mui/material';
+import { Grid, Box, Typography, Paper } from '@mui/material';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -20,9 +13,15 @@ import {
   CustomSelectField,
   CustomProductSelector,
   FormLayout,
+  QuantityInput,
 } from 'components/shared';
 
-import { DeliveryStatus, OrderTransactionRequest, Product } from 'types/api';
+import {
+  DeliveryStatus,
+  OrderTransactionRequest,
+  Product,
+  PaymentStatus,
+} from 'types/api';
 
 import {
   CAT_METHOD_PAYMENT,
@@ -30,7 +29,8 @@ import {
   CAT_DELIVERY_STATUS,
 } from 'commons/catalogs';
 
-import SubtotalBadge from '../SubtotalBadge';
+import SubtotalBadge from './SubtotalBadge';
+import AddToSalesCheckbox from './AddToSalesCheckbox';
 
 import schema from './schema';
 import * as styles from './styles';
@@ -68,13 +68,69 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
     },
   });
 
-  // Observar cambios en cantidad
+  // Observar cambios en cantidad, monto extra y monto pagado
   const itemCount = watch('itemCount') || 0;
+  const extraAmount = watch('extraAmount') || 0;
+  const amountPaid = watch('amountPaid');
+  const paymentStatus = watch('paymentStatus');
+  const deliveryStatus = watch('deliveryStatus');
+  const addTransaction = watch('addTransaction');
+
+  // Referencias para controlar cuándo actualizar el estado de pago
+  const previousSubtotal = useRef<number>(0);
 
   const subtotal = useMemo(() => {
     if (!selectedProduct || !itemCount) return 0;
-    return (selectedProduct.purchasePrice || 0) * itemCount;
-  }, [selectedProduct, itemCount]);
+    const productTotal = (selectedProduct.purchasePrice || 0) * itemCount;
+    return productTotal + extraAmount;
+  }, [selectedProduct, itemCount, extraAmount]);
+
+  useEffect(() => {
+    if (amountPaid === null || !subtotal || subtotal <= 0) {
+      setValue('paymentStatus', null);
+      return;
+    }
+
+    const getPaymentStatus = () => {
+      if (amountPaid === 0) return PaymentStatus.PENDING;
+      if (amountPaid < subtotal) return PaymentStatus.INCOMPLETE;
+      return PaymentStatus.PAID;
+    };
+
+    setValue('paymentStatus', getPaymentStatus());
+  }, [amountPaid, subtotal, setValue]);
+
+  // Resetear estado de pago a null cuando cambia el subtotal
+  // Solo si el estado es PAID y ahora amountPaid es menor al subtotal
+  useEffect(() => {
+    if (
+      previousSubtotal.current !== subtotal &&
+      previousSubtotal.current !== 0
+    ) {
+      // Solo resetear si el estado es PAID y el monto ya no cubre el subtotal
+      if (
+        paymentStatus === PaymentStatus.PAID &&
+        (amountPaid || 0) < subtotal
+      ) {
+        setValue('paymentStatus', null, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      }
+    }
+    previousSubtotal.current = subtotal;
+  }, [subtotal, setValue, paymentStatus, amountPaid]);
+
+  // Desactivar addTransaction si no se cumplen las condiciones
+  useEffect(() => {
+    const canAddToSales =
+      paymentStatus === PaymentStatus.PAID &&
+      deliveryStatus === DeliveryStatus.DELIVERED;
+
+    if (!canAddToSales && addTransaction) {
+      setValue('addTransaction', false);
+    }
+  }, [paymentStatus, deliveryStatus, addTransaction, setValue]);
 
   return (
     <FormLayout id={id} onSubmit={handleSubmit(onSubmit)}>
@@ -117,7 +173,7 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
                   render={({ field }) => (
                     <CustomTextField
                       {...field}
-                      label="Cliente"
+                      label="Nombre del cliente"
                       error={!!errors.client}
                       helperText={errors.client?.message}
                     />
@@ -131,16 +187,56 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
                   name="itemCount"
                   control={control}
                   render={({ field }) => (
+                    <Box display="flex" flexDirection="column" gap={0.5}>
+                      <Typography
+                        variant="subtitle2"
+                        fontWeight={500}
+                        sx={{
+                          color: errors.itemCount
+                            ? 'error.main'
+                            : 'text.primary',
+                        }}
+                      >
+                        Cantidad *
+                      </Typography>
+                      <QuantityInput
+                        value={field.value || 0}
+                        onChange={(val) => field.onChange(val)}
+                      />
+                      {errors.itemCount && (
+                        <Typography color="error" variant="caption">
+                          {errors.itemCount.message}
+                        </Typography>
+                      )}
+                    </Box>
+                  )}
+                />
+              </Grid>
+
+              {/* Cargo adicional */}
+              <Grid size={{ xs: 12 }}>
+                <Controller
+                  name="extraAmount"
+                  control={control}
+                  render={({ field }) => (
                     <NumericFormat
-                      {...field}
-                      required
+                      id="extraAmount"
+                      name="extraAmount"
+                      inputMode="decimal"
                       type="text"
+                      value={field.value}
+                      onValueChange={({ floatValue }) => {
+                        field.onChange(floatValue ?? 0);
+                      }}
                       customInput={CustomTextField}
-                      label="Cantidad"
+                      label="Cargo adicional"
+                      placeholder="Envío, empaquetado, etc."
+                      thousandSeparator
+                      prefix="$"
+                      decimalScale={2}
                       allowNegative={false}
-                      decimalScale={0}
-                      error={!!errors.itemCount}
-                      helperText={errors.itemCount?.message}
+                      error={!!errors.extraAmount}
+                      helperText={errors.extraAmount?.message}
                     />
                   )}
                 />
@@ -179,6 +275,7 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
             <SubtotalBadge
               selectedProduct={selectedProduct}
               itemCount={itemCount}
+              extraAmount={extraAmount}
               subtotal={subtotal}
             />
 
@@ -192,7 +289,7 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
                     <CustomSelectField
                       {...field}
                       required
-                      label="Método de pago"
+                      label="Forma de pago"
                       options={CAT_METHOD_PAYMENT}
                       error={!!errors.methodPayment}
                       helperText={errors.methodPayment?.message}
@@ -230,34 +327,6 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
                 />
               </Grid>
 
-              {/* Monto extra */}
-              <Grid size={{ xs: 12 }}>
-                <Controller
-                  name="extraAmount"
-                  control={control}
-                  render={({ field }) => (
-                    <NumericFormat
-                      id="extraAmount"
-                      name="extraAmount"
-                      inputMode="decimal"
-                      type="text"
-                      value={field.value}
-                      onValueChange={({ floatValue }) => {
-                        field.onChange(floatValue ?? 0);
-                      }}
-                      customInput={CustomTextField}
-                      label="Monto extra"
-                      thousandSeparator
-                      prefix="$"
-                      decimalScale={2}
-                      allowNegative={false}
-                      error={!!errors.extraAmount}
-                      helperText={errors.extraAmount?.message}
-                    />
-                  )}
-                />
-              </Grid>
-
               {/* Estado de pago */}
               <Grid size={{ xs: 12 }}>
                 <Controller
@@ -265,11 +334,16 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
                   control={control}
                   render={({ field }) => (
                     <CustomSelectField
+                      key={`payment-status-${paymentStatus}`}
                       {...field}
-                      label="Estado de pago"
+                      value={field.value || ''}
+                      label="Estatus del pago"
                       options={CAT_PAYMENT_STATUS}
                       error={!!errors.paymentStatus}
                       helperText={errors.paymentStatus?.message}
+                      InputProps={{
+                        readOnly: true,
+                      }}
                     />
                   )}
                 />
@@ -349,33 +423,11 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
 
         {/* ========== AGREGAR A VENTAS (INDEPENDIENTE) ========== */}
         <Grid size={{ xs: 12 }}>
-          <Paper elevation={0} sx={styles.checkboxPaper}>
-            <Controller
-              name="addTransaction"
-              control={control}
-              render={({ field }) => (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={field.value}
-                      onChange={(e) => field.onChange(e.target.checked)}
-                      sx={styles.checkboxIcon}
-                    />
-                  }
-                  label={
-                    <Box>
-                      <Typography variant="body1" fontWeight={600}>
-                        Agregar a ventas
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        Este pedido también se registrará en el módulo de ventas
-                      </Typography>
-                    </Box>
-                  }
-                />
-              )}
-            />
-          </Paper>
+          <AddToSalesCheckbox
+            control={control}
+            paymentStatus={paymentStatus}
+            deliveryStatus={deliveryStatus}
+          />
         </Grid>
       </Grid>
     </FormLayout>

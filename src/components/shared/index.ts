@@ -12,3 +12,4 @@ export { default as CustomDatePicker } from './CustomDatePicker';
 export { default as CustomProductSelector } from './CustomProductSelector';
 export { default as ActionMenu } from './ActionMenu';
 export { default as CardLayout } from './Layouts/CardLayout';
+export { default as QuantityInput } from './QuantityInput';
