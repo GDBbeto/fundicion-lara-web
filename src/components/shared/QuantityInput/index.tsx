@@ -73,13 +73,6 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
             transition: 'width 0.2s ease',
           },
         }}
-        sx={{
-          '& .MuiInput-root': {
-            '&:before, &:after': {
-              display: 'none',
-            },
-          },
-        }}
       />
       <IconButton
         size="small"

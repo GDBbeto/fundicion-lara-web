@@ -29,7 +29,7 @@ import {
   CAT_DELIVERY_STATUS,
 } from 'commons/catalogs';
 
-import SubtotalBadge from './SubtotalBadge';
+import TotalBadge from './TotalBadge';
 import AddToSalesCheckbox from './AddToSalesCheckbox';
 
 import schema from './schema';
@@ -77,49 +77,43 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
   const addTransaction = watch('addTransaction');
 
   // Referencias para controlar cuándo actualizar el estado de pago
-  const previousSubtotal = useRef<number>(0);
+  const previousTotal = useRef<number>(0);
 
-  const subtotal = useMemo(() => {
+  const total = useMemo(() => {
     if (!selectedProduct || !itemCount) return 0;
     const productTotal = (selectedProduct.purchasePrice || 0) * itemCount;
     return productTotal + extraAmount;
   }, [selectedProduct, itemCount, extraAmount]);
 
   useEffect(() => {
-    if (amountPaid === null || !subtotal || subtotal <= 0) {
+    if (amountPaid === null || !total || total <= 0) {
       setValue('paymentStatus', null);
       return;
     }
 
     const getPaymentStatus = () => {
       if (amountPaid === 0) return PaymentStatus.PENDING;
-      if (amountPaid < subtotal) return PaymentStatus.INCOMPLETE;
+      if (amountPaid < total) return PaymentStatus.INCOMPLETE;
       return PaymentStatus.PAID;
     };
 
     setValue('paymentStatus', getPaymentStatus());
-  }, [amountPaid, subtotal, setValue]);
+  }, [amountPaid, total, setValue]);
 
-  // Resetear estado de pago a null cuando cambia el subtotal
-  // Solo si el estado es PAID y ahora amountPaid es menor al subtotal
+  // Resetear estado de pago a null cuando cambia el total
+  // Solo si el estado es PAID y ahora amountPaid es menor al total
   useEffect(() => {
-    if (
-      previousSubtotal.current !== subtotal &&
-      previousSubtotal.current !== 0
-    ) {
-      // Solo resetear si el estado es PAID y el monto ya no cubre el subtotal
-      if (
-        paymentStatus === PaymentStatus.PAID &&
-        (amountPaid || 0) < subtotal
-      ) {
+    if (previousTotal.current !== total && previousTotal.current !== 0) {
+      // Solo resetear si el estado es PAID y el monto ya no cubre el total
+      if (paymentStatus === PaymentStatus.PAID && (amountPaid || 0) < total) {
         setValue('paymentStatus', null, {
           shouldValidate: true,
           shouldDirty: true,
         });
       }
     }
-    previousSubtotal.current = subtotal;
-  }, [subtotal, setValue, paymentStatus, amountPaid]);
+    previousTotal.current = total;
+  }, [total, setValue, paymentStatus, amountPaid]);
 
   // Desactivar addTransaction si no se cumplen las condiciones
   useEffect(() => {
@@ -271,12 +265,12 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
               💳 Pago
             </Typography>
 
-            {/* SUBTOTAL CALCULADO */}
-            <SubtotalBadge
+            {/* TOTAL CALCULADO */}
+            <TotalBadge
               selectedProduct={selectedProduct}
               itemCount={itemCount}
               extraAmount={extraAmount}
-              subtotal={subtotal}
+              total={total}
             />
 
             <Grid container spacing={2}>
