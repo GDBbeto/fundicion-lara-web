@@ -3,18 +3,34 @@ import { Box, Grid, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { useDebounce } from 'use-debounce';
 
-import { CustomDatePicker, SearchInput } from 'components/shared';
+import {
+  CustomDatePicker,
+  SearchInput,
+  CustomSpinner,
+} from 'components/shared';
 
-import { useDevice, useValidatedDateRange } from 'hooks';
+import {
+  useDevice,
+  useValidatedDateRange,
+  useSnackbar,
+  useErrorHandler,
+} from 'hooks';
 
 import { HttpStatusCode } from 'commons/global';
-import useOrderTransactions from 'views/OrderManagement/hooks/useOrderTransactios';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+import {
+  useOrderTransactions,
+  useSaveOrderTransaction,
+} from 'views/OrderManagement/hooks';
 import OrderTransactionFormModal from '../OrderTransactionFormModal';
 
 import type { OrderTransactionRequest } from 'types/api';
 
 const OrderTransactionToolbar = () => {
   const { isSm } = useDevice();
+  const { showSnackbar } = useSnackbar();
+  const { showError } = useErrorHandler();
+
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const [openModal, setOpenModal] = useState(false);
@@ -24,11 +40,14 @@ const OrderTransactionToolbar = () => {
   const {
     error,
     handleSearch,
+    handleRefresh,
     startDate: ctxStartDate,
     endDate: ctxEndDate,
     setStartDate: setCtxStartDate,
     setEndDate: setCtxEndDate,
   } = useOrderTransactions();
+
+  const { mutate: saveOrderTransaction, isPending } = useSaveOrderTransaction();
 
   const {
     startDate,
@@ -51,27 +70,26 @@ const OrderTransactionToolbar = () => {
   }, [debouncedSearch, handleSearch]);
 
   const handleOpenModal = () => {
-    console.log('Abriendo modal para nuevo pedido');
     setSelectedOrderTransaction(null);
     setOpenModal(true);
   };
 
   const handleCloseModal = () => {
-    console.log('Cerrando modal');
     setOpenModal(false);
     setSelectedOrderTransaction(null);
   };
 
   const handleSubmit = (data: OrderTransactionRequest) => {
-    console.log('===== DATOS DEL FORMULARIO =====');
-    console.log('Datos recibidos:', data);
-    console.log(
-      'Acción:',
-      selectedOrderTransaction ? 'ACTUALIZAR pedido' : 'CREAR nuevo pedido',
-    );
-    console.log('================================');
-    // TODO: Aquí se implementará la lógica de guardado con los servicios
-    handleCloseModal();
+    saveOrderTransaction(data, {
+      onSuccess: () => {
+        handleCloseModal();
+        handleRefresh();
+        showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
+      },
+      onError: (errorSave) => {
+        showError(errorSave, ERROR_MESSAGES.CREATE);
+      },
+    });
   };
 
   return (
@@ -135,6 +153,8 @@ const OrderTransactionToolbar = () => {
         handleClose={handleCloseModal}
         onSubmit={handleSubmit}
       />
+
+      {isPending && <CustomSpinner open />}
     </Box>
   );
 };

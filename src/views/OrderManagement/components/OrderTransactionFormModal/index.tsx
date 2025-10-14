@@ -4,13 +4,13 @@ import { Button } from '@mui/material';
 
 import CustomModal from 'components/shared/CustomModal';
 
-import type { OrderTransactionRequest } from 'types/api';
+import type { OrderTransaction, OrderTransactionRequest } from 'types/api';
 
 import OrderTransactionForm from './OrderTransactionForm';
 
 interface Props {
   open: boolean;
-  orderTransaction?: OrderTransactionRequest | null;
+  orderTransaction?: OrderTransactionRequest | OrderTransaction | null;
   handleClose: () => void;
   onSubmit: (data: OrderTransactionRequest) => void;
 }

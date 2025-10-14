@@ -75,7 +75,7 @@ const AddToSalesCheckbox: React.FC<AddToSalesCheckboxProps> = ({
 
         <Box flex={1}>
           <Controller
-            name="addTransaction"
+            name="registerInSales"
             control={control}
             render={({ field }) => (
               <FormControlLabel

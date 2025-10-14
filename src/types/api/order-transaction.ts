@@ -21,7 +21,7 @@ export enum DeliveryStatus {
 }
 
 export interface OrderTransaction {
-  orderTransactionId: number | null;
+  orderTransactionId: number;
   extraAmount: number;
   description: string;
   productId: number;
@@ -38,11 +38,11 @@ export interface OrderTransaction {
   sellingPrice: number;
   profit: number;
   operationDate: string;
-  addTransaction: boolean;
+  registerInSales: boolean;
 }
 
 export interface OrderTransactionRequest {
-  orderTransactionId: number | null;
+  orderTransactionId: number;
   extraAmount: number;
   description: string;
   productId: number;
@@ -54,5 +54,5 @@ export interface OrderTransactionRequest {
   paymentStatus: PaymentStatus | null;
   deliveryStatus: DeliveryStatus | null;
   operationDate: string;
-  addTransaction: boolean;
+  registerInSales: boolean;
 }

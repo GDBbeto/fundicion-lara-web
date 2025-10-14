@@ -2,52 +2,48 @@ import React from 'react';
 import { Paper, Stack, Box, Typography } from '@mui/material';
 import { Description } from '@mui/icons-material';
 
-import { colors } from 'commons/colors';
-
 interface DescriptionSectionProps {
-  description: string;
+  description?: string;
 }
 
 const DescriptionSection = ({ description }: DescriptionSectionProps) => (
   <Paper
     elevation={0}
     sx={{
-      p: { xs: 1.5, sm: 1.5 },
-      border: `1px solid ${colors.lightBlue}30`,
+      p: 2,
+      border: '1px solid #e0e0e0',
       borderRadius: 2,
+      backgroundColor: description ? '#fafafa' : '#f5f5f5',
     }}
   >
-    <Stack direction="row" spacing={1} alignItems="flex-start">
+    <Stack direction="row" spacing={1.5} alignItems="flex-start">
       <Description
         sx={{
-          fontSize: { xs: 14, sm: 16 },
-          color: colors.darkBlue,
-          mt: 0.2,
+          fontSize: 20,
+          color: description ? 'primary.main' : 'text.disabled',
+          mt: 0.3,
         }}
       />
       <Box flex={1}>
         <Typography
-          variant="caption"
-          fontWeight={700}
+          variant="subtitle2"
+          fontWeight={600}
           sx={{
             mb: 0.5,
-            color: colors.darkBlue,
-            display: 'block',
-            fontSize: { xs: '0.7rem', sm: '0.75rem' },
+            color: description ? 'primary.main' : 'text.disabled',
           }}
         >
-          Descripción
+          Notas del pedido
         </Typography>
         <Typography
           variant="body2"
-          color="text.secondary"
+          color={description ? 'text.secondary' : 'text.disabled'}
           sx={{
-            lineHeight: 1.4,
-            fontStyle: 'italic',
-            fontSize: { xs: '0.8rem', sm: '0.85rem' },
+            lineHeight: 1.6,
+            fontStyle: description ? 'normal' : 'italic',
           }}
         >
-          {description}
+          {description || 'Sin notas adicionales'}
         </Typography>
       </Box>
     </Stack>

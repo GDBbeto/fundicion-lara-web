@@ -1,45 +1,46 @@
 import React from 'react';
 import { Box, Stack, Typography } from '@mui/material';
 
-import { colors } from 'commons/colors';
-
 interface InfoItemProps {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
   label: string;
   value: React.ReactNode;
   valueColor?: string;
 }
 
 const InfoItem = ({ icon, label, value, valueColor }: InfoItemProps) => (
-  <Stack direction="row" spacing={1.5} alignItems="flex-start">
-    <Box
+  <Stack direction="row" spacing={1} alignItems="center">
+    {icon && (
+      <Box
+        sx={{
+          color: 'text.secondary',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {icon}
+      </Box>
+    )}
+    <Typography
+      variant="body2"
       sx={{
-        color: colors.darkBlue,
-        mt: 0.3,
-        minWidth: 20,
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'baseline',
+        gap: 0.5,
+        flexWrap: 'wrap',
       }}
     >
-      {icon}
-    </Box>
-    <Box flex={1}>
-      <Typography
-        variant="caption"
-        color="text.secondary"
-        sx={{ display: 'block', mb: 0.3, fontWeight: 500 }}
-      >
-        {label}
-      </Typography>
-      <Typography
-        variant="body2"
-        fontWeight={600}
-        sx={{ color: valueColor || colors.darkText }}
+      <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>
+        {label}:
+      </Box>
+      <Box
+        component="span"
+        sx={{ color: valueColor || 'text.primary', fontWeight: 600 }}
       >
         {value}
-      </Typography>
-    </Box>
+      </Box>
+    </Typography>
   </Stack>
 );
 

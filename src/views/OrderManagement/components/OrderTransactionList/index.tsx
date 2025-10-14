@@ -1,11 +1,21 @@
 import React, { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
-import { CustomTable } from 'components/shared';
+import {
+  CustomTable,
+  CustomSpinner,
+  DeleteConfirmationModal,
+} from 'components/shared';
 
-import useOrderTransactions from 'views/OrderManagement/hooks/useOrderTransactios';
-import type { OrderTransaction } from 'types/api';
-import { useDevice } from 'hooks';
+import {
+  useOrderTransactions,
+  useUpdateOrderTransaction,
+  useDeleteOrderTransaction,
+} from 'views/OrderManagement/hooks';
+import type { OrderTransaction, OrderTransactionRequest } from 'types/api';
+import { useDevice, useSnackbar, useErrorHandler } from 'hooks';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 import OrderTransactionDetailModal from '../OrderTransactionDetailModal';
+import OrderTransactionFormModal from '../OrderTransactionFormModal';
 import OrderTransactionListMobile from '../OrderTransactionListMobile';
 import { createColumns } from './Columns';
 
@@ -22,19 +32,35 @@ const OrderTransactionList = () => {
     handleSort,
   } = useOrderTransactions();
   const { isSmallScreen } = useDevice();
+  const { showSnackbar } = useSnackbar();
+  const { showError } = useErrorHandler();
+
+  const { mutate: updateTransaction, isPending: isPendingUpdate } =
+    useUpdateOrderTransaction();
+  const { mutate: deleteTransaction, isPending: isPendingDelete } =
+    useDeleteOrderTransaction();
 
   const [selectedTransaction, setSelectedTransaction] =
     useState<OrderTransaction | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const isPending = isPendingUpdate || isPendingDelete;
+
+  const processSuccess = (message: string) => {
+    handleRefresh();
+    showSnackbar(message, 'success');
+  };
 
   const handleOpenFormModal = (transaction: OrderTransaction) => {
-    // TODO: Implement form modal
-    console.log('Edit transaction:', transaction);
+    setSelectedTransaction(transaction);
+    setShowFormModal(true);
   };
 
   const handleOpenDeleteModal = (transaction: OrderTransaction) => {
-    // TODO: Implement delete modal
-    console.log('Delete transaction:', transaction);
+    setSelectedTransaction(transaction);
+    setShowDeleteModal(true);
   };
 
   const handleOpenViewModal = (transaction: OrderTransaction) => {
@@ -42,9 +68,45 @@ const OrderTransactionList = () => {
     setShowDetailModal(true);
   };
 
-  const handleCloseModal = () => {
+  const handleCloseDetailModal = () => {
     setShowDetailModal(false);
     setSelectedTransaction(null);
+  };
+
+  const handleCloseFormModal = () => {
+    setShowFormModal(false);
+    setSelectedTransaction(null);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setSelectedTransaction(null);
+  };
+
+  const handleSubmitUpdate = (data: OrderTransactionRequest) => {
+    updateTransaction(data, {
+      onSuccess: () => {
+        handleCloseFormModal();
+        processSuccess(SUCCESS_MESSAGES.UPDATED);
+      },
+      onError: (error) => {
+        showError(error, ERROR_MESSAGES.UPDATE);
+      },
+    });
+  };
+
+  const handleConfirmDelete = () => {
+    if (!selectedTransaction) return;
+
+    deleteTransaction(selectedTransaction.orderTransactionId, {
+      onSuccess: () => {
+        handleCloseDeleteModal();
+        processSuccess(SUCCESS_MESSAGES.DELETED);
+      },
+      onError: (error) => {
+        showError(error, ERROR_MESSAGES.DELETE);
+      },
+    });
   };
 
   const columns = useMemo(
@@ -85,9 +147,26 @@ const OrderTransactionList = () => {
         <OrderTransactionDetailModal
           open={showDetailModal}
           transaction={selectedTransaction}
-          onClose={handleCloseModal}
+          onClose={handleCloseDetailModal}
         />
       )}
+
+      <OrderTransactionFormModal
+        open={showFormModal}
+        orderTransaction={selectedTransaction}
+        handleClose={handleCloseFormModal}
+        onSubmit={handleSubmitUpdate}
+      />
+
+      <DeleteConfirmationModal
+        open={showDeleteModal}
+        handleClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        title="Eliminar pedido"
+        confirmMessage={`¿Estás seguro de que deseas eliminar el pedido #${selectedTransaction?.orderTransactionId}?`}
+      />
+
+      {isPending && <CustomSpinner open />}
     </Box>
   );
 };

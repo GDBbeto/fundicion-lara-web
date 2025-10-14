@@ -1,4 +1,8 @@
-import { OrderTransaction, ApiResponse } from 'types/api';
+import {
+  OrderTransaction,
+  ApiResponse,
+  OrderTransactionRequest,
+} from 'types/api';
 import api from './api';
 import { ORDER_TRANSACTION_API_BASE } from './apiRoutes';
 
@@ -32,7 +36,7 @@ export const getOrderTransactionById = async (
 };
 
 export const createOrderTransaction = async (
-  orderTransaction: OrderTransaction,
+  orderTransaction: OrderTransactionRequest,
 ): Promise<ApiResponse<OrderTransaction>> => {
   const response = await api.post<ApiResponse<OrderTransaction>>(
     ORDER_TRANSACTION_API_BASE,
@@ -43,7 +47,7 @@ export const createOrderTransaction = async (
 
 export const updateOrderTransaction = async (
   id: number,
-  orderTransaction: OrderTransaction,
+  orderTransaction: OrderTransactionRequest,
 ): Promise<ApiResponse<OrderTransaction>> => {
   const response = await api.put<ApiResponse<OrderTransaction>>(
     `${ORDER_TRANSACTION_API_BASE}/${id}`,

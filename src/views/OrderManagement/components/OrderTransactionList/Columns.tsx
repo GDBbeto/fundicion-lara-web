@@ -57,6 +57,7 @@ export const baseColumns: Column<OrderTransaction>[] = [
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           color: 'text.secondary',
+          textTransform: 'uppercase',
         }}
         title={row.client}
       >
@@ -77,6 +78,25 @@ export const baseColumns: Column<OrderTransaction>[] = [
         variant="outlined"
         sx={{ fontWeight: 600 }}
       />
+    ),
+  },
+  {
+    label: 'Total',
+    apiField: 'amountPaid',
+    align: 'right',
+    sort: true,
+    render: (row) => (
+      <Box sx={{ fontWeight: 600 }}>
+        <NumericFormat
+          id="total"
+          value={row.itemCount * row.sellingPrice + row.extraAmount || 0}
+          displayType="text"
+          thousandSeparator=","
+          prefix="$"
+          decimalScale={2}
+          fixedDecimalScale
+        />
+      </Box>
     ),
   },
   {

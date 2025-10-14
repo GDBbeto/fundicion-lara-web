@@ -23,7 +23,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 900,
     profit: 400,
     operationDate: '2025-09-10',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 2,
@@ -42,7 +42,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 50,
     profit: 100,
     operationDate: '2025-09-12',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 3,
@@ -61,7 +61,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 500,
     profit: 300,
     operationDate: '2025-09-15',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 4,
@@ -80,7 +80,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 250,
     profit: 0,
     operationDate: '2025-09-16',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 5,
@@ -99,7 +99,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 400,
     profit: 100,
     operationDate: '2025-09-20',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 6,
@@ -118,7 +118,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 500,
     profit: 400,
     operationDate: '2025-09-21',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 7,
@@ -137,7 +137,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 100,
     profit: 30,
     operationDate: '2025-09-22',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 8,
@@ -156,7 +156,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 20,
     profit: 40,
     operationDate: '2025-09-22',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 9,
@@ -175,7 +175,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 200,
     profit: 80,
     operationDate: '2025-09-23',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 10,
@@ -194,7 +194,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 200,
     profit: 50,
     operationDate: '2025-09-25',
-    addTransaction: true,
+    registerInSales: true,
   },
   // Puedes copiar y adaptar este formato para agregar más registros (11 a 20)
 
@@ -215,7 +215,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 100,
     profit: 20,
     operationDate: '2025-09-26',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 12,
@@ -234,7 +234,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 150,
     profit: 150,
     operationDate: '2025-09-26',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 13,
@@ -253,7 +253,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 400,
     profit: 150,
     operationDate: '2025-09-27',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 14,
@@ -272,7 +272,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 40,
     profit: 0,
     operationDate: '2025-09-27',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 15,
@@ -291,7 +291,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 500,
     profit: 100,
     operationDate: '2025-09-28',
-    addTransaction: true,
+    registerInSales: true,
   },
 
   // Agrega 5 más si los necesitas
@@ -312,7 +312,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 180,
     profit: 80,
     operationDate: '2025-09-28',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 17,
@@ -331,7 +331,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 30,
     profit: 20,
     operationDate: '2025-09-28',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 18,
@@ -350,7 +350,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 400,
     profit: 100,
     operationDate: '2025-09-29',
-    addTransaction: false,
+    registerInSales: false,
   },
   {
     orderTransactionId: 19,
@@ -369,7 +369,7 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 100,
     profit: 40,
     operationDate: '2025-09-29',
-    addTransaction: true,
+    registerInSales: true,
   },
   {
     orderTransactionId: 20,
@@ -388,6 +388,6 @@ export const MOCK_ORDER_TRANSACTIONS: OrderTransaction[] = [
     sellingPrice: 80,
     profit: 40,
     operationDate: '2025-09-30',
-    addTransaction: false,
+    registerInSales: false,
   },
 ];

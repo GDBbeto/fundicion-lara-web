@@ -41,7 +41,7 @@ const schema = yup.object().shape({
 
   operationDate: yup.string().required(msg.required),
 
-  addTransaction: yup.boolean().default(false),
+  registerInSales: yup.boolean().default(false),
 
   description: yup.string().notRequired(),
   orderTransactionId: yup.number().nullable().notRequired(),

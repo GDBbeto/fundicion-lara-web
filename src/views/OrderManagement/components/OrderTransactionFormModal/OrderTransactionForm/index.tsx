@@ -18,6 +18,7 @@ import {
 
 import {
   DeliveryStatus,
+  OrderTransaction,
   OrderTransactionRequest,
   Product,
   PaymentStatus,
@@ -34,17 +35,19 @@ import AddToSalesCheckbox from './AddToSalesCheckbox';
 
 import schema from './schema';
 import * as styles from './styles';
+import { getProductByOrderTransaction, getInitialValues } from './helpers';
 
 interface Props {
   id?: string;
-  orderTransaction?: OrderTransactionRequest | null;
+  orderTransaction?: OrderTransactionRequest | OrderTransaction | null;
   onSubmit: (data: OrderTransactionRequest) => void;
 }
 
 const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
-  // Guardar el producto completo
   const [selectedProduct, setSelectedProduct] = React.useState<Product | null>(
-    null,
+    getProductByOrderTransaction(
+      orderTransaction ? (orderTransaction as OrderTransaction) : null,
+    ),
   );
 
   const {
@@ -55,17 +58,7 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
     formState: { errors },
   } = useForm<OrderTransactionRequest>({
     resolver: yupResolver(schema) as any,
-    defaultValues: orderTransaction ?? {
-      orderTransactionId: null,
-      client: '',
-      invoiceNumber: '',
-      methodPayment: null,
-      paymentStatus: null,
-      deliveryStatus: DeliveryStatus.PENDING,
-      description: '',
-      operationDate: new Date() as any,
-      addTransaction: false,
-    },
+    defaultValues: orderTransaction ?? getInitialValues(),
   });
 
   // Observar cambios en cantidad, monto extra y monto pagado
@@ -74,14 +67,14 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
   const amountPaid = watch('amountPaid');
   const paymentStatus = watch('paymentStatus');
   const deliveryStatus = watch('deliveryStatus');
-  const addTransaction = watch('addTransaction');
+  const registerInSales = watch('registerInSales');
 
   // Referencias para controlar cuándo actualizar el estado de pago
   const previousTotal = useRef<number>(0);
 
   const total = useMemo(() => {
     if (!selectedProduct || !itemCount) return 0;
-    const productTotal = (selectedProduct.purchasePrice || 0) * itemCount;
+    const productTotal = (selectedProduct.sellingPrice || 0) * itemCount;
     return productTotal + extraAmount;
   }, [selectedProduct, itemCount, extraAmount]);
 
@@ -115,16 +108,16 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
     previousTotal.current = total;
   }, [total, setValue, paymentStatus, amountPaid]);
 
-  // Desactivar addTransaction si no se cumplen las condiciones
+  // Desactivar registerInSales si no se cumplen las condiciones
   useEffect(() => {
     const canAddToSales =
       paymentStatus === PaymentStatus.PAID &&
       deliveryStatus === DeliveryStatus.DELIVERED;
 
-    if (!canAddToSales && addTransaction) {
-      setValue('addTransaction', false);
+    if (!canAddToSales && registerInSales) {
+      setValue('registerInSales', false);
     }
-  }, [paymentStatus, deliveryStatus, addTransaction, setValue]);
+  }, [paymentStatus, deliveryStatus, registerInSales, setValue]);
 
   return (
     <FormLayout id={id} onSubmit={handleSubmit(onSubmit)}>
