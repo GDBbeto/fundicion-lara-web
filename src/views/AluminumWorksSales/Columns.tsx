@@ -1,13 +1,17 @@
+// Columns.tsx
 import React from 'react';
-
 import { Box, Chip } from '@mui/material';
-
 import { NumericFormat } from 'react-number-format';
-
 import type { Transaction } from 'types/api';
 import type { Column } from 'types/column';
 
-export const columns: Column<Transaction>[] = [
+interface ColumnsProps {
+  onOrderClick?: (orderId: number) => void;
+}
+
+export const getColumns = ({
+  onOrderClick,
+}: ColumnsProps): Column<Transaction>[] => [
   {
     label: 'Fecha',
     apiField: 'operationDate',
@@ -22,7 +26,6 @@ export const columns: Column<Transaction>[] = [
     render: (row) => (
       <Box sx={{ fontWeight: 600 }}>
         <NumericFormat
-          id="amount"
           value={row.amount ?? 0}
           displayType="text"
           thousandSeparator=","
@@ -72,6 +75,8 @@ export const columns: Column<Transaction>[] = [
           size="small"
           color="primary"
           variant="outlined"
+          sx={{ cursor: 'pointer', fontWeight: 500 }}
+          onClick={() => onOrderClick?.(row.orderTransactionId || 0)}
         />
       ) : (
         <Box
@@ -86,7 +91,7 @@ export const columns: Column<Transaction>[] = [
       ),
   },
   {
-    label: 'Descripci\u00F3n',
+    label: 'Descripción',
     apiField: 'description',
     render: (row) => (
       <Box
@@ -97,9 +102,9 @@ export const columns: Column<Transaction>[] = [
           whiteSpace: 'nowrap',
           fontStyle: row.description ? undefined : 'italic',
         }}
-        title={row.description || 'Sin descripci\u00F3n'}
+        title={row.description || 'Sin descripción'}
       >
-        {row.description || 'Sin descripci\u00F3n'}
+        {row.description || 'Sin descripción'}
       </Box>
     ),
   },

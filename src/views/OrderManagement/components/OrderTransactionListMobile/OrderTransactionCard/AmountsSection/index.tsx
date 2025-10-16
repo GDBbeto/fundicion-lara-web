@@ -19,16 +19,21 @@ const AmountsSection = ({ transaction }: AmountsSectionProps) => (
     }}
   >
     <Grid container spacing={1}>
-      <Grid size={{ xs: 6 }}>
+      <Grid size={{ xs: 12 }}>
         <Typography
           variant="caption"
           color="text.secondary"
-          sx={{ display: 'block', fontSize: '0.65rem', mb: 0.3 }}
+          sx={{
+            display: 'inline-block',
+            fontSize: '0.7rem',
+            fontWeight: 600,
+            mb: 0.3,
+          }}
         >
-          P. Compra
+          Cargo adicional:
         </Typography>
         <NumericFormat
-          value={transaction.purchasePrice || 0}
+          value={transaction.extraAmount}
           displayType="text"
           thousandSeparator=","
           prefix="$"
@@ -36,63 +41,13 @@ const AmountsSection = ({ transaction }: AmountsSectionProps) => (
           fixedDecimalScale
           renderText={(value) => (
             <Typography
-              variant="body2"
+              variant="body1"
               fontWeight={600}
-              sx={{ fontSize: '0.75rem', color: colors.darkText }}
-            >
-              {value}
-            </Typography>
-          )}
-        />
-      </Grid>
-      <Grid size={{ xs: 6 }}>
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: 'block', fontSize: '0.65rem', mb: 0.3 }}
-        >
-          P. Venta
-        </Typography>
-        <NumericFormat
-          value={transaction.sellingPrice || 0}
-          displayType="text"
-          thousandSeparator=","
-          prefix="$"
-          decimalScale={2}
-          fixedDecimalScale
-          renderText={(value) => (
-            <Typography
-              variant="body2"
-              fontWeight={600}
-              sx={{ fontSize: '0.75rem', color: colors.darkText }}
-            >
-              {value}
-            </Typography>
-          )}
-        />
-      </Grid>
-      <Grid size={{ xs: 6 }}>
-        <Typography
-          variant="caption"
-          color="text.secondary"
-          sx={{ display: 'block', fontSize: '0.65rem', mb: 0.3 }}
-        >
-          Ganancia
-        </Typography>
-        <NumericFormat
-          value={transaction.profit || 0}
-          displayType="text"
-          thousandSeparator=","
-          prefix="$"
-          decimalScale={2}
-          fixedDecimalScale
-          renderText={(value) => (
-            <Typography
-              variant="body2"
-              fontWeight={700}
               sx={{
-                fontSize: '0.75rem',
-                color: transaction.profit > 0 ? colors.green : colors.red,
+                pl: 2,
+                fontSize: '1rem',
+                color: colors.darkText,
+                display: 'inline-block',
               }}
             >
               {value}
@@ -100,34 +55,6 @@ const AmountsSection = ({ transaction }: AmountsSectionProps) => (
           )}
         />
       </Grid>
-      {transaction.extraAmount > 0 && (
-        <Grid size={{ xs: 6 }}>
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ display: 'block', fontSize: '0.65rem', mb: 0.3 }}
-          >
-            Monto Extra
-          </Typography>
-          <NumericFormat
-            value={transaction.extraAmount}
-            displayType="text"
-            thousandSeparator=","
-            prefix="$"
-            decimalScale={2}
-            fixedDecimalScale
-            renderText={(value) => (
-              <Typography
-                variant="body2"
-                fontWeight={600}
-                sx={{ fontSize: '0.75rem', color: colors.darkText }}
-              >
-                {value}
-              </Typography>
-            )}
-          />
-        </Grid>
-      )}
     </Grid>
   </Box>
 );

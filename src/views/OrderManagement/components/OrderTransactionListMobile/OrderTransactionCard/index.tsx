@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider } from '@mui/material';
+import { Box, Divider } from '@mui/material';
 
 import type { OrderTransaction } from 'types/api';
 import { CardLayout } from 'components/shared';
@@ -17,13 +17,31 @@ interface OrderTransactionCardProps {
   transaction: OrderTransaction;
   index: number;
   actions: ActionItem[];
+  onlyQuery?: boolean;
 }
 
 const OrderTransactionCard = ({
   transaction,
   index,
   actions,
+  onlyQuery,
 }: OrderTransactionCardProps) => {
+  if (onlyQuery) {
+    return (
+      <Box>
+        <TransactionHeader transaction={transaction} actions={[]} />
+        <ProductSection transaction={transaction} />
+        <StatusSection transaction={transaction} />
+        <Divider sx={{ mb: 1.5, opacity: 0.3 }} />
+        <BasicInfoSection transaction={transaction} />
+        <AmountsSection transaction={transaction} />
+        <AmountPaidSection transaction={transaction} />
+        <DescriptionSection
+          description={transaction.description || 'Sin notas'}
+        />
+      </Box>
+    );
+  }
   return (
     <CardLayout fadeIn={true} fadeDelay={index * 100} padding={2}>
       <TransactionHeader transaction={transaction} actions={actions} />
@@ -33,9 +51,9 @@ const OrderTransactionCard = ({
       <BasicInfoSection transaction={transaction} />
       <AmountsSection transaction={transaction} />
       <AmountPaidSection transaction={transaction} />
-      {transaction.description && (
-        <DescriptionSection description={transaction.description} />
-      )}
+      <DescriptionSection
+        description={transaction.description || 'Sin notas'}
+      />
     </CardLayout>
   );
 };

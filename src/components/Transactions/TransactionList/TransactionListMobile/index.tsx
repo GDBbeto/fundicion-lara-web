@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Box, Typography, Divider, Stack, Skeleton } from '@mui/material';
+import { Box, Typography, Divider, Stack, Skeleton, Chip } from '@mui/material';
 import {
   Edit,
   Delete,
@@ -17,6 +17,7 @@ import { CustomPagination, ActionMenu, CardLayout } from 'components/shared';
 import type { ActionItem } from 'components/shared/ActionMenu';
 import { colors } from 'commons/colors';
 import { formatDateToDisplay } from 'utils/dateUtils';
+import OrderTransactionDetailModal from 'views/AluminumWorksSales/components/OrderTransactionDetailModal';
 
 interface Props {
   handleOpenFormModal: (transaction: Transaction) => void;
@@ -35,6 +36,10 @@ const TransactionListMobile = ({
     handlePageChange,
     handleRowsPerPageChange,
   } = useTransactions();
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedOrderId, setSelectedOrderId] = React.useState<number | null>(
+    null,
+  );
 
   const handleEditTransaction = useCallback(
     (transaction: Transaction) => {
@@ -49,6 +54,16 @@ const TransactionListMobile = ({
     },
     [handleOpenDeleteModal],
   );
+
+  const handleOrderClick = (orderId: number) => {
+    setSelectedOrderId(orderId);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedOrderId(null);
+  };
 
   const getTransactionActions = useCallback(
     (transaction: Transaction): ActionItem[] => [
@@ -254,18 +269,28 @@ const TransactionListMobile = ({
                     fontSize="small"
                     sx={{ color: colors.darkBlue, minWidth: 16 }}
                   />
-                  <Typography
-                    variant="body2"
-                    color="text.primary"
-                    fontWeight={500}
-                  >
-                    Pedido:{' '}
-                    <span style={{ color: colors.darkBlue }}>
-                      {transaction.orderTransactionId
-                        ? `#${transaction.orderTransactionId}`
-                        : 'Sin # pedido'}
-                    </span>
-                  </Typography>
+                  {transaction.orderTransactionId ? (
+                    <Chip
+                      label={`pedido #${transaction.orderTransactionId}`}
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      sx={{ cursor: 'pointer', fontWeight: 500 }}
+                      onClick={() =>
+                        handleOrderClick(transaction.orderTransactionId || 0)
+                      }
+                    />
+                  ) : (
+                    <Box
+                      sx={{
+                        color: 'text.secondary',
+                        fontStyle: 'italic',
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      Sin # pedido
+                    </Box>
+                  )}
                 </Stack>
               ) : null}
 
@@ -300,6 +325,15 @@ const TransactionListMobile = ({
         handlePageChange={handlePageChange}
         handleRowsPerPageChange={handleRowsPerPageChange}
       />
+
+      {selectedOrderId && (
+        <OrderTransactionDetailModal
+          open={openModal}
+          transactionId={selectedOrderId}
+          onClose={handleCloseModal}
+          isMobile
+        />
+      )}
     </>
   );
 };

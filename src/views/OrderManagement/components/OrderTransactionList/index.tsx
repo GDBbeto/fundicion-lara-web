@@ -84,15 +84,18 @@ const OrderTransactionList = () => {
   };
 
   const handleSubmitUpdate = (data: OrderTransactionRequest) => {
-    updateTransaction(data, {
-      onSuccess: () => {
-        handleCloseFormModal();
-        processSuccess(SUCCESS_MESSAGES.UPDATED);
+    updateTransaction(
+      { ...data, registerInSales: data.registerInSales || false },
+      {
+        onSuccess: () => {
+          handleCloseFormModal();
+          processSuccess(SUCCESS_MESSAGES.UPDATED);
+        },
+        onError: (error) => {
+          showError(error, ERROR_MESSAGES.UPDATE);
+        },
       },
-      onError: (error) => {
-        showError(error, ERROR_MESSAGES.UPDATE);
-      },
-    });
+    );
   };
 
   const handleConfirmDelete = () => {

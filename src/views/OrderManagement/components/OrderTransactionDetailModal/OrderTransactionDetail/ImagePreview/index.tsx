@@ -36,7 +36,7 @@ const ImagePreview: React.FC<ImagePreviewProps> = ({
       {hasImage && !imageError && (
         <CardMedia
           component="img"
-          image={imageUrl!}
+          image={imageUrl || undefined}
           alt={name}
           onError={() => setImageError(true)}
           sx={{

@@ -26,7 +26,7 @@ const DescriptionSection = ({ description }: DescriptionSectionProps) => (
           fontWeight={600}
           sx={{ display: 'block', fontSize: '0.7rem', mb: 0.5 }}
         >
-          Descripción
+          Notas del pedido
         </Typography>
         <Typography
           variant="body2"

@@ -119,6 +119,8 @@ const OrderTransactionForm = ({ id, orderTransaction, onSubmit }: Props) => {
     }
   }, [paymentStatus, deliveryStatus, registerInSales, setValue]);
 
+  console.log({ errors });
+
   return (
     <FormLayout id={id} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={2.5}>

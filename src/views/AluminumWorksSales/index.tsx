@@ -7,14 +7,40 @@ import {
   TransactionTotalCard,
 } from 'components/Transactions';
 
-import { columns } from './Columns';
+import { getColumns } from './Columns';
+import OrderTransactionDetailModal from './components/OrderTransactionDetailModal';
 
 const AluminumWorksSales = () => {
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedOrderId, setSelectedOrderId] = React.useState<number | null>(
+    null,
+  );
+
+  const handleOrderClick = (orderId: number) => {
+    setSelectedOrderId(orderId);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedOrderId(null);
+  };
+
   return (
     <TransactionProvider type="SALE" label="Venta">
       <TransactionTotalCard />
       <TransactionToolbar />
-      <TransactionList columns={columns} />
+      <TransactionList
+        columns={getColumns({ onOrderClick: handleOrderClick })}
+      />
+
+      {selectedOrderId && (
+        <OrderTransactionDetailModal
+          open={openModal}
+          transactionId={selectedOrderId}
+          onClose={handleCloseModal}
+        />
+      )}
     </TransactionProvider>
   );
 };
