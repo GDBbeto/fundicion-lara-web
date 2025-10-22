@@ -1,4 +1,4 @@
-import { DeliveryStatus, MethodPayment, PaymentStatus } from 'types/api';
+import { DeliveryStatus, MethodPayment, PaymentStatus, Role } from 'types/api';
 
 export const CAT_UNITS = [
   { label: 'Piezas', value: 'Pzas' },
@@ -26,4 +26,11 @@ export const CAT_DELIVERY_STATUS = [
   { label: 'Entregado', value: DeliveryStatus.DELIVERED },
   { label: 'Cancelado', value: DeliveryStatus.CANCELLED },
   { label: 'En espera', value: DeliveryStatus.ON_HOLD },
+];
+
+export const CAT_USER_ROLES = [
+  { label: 'Administrador', value: Role.ADMIN },
+  { label: 'Operador', value: Role.OPERATOR },
+  { label: 'Solo consulta', value: Role.VIEWER },
+  { label: 'Pendiente', value: Role.PENDING },
 ];

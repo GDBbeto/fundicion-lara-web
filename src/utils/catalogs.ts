@@ -1,9 +1,10 @@
 import Option from 'types/option';
-import { DeliveryStatus, MethodPayment, PaymentStatus } from 'types/api';
+import { DeliveryStatus, MethodPayment, PaymentStatus, Role } from 'types/api';
 import {
   CAT_DELIVERY_STATUS,
   CAT_METHOD_PAYMENT,
   CAT_PAYMENT_STATUS,
+  CAT_USER_ROLES,
 } from 'commons/catalogs';
 
 export const getPaymentStatusOption = (
@@ -60,4 +61,26 @@ export const getMethodPaymentOption = (
   const methodPayment = CAT_METHOD_PAYMENT.find((cat) => cat.value === method);
 
   return methodPayment || null;
+};
+
+export const getRoleColor = (
+  role: Role,
+): 'success' | 'info' | 'error' | 'default' => {
+  switch (role) {
+    case 'ADMIN':
+      return 'success';
+    case 'OPERATOR':
+      return 'info';
+    case 'VIEWER':
+      return 'default';
+    case 'PENDING':
+      return 'error';
+    default:
+      return 'default';
+  }
+};
+
+export const getRoleLabel = (role: Role): string => {
+  const roleOption = CAT_USER_ROLES.find((cat) => cat.value === role);
+  return roleOption?.label || '';
 };

@@ -3,6 +3,7 @@ export * from './transaction';
 export * from './transaction-summary';
 export * from './invoice';
 export * from './order-transaction';
+export * from './user';
 
 export interface ApiResponse<T> {
   status: string;

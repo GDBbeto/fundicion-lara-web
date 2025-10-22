@@ -11,6 +11,7 @@ import {
   ShoppingCartOutlined as ShoppingCartOutlinedIcon,
   AttachMoneyOutlined as AttachMoneyOutlinedIcon,
   AssignmentOutlined as AssignmentOutlinedIcon,
+  Group as GroupIcon,
 } from '@mui/icons-material';
 
 import { useTheme } from '@mui/material/styles';
@@ -55,6 +56,12 @@ const menuItems = [
     path: '/pedidos',
     text: 'Gestión de Pedidos',
     icon: AssignmentOutlinedIcon,
+  },
+  {
+    id: 'users',
+    path: '/usuarios',
+    text: 'Administrar Usuarios',
+    icon: GroupIcon,
   },
 ];
 
