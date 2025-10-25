@@ -16,6 +16,7 @@ const PurchaseManagement = lazy(() => import('views/PurchaseManagement'));
 const ExpenseManagement = lazy(() => import('views/ExpenseManagement'));
 const OrderManagement = lazy(() => import('views/OrderManagement'));
 const UsersManagemet = lazy(() => import('views/UsersManagemet'));
+const Profile = lazy(() => import('views/Profile'));
 
 const withSuspense = (
   Component: React.LazyExoticComponent<() => JSX.Element>,
@@ -56,6 +57,7 @@ const AppRoutes = () => {
             <Route path="/gastos" element={withSuspense(ExpenseManagement)} />
             <Route path="/pedidos" element={withSuspense(OrderManagement)} />
             <Route path="/usuarios" element={withSuspense(UsersManagemet)} />
+            <Route path="/perfil" element={withSuspense(Profile)} />
 
             <Route path="*" element={<Navigate to="/inicio" replace />} />
           </Route>

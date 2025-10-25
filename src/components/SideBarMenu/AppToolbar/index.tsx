@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { use, useCallback } from 'react';
 import {
   Toolbar,
   Typography,
@@ -13,11 +13,16 @@ import {
   Person as PersonIcon,
 } from '@mui/icons-material';
 
+import { useNavigate } from 'react-router-dom';
+
 import { colors } from 'commons/colors';
 
 import ActionMenu, { ActionItem } from 'components/shared/ActionMenu';
 
 import { useAuth, useDevice } from 'hooks';
+
+import { getRoleLabel } from 'utils/catalogs';
+import { getInitials } from 'utils/utils';
 
 import { AppBar } from '../styles';
 
@@ -32,7 +37,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
   onDrawerOpen,
 }) => {
   const { isSmallScreen } = useDevice();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
   const userActions: ActionItem[] = useCallback(
     () => [
@@ -40,7 +46,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
         id: 'profile',
         label: 'Mi perfil',
         icon: <PersonIcon fontSize="small" />,
-        onClick: () => console.log('Perfil'),
+        onClick: () => navigate('perfil'),
         color: colors.darkBlue,
       },
       {
@@ -118,7 +124,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
                   fontSize: '0.85rem',
                 }}
               >
-                Roberto Aguilar
+                {`${user?.name} ${user?.lastName}`}
               </Typography>
               <Typography
                 variant="caption"
@@ -129,7 +135,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
                   lineHeight: 1,
                 }}
               >
-                Administrador
+                {user ? getRoleLabel(user.role) : ''}
               </Typography>
             </Box>
           )}
@@ -147,7 +153,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
-            RA
+            {user ? getInitials(user) : 'NA'}
           </Avatar>
           <ActionMenu
             actions={userActions}

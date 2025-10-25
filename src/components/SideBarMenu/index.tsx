@@ -79,7 +79,7 @@ const SideBarMenu = () => {
 
   const selectedIndex = useMemo(() => {
     const index = menuItems.findIndex((item) => item.path === pathname);
-    return index >= 0 ? index : 0;
+    return index >= 0 ? index : -1;
   }, [pathname]);
 
   const handleListItemClick = useCallback(
@@ -96,7 +96,6 @@ const SideBarMenu = () => {
       menuItems,
       selectedIndex,
       handleListItemClick,
-      userName: 'Roberto Aguilar',
     }),
     [drawerOpen, selectedIndex, handleListItemClick],
   );

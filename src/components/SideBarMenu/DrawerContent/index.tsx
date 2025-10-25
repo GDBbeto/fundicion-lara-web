@@ -23,7 +23,6 @@ interface Props {
   open: boolean;
   menuItems: MenuItem[];
   selectedIndex: number;
-  userName?: string;
   handleListItemClick: (index: number) => void;
 }
 const DrawerContent = ({

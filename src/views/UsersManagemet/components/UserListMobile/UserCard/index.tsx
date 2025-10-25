@@ -7,18 +7,13 @@ import { CardLayout, ActionMenu } from 'components/shared';
 import type { ActionItem } from 'components/shared/ActionMenu';
 import { colors } from 'commons/colors';
 import { getRoleColor, getRoleLabel } from 'utils/catalogs';
+import { getInitials } from 'utils/utils';
 
 interface UserCardProps {
   user: User;
   index: number;
   actions: ActionItem[];
 }
-
-const getInitials = (user: User) => {
-  const firstInitial = user.name.charAt(0).toUpperCase();
-  const lastInitial = user.lastName.charAt(0).toUpperCase();
-  return `${firstInitial}${lastInitial}`;
-};
 
 const UserCard = ({ user, index, actions }: UserCardProps) => {
   return (
