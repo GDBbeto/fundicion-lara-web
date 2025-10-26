@@ -12,7 +12,12 @@ import {
 } from '@mui/material';
 import { Edit, Save, Cancel, Lock, Person } from '@mui/icons-material';
 
-import { CardLayout, CustomTextField, CustomSpinner } from 'components/shared';
+import {
+  CardLayout,
+  CustomTextField,
+  CustomSpinner,
+  FormLayout,
+} from 'components/shared';
 import { useAuth, useSnackbar, useErrorHandler } from 'hooks';
 import { updateUser } from 'services/userService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
@@ -139,7 +144,7 @@ const Profile = () => {
             </Box>
 
             {/* Form Fields */}
-            <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+            <FormLayout id={'profile-form'} onSubmit={handleSubmit(onSubmit)}>
               <Stack spacing={3}>
                 {/* Name Fields */}
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -270,7 +275,7 @@ const Profile = () => {
                   )}
                 </Box>
               </Stack>
-            </Box>
+            </FormLayout>
           </Stack>
         </CardLayout>
       </Stack>

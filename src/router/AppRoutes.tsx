@@ -6,9 +6,13 @@ import { Box, CircularProgress } from '@mui/material';
 
 import PublicRoute from 'router/PublicRoute';
 import PrivateRoute from 'router/PrivateRoute';
+
 import Layout from 'components/Layout';
+import { AuthLayout } from 'components/shared';
 
 const Login = lazy(() => import('views/Login'));
+const Register = lazy(() => import('views/Register'));
+
 const Home = lazy(() => import('views/Home'));
 const Inventory = lazy(() => import('views/Inventory'));
 const AluminumWorksSales = lazy(() => import('views/AluminumWorksSales'));
@@ -43,7 +47,11 @@ const AppRoutes = () => {
       <Routes>
         {/* Rutas públicas (no autenticado) */}
         <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
+          <Route element={<AuthLayout showImage={true} />}>
+            <Route path="/login" element={withSuspense(Login)} />
+            <Route path="/register" element={withSuspense(Register)} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Route>
         </Route>
 
         {/* Rutas privadas (autenticado) */}

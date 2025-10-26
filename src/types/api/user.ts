@@ -13,3 +13,8 @@ export enum Role {
   PENDING = 'PENDING',
   VIEWER = 'VIEWER',
 }
+
+export interface RegisterRequest extends Omit<User, 'userId' | 'role'> {
+  password: string;
+  confirmPassword: string;
+}

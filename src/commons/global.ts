@@ -12,3 +12,7 @@ export const HttpStatusCode = {
 };
 
 export const MAX_FILE_SIZE = 100 * 1024;
+
+export const SYSTEM_NAME = 'Fundición Lara';
+export const SYSTEM_DESCRIPTION =
+  'Sistema de gestión de ventas de productos artesanales';
