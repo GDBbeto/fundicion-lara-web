@@ -7,6 +7,8 @@ import { useDevice } from 'hooks';
 
 import { SYSTEM_DESCRIPTION, SYSTEM_NAME } from 'commons/global';
 
+import logo from 'assets/images/logo.png';
+
 import * as styles from './styles';
 
 interface AuthLayoutProps {
@@ -27,7 +29,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ showImage = true }) => {
 
           {/* Logo */}
           <Box sx={styles.mobileLogoContainerStyles}>
-            <Box sx={styles.mobileLogoTextStyles}>F</Box>
+            <Box
+              component="img"
+              src={logo}
+              alt={SYSTEM_NAME}
+              sx={styles.mobileLogoImageStyles}
+            />
           </Box>
 
           {/* Nombre del sistema */}
@@ -69,7 +76,12 @@ const AuthLayout: React.FC<AuthLayoutProps> = ({ showImage = true }) => {
             {/* Logo and branding */}
             <Box sx={styles.desktopBrandingContainerStyles}>
               <Box sx={styles.desktopLogoContainerStyles}>
-                <Box sx={styles.desktopLogoTextStyles}>F</Box>
+                <Box
+                  component="img"
+                  src={logo}
+                  alt={SYSTEM_NAME}
+                  sx={styles.desktopLogoImageStyles}
+                />
               </Box>
               <Box sx={styles.desktopSystemNameStyles}>{SYSTEM_NAME}</Box>
               <Box sx={styles.desktopSystemDescriptionStyles}>

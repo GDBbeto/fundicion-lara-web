@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
 import {
+  CustomErrorState,
   CustomSpinner,
   CustomTable,
   DeleteConfirmationModal,
@@ -14,6 +15,7 @@ import type { User, Role } from 'types/api';
 import type { Column } from 'types/column';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+import { HttpStatusCode } from 'commons/global';
 
 import { useUser, useDeleteUser, useUpdateUser } from '../../hooks';
 import UserEditModal from '../UserEditModal';
@@ -22,6 +24,7 @@ import { columns as baseColumns } from './Columns';
 
 const UserList = () => {
   const {
+    error: errorUsers,
     users,
     isLoading,
     pagination,
@@ -117,6 +120,10 @@ const UserList = () => {
       onError: (error) => showError(error, ERROR_MESSAGES.UPDATE),
     });
   };
+
+  if (errorUsers && errorUsers.status !== HttpStatusCode.NotFound) {
+    return <CustomErrorState error={errorUsers} />;
+  }
 
   return (
     <Box sx={{ width: '100%' }}>

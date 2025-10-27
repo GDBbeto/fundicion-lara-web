@@ -19,9 +19,11 @@ const FormLayout = ({ id, onSubmit, children }: FormLayoutProps) => {
       sx={{
         overflowY: 'hidden',
         pb: 4,
+        pt: '10px',
         [theme.breakpoints.down('sm')]: {
           px: 1,
           pb: 12,
+          pt: '10px',
         },
       }}
     >

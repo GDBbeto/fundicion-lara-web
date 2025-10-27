@@ -18,7 +18,7 @@ export const ProductContext = createContext<ProductContextType>(
 );
 
 const ProductProvider = ({ children }: { children: React.ReactNode }) => {
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbarError } = useSnackbar();
 
   const [search, setSearch] = useState('');
 
@@ -72,7 +72,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     if (isError) {
       cleanTable();
       if (error.status !== HttpStatusCode.NotFound) {
-        showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
+        showSnackbarError(error, ERROR_MESSAGES.DEFAULT);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

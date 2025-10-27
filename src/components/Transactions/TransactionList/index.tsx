@@ -3,6 +3,7 @@ import { Box, IconButton } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 
 import {
+  CustomErrorState,
   CustomSpinner,
   CustomTable,
   DeleteConfirmationModal,
@@ -22,6 +23,8 @@ import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
 import { Column } from 'types/column';
 
+import { HttpStatusCode } from 'commons/global';
+
 import TransactionFormModal from '../TransactionFormModal';
 import TransactionListMobile from './TransactionListMobile';
 
@@ -31,6 +34,7 @@ interface TransactionListProps {
 
 const TransactionList = (props: TransactionListProps) => {
   const {
+    error: errorTransactions,
     transactions,
     isLoading,
     pagination,
@@ -125,6 +129,13 @@ const TransactionList = (props: TransactionListProps) => {
     setShowFormModal(false);
     setSelectedTransaction(null);
   };
+
+  if (
+    errorTransactions &&
+    errorTransactions.status !== HttpStatusCode.NotFound
+  ) {
+    return <CustomErrorState error={errorTransactions} />;
+  }
 
   return (
     <Box sx={{ width: '100%' }}>

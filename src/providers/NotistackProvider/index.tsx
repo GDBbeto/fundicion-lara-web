@@ -15,6 +15,7 @@ const NotistackProvider = ({ children }: Props) => {
       autoHideDuration={4000}
       preventDuplicate
       TransitionComponent={Slide}
+      hideIconVariant={false}
     >
       {children}
     </SnackbarProvider>

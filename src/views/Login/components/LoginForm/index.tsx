@@ -44,7 +44,7 @@ const LoginForm = ({ onSubmit }: Props) => {
 
   return (
     <FormLayout id={'login-form'} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3} marginTop={'10px'}>
+      <Stack spacing={3}>
         {/* Email Field */}
         <Controller
           name="email"

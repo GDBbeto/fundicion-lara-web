@@ -18,7 +18,7 @@ import {
   CustomSpinner,
   FormLayout,
 } from 'components/shared';
-import { useAuth, useSnackbar, useErrorHandler } from 'hooks';
+import { useAuth, useSnackbar, useErrorHandler, useDevice } from 'hooks';
 import { updateUser } from 'services/userService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 import { colors } from 'commons/colors';
@@ -35,7 +35,7 @@ const Profile = () => {
   const { user, setUser } = useAuth();
   const { showSnackbar } = useSnackbar();
   const { showError } = useErrorHandler();
-
+  const { isSmallScreenV2: isMobile } = useDevice();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -240,14 +240,17 @@ const Profile = () => {
                   sx={{
                     display: 'flex',
                     gap: 2,
-                    justifyContent: 'flex-end',
+                    justifyContent: isMobile ? 'center' : 'flex-end',
                     pt: 2,
                     borderTop: `1px solid ${colors.lightSurface}`,
+                    width: '100%',
+                    flexDirection: isMobile && isEditing ? 'column' : 'row',
                   }}
                 >
                   {isEditing ? (
                     <>
                       <Button
+                        fullWidth={isMobile}
                         variant="outlined"
                         startIcon={<Cancel />}
                         onClick={handleCancelClick}
@@ -256,6 +259,7 @@ const Profile = () => {
                         Cancelar
                       </Button>
                       <Button
+                        fullWidth={isMobile}
                         type="submit"
                         variant="contained"
                         startIcon={<Save />}
@@ -266,6 +270,7 @@ const Profile = () => {
                     </>
                   ) : (
                     <Button
+                      fullWidth={isMobile}
                       variant="contained"
                       startIcon={<Edit />}
                       onClick={handleEditClick}

@@ -6,12 +6,13 @@ import {
   DialogContent,
   IconButton,
   Box,
-  useTheme,
   DialogActions,
+  useTheme,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import { BACKGROUND_COLOR } from 'commons/colors';
+import { useDevice } from 'hooks';
 
 interface CustomModalProps {
   open: boolean;
@@ -37,7 +38,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
   actions,
 }) => {
   const theme = useTheme();
-
+  const { isSmallScreen: isMobile } = useDevice();
   return (
     <Dialog
       open={open}
@@ -103,9 +104,12 @@ const CustomModal: React.FC<CustomModalProps> = ({
             pt: 2,
             pb: 0,
             display: 'flex',
-            justifyContent: 'flex-end',
-            gap: 2,
+            justifyContent: isMobile ? 'center' : 'flex-end',
+            gap: isMobile ? 1 : 2,
             margin: 0,
+            '& > *': {
+              width: isMobile ? 'calc(50% - 4px)' : 'auto',
+            },
           }}
         >
           {actions({ onClose: handleClose })}

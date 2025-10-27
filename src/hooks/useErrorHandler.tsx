@@ -1,5 +1,9 @@
 import React from 'react';
 import { useSnackbar } from 'notistack';
+
+import { IconButton } from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
+
 import { ERROR_MESSAGES } from 'commons/messages';
 import { CommonError } from 'types/api';
 
@@ -11,25 +15,24 @@ const useErrorHandler = () => {
     fallbackMessage = ERROR_MESSAGES.DEFAULT,
   ) => {
     const typedError = error as CommonError;
+    const message = typedError?.userMessage || fallbackMessage;
 
-    enqueueSnackbar(typedError?.userMessage || fallbackMessage, {
+    enqueueSnackbar(message, {
       variant: 'error',
       autoHideDuration: 8000,
-      persist: true,
+      persist: false,
+      preventDuplicate: true,
+      hideIconVariant: true, // ✅ Elimina el icono por defecto
       action: (key) => (
-        <button
-          style={{
-            background: 'transparent',
-            border: 'none',
-            color: '#fff',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            fontSize: '14px',
-          }}
+        <IconButton
+          size="small"
+          aria-label="close"
+          color="inherit"
           onClick={() => closeSnackbar(key)}
+          sx={{ padding: 0.5 }}
         >
-          ✕
-        </button>
+          <CloseIcon fontSize="small" />
+        </IconButton>
       ),
     });
   };

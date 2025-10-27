@@ -42,7 +42,7 @@ const TransactionToolbar = () => {
   } = useTransactions();
 
   const { mutate: saveTransaction, isPending } = useSaveTransaction();
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar, showSnackbarError } = useSnackbar();
 
   const {
     startDate,
@@ -72,10 +72,7 @@ const TransactionToolbar = () => {
         showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
       },
       onError: (customError) => {
-        showSnackbar(
-          customError?.userMessage || ERROR_MESSAGES.DEFAULT,
-          'error',
-        );
+        showSnackbarError(customError, ERROR_MESSAGES.DEFAULT);
       },
     });
   };
@@ -129,6 +126,7 @@ const TransactionToolbar = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={() => setOpenModal(true)}
+            disabled={!!error && error.status !== HttpStatusCode.NotFound}
           >
             {isSm ? label : `Registrar ${label.toLowerCase()}`}
           </Button>

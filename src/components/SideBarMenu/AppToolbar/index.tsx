@@ -1,4 +1,4 @@
-import React, { use, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import {
   Toolbar,
   Typography,
@@ -57,6 +57,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
         color: colors.red,
       },
     ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [logout],
   )();
 
@@ -65,13 +66,21 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
       position="fixed"
       open={false}
       elevation={0}
-      sx={{
-        backgroundColor: 'transparent',
-        backdropFilter: 'blur(20px)',
-        borderBottom: `1px solid rgba(255, 255, 255, 0.1)`,
-        background: `linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)`,
-        boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-      }}
+      sx={
+        isSmallScreen
+          ? {
+              background: `linear-gradient(135deg, ${colors.darkBlue} 0%, ${colors.darkerBlue} 100%)`,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              borderBottom: 'none',
+            }
+          : {
+              backgroundColor: 'transparent',
+              backdropFilter: 'blur(20px)',
+              borderBottom: `1px solid rgba(255, 255, 255, 0.1)`,
+              background: `linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(248,250,252,0.95) 100%)`,
+              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+            }
+      }
     >
       <Toolbar>
         <IconButton
@@ -81,6 +90,12 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
           edge="start"
           sx={{
             mr: isSmallScreen ? 1 : 4,
+            color: isSmallScreen ? colors.white : colors.darkBlue,
+            '&:hover': {
+              backgroundColor: isSmallScreen
+                ? 'rgba(255, 255, 255, 0.1)'
+                : undefined,
+            },
           }}
         >
           <MenuIcon />
@@ -97,8 +112,7 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
             textTransform: 'capitalize',
             flexGrow: 1,
             transition: 'margin-left 0.3s ease',
-            color: colors.darkBlue,
-            // color: 'primary.main',
+            color: isSmallScreen ? colors.white : colors.darkBlue,
           }}
         >
           {selectedMenuText}
@@ -119,7 +133,6 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
                 sx={{
                   fontWeight: 600,
                   color: colors.darkText,
-                  // color: 'primary.main',
                   lineHeight: 1.2,
                   fontSize: '0.85rem',
                 }}
@@ -144,13 +157,19 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
               ml: 1,
               width: 36,
               height: 36,
-              bgcolor: colors.darkBlue,
-              //bgcolor: 'primary.main',
-              color: '#fff',
+              bgcolor: isSmallScreen
+                ? 'rgba(255, 255, 255, 0.2)'
+                : colors.darkBlue,
+              color: colors.white,
               fontWeight: 700,
               fontSize: '0.9rem',
-              border: `2px solid ${colors.white}`,
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              border: isSmallScreen
+                ? `2px solid rgba(255, 255, 255, 0.3)`
+                : `2px solid ${colors.white}`,
+              boxShadow: isSmallScreen
+                ? '0 2px 8px rgba(0,0,0,0.2)'
+                : '0 2px 8px rgba(0,0,0,0.1)',
+              backdropFilter: isSmallScreen ? 'blur(10px)' : 'none',
             }}
           >
             {user ? getInitials(user) : 'NA'}
@@ -158,8 +177,8 @@ const AppToolbar: React.FC<AppToolbarProps> = ({
           <ActionMenu
             actions={userActions}
             size="small"
-            iconColor={colors.darkText}
-            hoverColor={colors.darkBlue}
+            iconColor={isSmallScreen ? colors.white : colors.darkText}
+            hoverColor={isSmallScreen ? colors.lightBlue : colors.darkBlue}
             alignItems="flex-start"
           />
         </Stack>

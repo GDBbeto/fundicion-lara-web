@@ -42,7 +42,7 @@ const TransactionProvider = ({
   type,
   label,
 }: TransactionProviderProps) => {
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbarError } = useSnackbar();
   const [search, setSearch] = useState('');
   const { firstDay, lastDay } = getDefaultMonthDates();
 
@@ -141,7 +141,7 @@ const TransactionProvider = ({
     if (isError) {
       cleanTable();
       if (error.status !== HttpStatusCode.NotFound) {
-        showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
+        showSnackbarError(error, ERROR_MESSAGES.DEFAULT);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

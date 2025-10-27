@@ -26,7 +26,7 @@ interface Props {
 }
 
 const UserProvider = ({ children }: Props) => {
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbarError } = useSnackbar();
   const [search, setSearch] = useState('');
 
   const {
@@ -92,7 +92,7 @@ const UserProvider = ({ children }: Props) => {
     if (isError) {
       cleanTable();
       if (error?.status !== HttpStatusCode.NotFound) {
-        showSnackbar(error?.userMessage || ERROR_MESSAGES.DEFAULT, 'error');
+        showSnackbarError(error, ERROR_MESSAGES.DEFAULT);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

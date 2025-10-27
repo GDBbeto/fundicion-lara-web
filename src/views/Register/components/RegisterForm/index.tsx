@@ -45,7 +45,7 @@ const RegisterForm = ({ onSubmit }: Props) => {
 
   return (
     <FormLayout id={'register-form'} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3} marginTop={'10px'}>
+      <Stack spacing={3}>
         {/* Name Fields */}
         <Controller
           name="name"

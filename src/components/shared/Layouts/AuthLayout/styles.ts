@@ -60,6 +60,13 @@ export const mobileLogoTextStyles = {
   color: colors.darkBlue,
 };
 
+export const mobileLogoImageStyles = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+  padding: '8px',
+};
+
 export const systemNameTypographyStyles = {
   mb: 0.5,
   zIndex: 1,
@@ -150,6 +157,13 @@ export const desktopLogoTextStyles = {
   fontSize: '3rem',
   fontWeight: 700,
   color: colors.darkBlue,
+};
+
+export const desktopLogoImageStyles = {
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+  padding: '12px',
 };
 
 export const desktopSystemNameStyles = {

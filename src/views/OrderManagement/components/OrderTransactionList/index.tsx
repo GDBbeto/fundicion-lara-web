@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import { Box } from '@mui/material';
+
 import {
   CustomTable,
   CustomSpinner,
   DeleteConfirmationModal,
+  CustomErrorState,
 } from 'components/shared';
 
 import {
@@ -11,9 +13,14 @@ import {
   useUpdateOrderTransaction,
   useDeleteOrderTransaction,
 } from 'views/OrderManagement/hooks';
+
 import type { OrderTransaction, OrderTransactionRequest } from 'types/api';
 import { useDevice, useSnackbar, useErrorHandler } from 'hooks';
+
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
+
+import { HttpStatusCode } from 'commons/global';
+
 import OrderTransactionDetailModal from '../OrderTransactionDetailModal';
 import OrderTransactionFormModal from '../OrderTransactionFormModal';
 import OrderTransactionListMobile from '../OrderTransactionListMobile';
@@ -21,6 +28,7 @@ import { createColumns } from './Columns';
 
 const OrderTransactionList = () => {
   const {
+    error: errorOrderTransactions,
     transactions,
     isLoading,
     pagination,
@@ -121,6 +129,13 @@ const OrderTransactionList = () => {
       ),
     [],
   );
+
+  if (
+    errorOrderTransactions &&
+    errorOrderTransactions.status !== HttpStatusCode.NotFound
+  ) {
+    return <CustomErrorState error={errorOrderTransactions} />;
+  }
 
   return (
     <Box sx={{ width: '100%' }}>

@@ -24,7 +24,7 @@ const ProductToolbar = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
-  const { showSnackbar } = useSnackbar();
+  const { showSnackbar, showSnackbarError } = useSnackbar();
 
   const { handleSearch, error, handleRefresh } = useProductos();
   const { mutate: saveProduct, isPending } = useSaveProduct();
@@ -45,10 +45,7 @@ const ProductToolbar = () => {
         showSnackbar(SUCCESS_MESSAGES.CREATED, 'success');
       },
       onError: (customError) => {
-        showSnackbar(
-          customError?.userMessage || ERROR_MESSAGES.DEFAULT,
-          'error',
-        );
+        showSnackbarError(customError, ERROR_MESSAGES.DEFAULT);
       },
     });
   };

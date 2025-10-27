@@ -141,6 +141,7 @@ const OrderTransactionToolbar = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={handleOpenModal}
+            disabled={!!error && error.status !== HttpStatusCode.NotFound}
           >
             {isSm ? 'Registrar' : `Registrar pedido`}
           </Button>

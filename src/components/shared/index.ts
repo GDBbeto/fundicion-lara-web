@@ -16,3 +16,4 @@ export { default as CardLayout } from './Layouts/CardLayout';
 export { default as QuantityInput } from './QuantityInput';
 export { default as AuthLayout } from './Layouts/AuthLayout';
 export { default as AuthFormLayout } from './Layouts/AuthFormLayout';
+export { default as CustomErrorState } from './CustomErrorState';

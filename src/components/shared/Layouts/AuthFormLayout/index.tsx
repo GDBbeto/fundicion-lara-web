@@ -26,6 +26,7 @@ const AuthFormLayout: React.FC<AuthFormLayoutProps> = ({
         sx={{
           padding: 0,
           width: '100%',
+          paddingBottom: '80px', // Espacio para que el último campo sea visible
         }}
       >
         {/* Sección del título del formulario */}
