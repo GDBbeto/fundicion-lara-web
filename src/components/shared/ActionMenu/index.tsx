@@ -18,6 +18,7 @@ interface ActionMenuProps {
   iconColor?: string;
   hoverColor?: string;
   alignItems?: 'flex-start' | 'center';
+  disabled?: boolean;
 }
 
 const ActionMenu: React.FC<ActionMenuProps> = ({
@@ -26,6 +27,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
   alignItems = 'center',
   iconColor = colors.darkText,
   hoverColor = colors.darkBlue,
+  disabled,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -57,6 +59,7 @@ const ActionMenu: React.FC<ActionMenuProps> = ({
             color: hoverColor,
           },
         }}
+        disabled={disabled}
       >
         <MoreVert fontSize={size} />
       </IconButton>

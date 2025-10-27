@@ -198,6 +198,7 @@ export const createColumns = (
   handleOpenViewModal: (transaction: OrderTransaction) => void,
   handleOpenFormModal: (transaction: OrderTransaction) => void,
   handleOpenDeleteModal: (transaction: OrderTransaction) => void,
+  isReadOnly: boolean,
 ): Column<OrderTransaction>[] => {
   return [
     ...baseColumns,
@@ -220,6 +221,7 @@ export const createColumns = (
             size="small"
             onClick={() => handleOpenFormModal(row)}
             color="primary"
+            disabled={isReadOnly}
           >
             <Edit fontSize="small" />
           </IconButton>
@@ -227,6 +229,7 @@ export const createColumns = (
             size="small"
             onClick={() => handleOpenDeleteModal(row)}
             color="error"
+            disabled={isReadOnly}
           >
             <Delete fontSize="small" />
           </IconButton>

@@ -4,9 +4,18 @@ import { Outlet } from 'react-router-dom';
 
 import SideBarMenu from 'components/SideBarMenu';
 
+import { usePermissions } from 'hooks';
+
+import PendingRoleNotice from 'components/PendingRoleNotice';
+
 import GlobalScrollStyles from '../GlobalScrollStyles';
 
 const Layout = () => {
+  const { isRolePending } = usePermissions();
+  if (isRolePending) {
+    return <PendingRoleNotice />;
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <GlobalScrollStyles />

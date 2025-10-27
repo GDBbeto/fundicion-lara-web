@@ -7,8 +7,11 @@ import PersonIcon from '@mui/icons-material/Person';
 
 import { ActionMenu } from 'components/shared';
 import type { ActionItem } from 'components/shared/ActionMenu';
-import { productNameStyles } from '../styles';
+
 import { colors } from 'commons/colors';
+import { usePermissions } from 'hooks';
+
+import { productNameStyles } from '../styles';
 
 interface Props {
   name: string;
@@ -19,6 +22,7 @@ interface Props {
 
 const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
   const { palette } = useTheme();
+  const { isReadOnly } = usePermissions();
 
   const productActions: ActionItem[] = useCallback(
     () => [
@@ -86,6 +90,7 @@ const ProductCardHeader = ({ name, client, onEdit, onDelete }: Props) => {
         iconColor={palette.text.secondary}
         hoverColor={colors.darkBlue}
         alignItems="flex-start"
+        disabled={isReadOnly}
       />
     </Box>
   );

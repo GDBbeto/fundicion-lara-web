@@ -18,14 +18,14 @@ import { useTheme } from '@mui/material/styles';
 
 import { colors } from 'commons/colors';
 
-import { useDevice } from 'hooks';
+import { useDevice, usePermissions } from 'hooks';
 
 import DrawerContent from './DrawerContent';
 import AppToolbar from './AppToolbar';
 
 import { DrawerHeader, Drawer as CustomDrawer } from './styles';
 
-const menuItems = [
+const allItems = [
   { id: 'home', path: '/', text: 'Inicio', icon: HomeIcon },
   {
     id: 'inventory',
@@ -70,6 +70,8 @@ const SideBarMenu = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const { isAdmin } = usePermissions();
+
   const { isSmallScreen } = useDevice();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -77,17 +79,24 @@ const SideBarMenu = () => {
   const handleDrawerOpen = useCallback(() => setDrawerOpen(true), []);
   const handleDrawerClose = useCallback(() => setDrawerOpen(false), []);
 
+  const menuItems = useMemo(() => {
+    return allItems.filter((item) => {
+      if (item.id === 'users' && !isAdmin) return false;
+      return true;
+    });
+  }, [isAdmin]);
+
   const selectedIndex = useMemo(() => {
     const index = menuItems.findIndex((item) => item.path === pathname);
     return index >= 0 ? index : -1;
-  }, [pathname]);
+  }, [pathname, menuItems]);
 
   const handleListItemClick = useCallback(
     (index: number) => {
       navigate(menuItems[index].path);
       if (isSmallScreen) handleDrawerClose();
     },
-    [navigate, isSmallScreen, handleDrawerClose],
+    [navigate, isSmallScreen, handleDrawerClose, menuItems],
   );
 
   const drawerContentProps = useMemo(
@@ -97,7 +106,7 @@ const SideBarMenu = () => {
       selectedIndex,
       handleListItemClick,
     }),
-    [drawerOpen, selectedIndex, handleListItemClick],
+    [drawerOpen, selectedIndex, handleListItemClick, menuItems],
   );
 
   return (

@@ -14,6 +14,7 @@ import {
   useValidatedDateRange,
   useSnackbar,
   useErrorHandler,
+  usePermissions,
 } from 'hooks';
 
 import { HttpStatusCode } from 'commons/global';
@@ -30,6 +31,7 @@ const OrderTransactionToolbar = () => {
   const { isSm } = useDevice();
   const { showSnackbar } = useSnackbar();
   const { showError } = useErrorHandler();
+  const { isReadOnly } = usePermissions();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
@@ -141,7 +143,10 @@ const OrderTransactionToolbar = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={handleOpenModal}
-            disabled={!!error && error.status !== HttpStatusCode.NotFound}
+            disabled={
+              isReadOnly ||
+              (!!error && error.status !== HttpStatusCode.NotFound)
+            }
           >
             {isSm ? 'Registrar' : `Registrar pedido`}
           </Button>

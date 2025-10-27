@@ -1,5 +1,13 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import React, {
+  createContext,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
+
 import { User } from 'types/api';
+
 import { AuthContextType } from './types';
 
 export const AuthContext = createContext<AuthContextType>(
@@ -23,6 +31,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     return token ? userToke : null;
   };
 
+  const login = useCallback((token: string) => {
+    localStorage.setItem('token', token);
+    setIsAuthenticated(true);
+    setUser(getUser(token));
+  }, []);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setUser(null);
+  }, []);
+
   React.useEffect(() => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
@@ -30,24 +50,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(getUser(token));
   }, []);
 
-  const login = (token: string) => {
-    localStorage.setItem('token', token);
-    setIsAuthenticated(true);
-    setUser(getUser(token));
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    setUser(null);
-  };
+  const contextValue: AuthContextType = useMemo(
+    () => ({
+      isAuthenticated,
+      login,
+      logout,
+      isLoading,
+      user,
+      setUser,
+    }),
+    [isAuthenticated, login, logout, isLoading, user],
+  );
 
   return (
-    <AuthContext.Provider
-      value={{ isAuthenticated, login, logout, isLoading, user, setUser }}
-    >
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
 

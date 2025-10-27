@@ -9,6 +9,7 @@ import PrivateRoute from 'router/PrivateRoute';
 
 import Layout from 'components/Layout';
 import { AuthLayout } from 'components/shared';
+import RoleRoute from './RoleRoute';
 
 const Login = lazy(() => import('views/Login'));
 const Register = lazy(() => import('views/Register'));
@@ -64,7 +65,14 @@ const AppRoutes = () => {
             <Route path="/compras" element={withSuspense(PurchaseManagement)} />
             <Route path="/gastos" element={withSuspense(ExpenseManagement)} />
             <Route path="/pedidos" element={withSuspense(OrderManagement)} />
-            <Route path="/usuarios" element={withSuspense(UsersManagemet)} />
+            <Route
+              path="/usuarios"
+              element={
+                <RoleRoute allowedRoles={['ADMIN']}>
+                  {withSuspense(UsersManagemet)}
+                </RoleRoute>
+              }
+            />
             <Route path="/perfil" element={withSuspense(Profile)} />
 
             <Route path="*" element={<Navigate to="/inicio" replace />} />

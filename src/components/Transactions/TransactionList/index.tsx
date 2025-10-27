@@ -13,6 +13,7 @@ import {
   useDeleteTransaction,
   useDevice,
   useErrorHandler,
+  usePermissions,
   useSnackbar,
   useTransactions,
   useUpdateTransaction,
@@ -54,6 +55,7 @@ const TransactionList = (props: TransactionListProps) => {
     useDeleteTransaction();
   const { mutate: updateTransaction, isPending: isPendingUpdate } =
     useUpdateTransaction();
+  const { isReadOnly } = usePermissions();
 
   const [showFormModal, setShowFormModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -85,6 +87,7 @@ const TransactionList = (props: TransactionListProps) => {
               size="small"
               onClick={() => handleOpenFormModal(row)}
               color="primary"
+              disabled={isReadOnly}
             >
               <Edit fontSize="small" />
             </IconButton>
@@ -92,6 +95,7 @@ const TransactionList = (props: TransactionListProps) => {
               size="small"
               onClick={() => handleOpenDeleteModal(row)}
               color="error"
+              disabled={isReadOnly}
             >
               <Delete fontSize="small" />
             </IconButton>
@@ -99,7 +103,7 @@ const TransactionList = (props: TransactionListProps) => {
         ),
       } as Column<Transaction>,
     ];
-  }, [props.columns]);
+  }, [props.columns, isReadOnly]);
 
   const processSuccess = (message: string) => {
     handleRefresh();

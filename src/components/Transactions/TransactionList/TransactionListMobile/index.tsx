@@ -11,7 +11,7 @@ import {
 } from '@mui/icons-material';
 import { NumericFormat } from 'react-number-format';
 
-import { useTransactions } from 'hooks';
+import { usePermissions, useTransactions } from 'hooks';
 import type { Transaction } from 'types/api';
 import { CustomPagination, ActionMenu, CardLayout } from 'components/shared';
 import type { ActionItem } from 'components/shared/ActionMenu';
@@ -36,6 +36,7 @@ const TransactionListMobile = ({
     handlePageChange,
     handleRowsPerPageChange,
   } = useTransactions();
+  const { isReadOnly } = usePermissions();
   const [openModal, setOpenModal] = React.useState(false);
   const [selectedOrderId, setSelectedOrderId] = React.useState<number | null>(
     null,
@@ -192,6 +193,7 @@ const TransactionListMobile = ({
                 iconColor={colors.darkText}
                 hoverColor={colors.darkBlue}
                 alignItems="flex-start"
+                disabled={isReadOnly}
               />
             </Stack>
 

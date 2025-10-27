@@ -15,7 +15,7 @@ import {
 } from 'views/OrderManagement/hooks';
 
 import type { OrderTransaction, OrderTransactionRequest } from 'types/api';
-import { useDevice, useSnackbar, useErrorHandler } from 'hooks';
+import { useDevice, useSnackbar, useErrorHandler, usePermissions } from 'hooks';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 
@@ -42,6 +42,7 @@ const OrderTransactionList = () => {
   const { isSmallScreen } = useDevice();
   const { showSnackbar } = useSnackbar();
   const { showError } = useErrorHandler();
+  const { isReadOnly } = usePermissions();
 
   const { mutate: updateTransaction, isPending: isPendingUpdate } =
     useUpdateOrderTransaction();
@@ -126,8 +127,9 @@ const OrderTransactionList = () => {
         handleOpenViewModal,
         handleOpenFormModal,
         handleOpenDeleteModal,
+        isReadOnly,
       ),
-    [],
+    [isReadOnly],
   );
 
   if (

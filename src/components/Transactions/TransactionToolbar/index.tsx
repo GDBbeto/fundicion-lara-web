@@ -11,6 +11,7 @@ import {
 
 import {
   useDevice,
+  usePermissions,
   useSaveTransaction,
   useSnackbar,
   useTransactions,
@@ -43,6 +44,7 @@ const TransactionToolbar = () => {
 
   const { mutate: saveTransaction, isPending } = useSaveTransaction();
   const { showSnackbar, showSnackbarError } = useSnackbar();
+  const { isReadOnly } = usePermissions();
 
   const {
     startDate,
@@ -126,7 +128,10 @@ const TransactionToolbar = () => {
             color="primary"
             startIcon={<AddIcon />}
             onClick={() => setOpenModal(true)}
-            disabled={!!error && error.status !== HttpStatusCode.NotFound}
+            disabled={
+              isReadOnly ||
+              (!!error && error.status !== HttpStatusCode.NotFound)
+            }
           >
             {isSm ? label : `Registrar ${label.toLowerCase()}`}
           </Button>

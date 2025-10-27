@@ -10,7 +10,7 @@ import UploadIcon from '@mui/icons-material/PhotoCamera';
 
 import { MAX_FILE_SIZE } from 'commons/global';
 import { ERROR_MESSAGES } from 'commons/messages';
-import { useSnackbar } from 'hooks';
+import { usePermissions, useSnackbar } from 'hooks';
 
 interface Props {
   onUpload: (file: File) => void;
@@ -26,6 +26,7 @@ const MobileUploader = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const theme = useTheme();
   const { showSnackbar } = useSnackbar();
+  const { isReadOnly } = usePermissions();
 
   const handleClick = () => {
     if (handleOpenModal) {
@@ -72,7 +73,7 @@ const MobileUploader = ({
         <span>
           <IconButton
             onClick={handleClick}
-            disabled={loading}
+            disabled={loading || isReadOnly}
             size="small"
             sx={{
               transition: 'background-color 0.3s',

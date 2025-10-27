@@ -8,6 +8,7 @@ import useSaveTransaction from './transaction/useSaveTransaction';
 import useUpdateTransaction from './transaction/useUpdateTransaction';
 import useValidatedDateRange from './useValidatedDateRange';
 import useErrorHandler from './useErrorHandler';
+import usePermissions from './usePermissions';
 
 export {
   useAuth,
@@ -20,4 +21,5 @@ export {
   useUpdateTransaction,
   useValidatedDateRange,
   useErrorHandler,
+  usePermissions,
 };

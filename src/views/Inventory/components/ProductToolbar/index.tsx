@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 import { useDebounce } from 'use-debounce';
 
-import { useDevice, useSnackbar } from 'hooks';
+import { useDevice, usePermissions, useSnackbar } from 'hooks';
 
 import { CustomSpinner, SearchInput } from 'components/shared';
 
@@ -20,6 +20,7 @@ import ProductFormModal from '../ProductFormModal';
 
 const ProductToolbar = () => {
   const { isXs } = useDevice();
+  const { isReadOnly } = usePermissions();
   const [open, setOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -76,7 +77,10 @@ const ProductToolbar = () => {
             variant="contained"
             startIcon={<AddIcon />}
             onClick={handleAddProduct}
-            disabled={!!error && error.status !== HttpStatusCode.NotFound}
+            disabled={
+              isReadOnly ||
+              (!!error && error.status !== HttpStatusCode.NotFound)
+            }
           >
             {isXs ? 'Agregar' : ' Agregar producto'}
           </Button>
