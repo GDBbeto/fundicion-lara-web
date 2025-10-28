@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import { User } from 'types/api';
+import type { LoginResponse, User } from 'types/api';
 
 import { AuthContextType } from './types';
 
@@ -19,26 +19,18 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
 
-  const getUser = (token: string | null) => {
-    const userToke = {
-      userId: 1,
-      name: 'Roberto',
-      lastName: 'Aguilar',
-      motherLastName: 'Vazquez',
-      email: 'roberto.aav.23@gmail.com',
-      role: 'ADMIN' as any,
-    };
-    return token ? userToke : null;
-  };
-
-  const login = useCallback((token: string) => {
-    localStorage.setItem('token', token);
+  const login = useCallback((loginResponse: LoginResponse) => {
+    localStorage.setItem('token', loginResponse.accessToken);
+    localStorage.setItem('refreshToken', loginResponse.refreshToken);
+    localStorage.setItem('user', JSON.stringify(loginResponse.user));
     setIsAuthenticated(true);
-    setUser(getUser(token));
+    setUser(loginResponse.user);
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUser(null);
   }, []);
@@ -47,7 +39,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     const token = localStorage.getItem('token');
     setIsAuthenticated(!!token);
     setIsLoading(false);
-    setUser(getUser(token));
+    const userJson = localStorage.getItem('user');
+    setUser(userJson ? (JSON.parse(userJson) as User) : null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contextValue: AuthContextType = useMemo(

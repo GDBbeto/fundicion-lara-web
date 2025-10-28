@@ -7,6 +7,8 @@ import { Box, CircularProgress } from '@mui/material';
 import PublicRoute from 'router/PublicRoute';
 import PrivateRoute from 'router/PrivateRoute';
 
+import { useScrollToTop } from 'hooks';
+
 import Layout from 'components/Layout';
 import { AuthLayout } from 'components/shared';
 import RoleRoute from './RoleRoute';
@@ -43,6 +45,8 @@ const withSuspense = (
 );
 
 const AppRoutes = () => {
+  useScrollToTop();
+
   return (
     <Suspense fallback={<div>Cargando...</div>}>
       <Routes>

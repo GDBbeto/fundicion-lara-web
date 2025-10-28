@@ -31,6 +31,6 @@ export const CAT_DELIVERY_STATUS = [
 export const CAT_USER_ROLES = [
   { label: 'Administrador', value: Role.ADMIN },
   { label: 'Operador', value: Role.OPERATOR },
-  { label: 'Solo consulta', value: Role.VIEWER },
+  { label: 'Acceso de lectura', value: Role.VIEWER },
   { label: 'Pendiente', value: Role.PENDING },
 ];

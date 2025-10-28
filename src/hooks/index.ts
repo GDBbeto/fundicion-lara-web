@@ -9,6 +9,7 @@ import useUpdateTransaction from './transaction/useUpdateTransaction';
 import useValidatedDateRange from './useValidatedDateRange';
 import useErrorHandler from './useErrorHandler';
 import usePermissions from './usePermissions';
+import useScrollToTop from './useScrollToTop';
 
 export {
   useAuth,
@@ -22,4 +23,5 @@ export {
   useValidatedDateRange,
   useErrorHandler,
   usePermissions,
+  useScrollToTop,
 };

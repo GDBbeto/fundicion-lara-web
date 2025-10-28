@@ -1,11 +1,5 @@
 import Option from 'types/option';
-import {
-  DeliveryStatus,
-  MethodPayment,
-  PaymentStatus,
-  Role,
-  User,
-} from 'types/api';
+import { DeliveryStatus, MethodPayment, PaymentStatus, Role } from 'types/api';
 import {
   CAT_DELIVERY_STATUS,
   CAT_METHOD_PAYMENT,

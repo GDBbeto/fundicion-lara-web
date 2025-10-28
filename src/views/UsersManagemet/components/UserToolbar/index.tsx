@@ -14,7 +14,7 @@ const UserToolbar = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
 
-  const { search, handleSearch, error } = useUser();
+  const { handleSearch, error } = useUser();
 
   useEffect(() => {
     handleSearch(debouncedSearch);
@@ -33,7 +33,7 @@ const UserToolbar = () => {
     >
       <SearchInput
         id="searchTerm"
-        value={search}
+        value={searchTerm}
         onChange={setSearchTerm}
         placeholder="Buscar por nombre o email..."
         disabled={!!error && error.status !== HttpStatusCode.NotFound}

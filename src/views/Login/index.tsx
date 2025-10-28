@@ -6,7 +6,7 @@ import { useAuth } from 'hooks';
 
 import { AuthFormLayout } from 'components/shared';
 
-import type { LoginRequest } from 'types/api';
+import type { LoginRequest, LoginResponse } from 'types/api';
 
 import LoginForm from './components/LoginForm';
 import * as styles from './components/LoginForm/styles';
@@ -17,7 +17,23 @@ const Login = () => {
   const handleSubmit = async (data: LoginRequest) => {
     try {
       console.log('Login data:', data);
-      login('data');
+
+      const loginResponse: LoginResponse = {
+        accessToken: '1234567890',
+        refreshToken: '1234567890',
+        tokenType: 'Bearer',
+        expiresIn: 1000,
+        user: {
+          userId: 1,
+          name: 'Roberto',
+          lastName: 'Aguilar',
+          motherLastName: 'Vazquez',
+          email: 'roberto.aav.23@gmail.com',
+          role: 'ADMIN' as any,
+        },
+      };
+
+      login(loginResponse);
     } catch (error) {
       console.error('Login error:', error);
     }
