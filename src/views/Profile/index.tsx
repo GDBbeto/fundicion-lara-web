@@ -111,6 +111,18 @@ const Profile = () => {
     <Container maxWidth="md" sx={{ py: 4 }}>
       <Stack spacing={3}>
         {/* Header */}
+        {isMobile ? (
+          <Box>
+            <Typography
+              variant="h4"
+              fontWeight={700}
+              color="primary"
+              gutterBottom
+            >
+              Mi Perfil
+            </Typography>
+          </Box>
+        ) : null}
         <Box>
           <Typography
             variant="h4"

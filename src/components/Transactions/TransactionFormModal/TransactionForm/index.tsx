@@ -31,6 +31,7 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
     control,
     handleSubmit,
     setValue,
+    resetField,
     formState: { errors },
   } = useForm<Transaction>({
     resolver: yupResolver(schema) as any,
@@ -51,6 +52,19 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
     setValue('issuerRfc', data.issuerRfc);
   };
 
+  const handleFillField = (
+    field: keyof Transaction,
+    value: string | number,
+  ) => {
+    setValue(field, value);
+  };
+
+  const handleClearFields = () => {
+    resetField('invoiceNumber');
+    resetField('issuerRfc');
+    resetField('amount');
+  };
+
   const handleFormSubmit = (data: Transaction) => {
     onSubmit({
       ...data,
@@ -67,7 +81,12 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
       <Grid container spacing={2}>
         {type !== 'EXPENSE' ? (
           <Grid size={{ xs: 12 }}>
-            <InvoiceFileUpload onExtract={handleExtractedData} />
+            <InvoiceFileUpload
+              onExtract={handleExtractedData}
+              onFillField={handleFillField}
+              onClearFields={handleClearFields}
+              type={type}
+            />
           </Grid>
         ) : null}
 
@@ -82,9 +101,9 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
                 name="amount"
                 inputMode="decimal"
                 type="text"
-                value={field.value}
+                value={field.value || ''}
                 onValueChange={({ floatValue }) =>
-                  field.onChange(floatValue ?? '')
+                  field.onChange(floatValue ?? null)
                 }
                 customInput={CustomTextField}
                 label="Monto"

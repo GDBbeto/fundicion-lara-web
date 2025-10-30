@@ -41,7 +41,7 @@ const OrderTransactionFormModal = ({
             type="submit"
             form={formId}
           >
-            Guardar pedido
+            Guardar
           </Button>
         </>
       )}
