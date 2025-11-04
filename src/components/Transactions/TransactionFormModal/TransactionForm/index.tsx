@@ -13,7 +13,7 @@ import {
 import type { Transaction, InvoiceData } from 'types/api';
 
 import { formatDateToDefault, parseDefaultToDate } from 'utils/dateUtils';
-import { useTransactions } from 'hooks';
+import { useDevice, useSnackbar, useTransactions } from 'hooks';
 
 import InvoiceFileUpload from '../InvoiceFileUpload';
 import schema from './schema';
@@ -26,6 +26,8 @@ interface Props {
 
 const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
   const { type } = useTransactions();
+  const { isSmallScreenV2: isMobile } = useDevice();
+  const { showSnackbar } = useSnackbar();
 
   const {
     control,
@@ -57,6 +59,9 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
     value: string | number,
   ) => {
     setValue(field, value);
+    if (isMobile) {
+      showSnackbar('Valor aplicado', 'success', 1000);
+    }
   };
 
   const handleClearFields = () => {

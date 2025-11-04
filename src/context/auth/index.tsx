@@ -20,7 +20,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const login = useCallback((loginResponse: LoginResponse) => {
-    localStorage.setItem('token', loginResponse.accessToken);
+    localStorage.setItem('accessToken', loginResponse.accessToken);
     localStorage.setItem('refreshToken', loginResponse.refreshToken);
     localStorage.setItem('user', JSON.stringify(loginResponse.user));
     setIsAuthenticated(true);
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     setIsAuthenticated(false);
@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   React.useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('accessToken');
     setIsAuthenticated(!!token);
     setIsLoading(false);
     const userJson = localStorage.getItem('user');

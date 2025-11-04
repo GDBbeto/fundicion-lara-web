@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { ERROR_MESSAGES } from 'commons/messages';
+import { AUTH_API_BASE } from './apiRoutes';
 
 // Aqui luego puedes obtener el token desde un storage mas seguro o cookie
 const getToken = () => {
@@ -49,20 +50,31 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const res = await axios.post(`${baseURL}/auth/refresh-token`, {
+        // Usar la misma ruta que authService.ts
+        const res = await axios.post(`${baseURL}/${AUTH_API_BASE}/refresh`, {
           refreshToken: getRefreshToken(),
         });
 
-        const newAccessToken = res.data.accessToken;
-        localStorage.setItem('accessToken', newAccessToken);
+        const { accessToken, refreshToken: newRefreshToken } = res.data.data;
 
-        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+        // Actualizar ambos tokens
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', newRefreshToken);
+
+        // Reintentar la petición original con el nuevo token
+        originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
+        // Si falla el refresh, hacer logout completo
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
         window.location.href = '/login';
-        return Promise.reject(refreshError);
+        return Promise.reject({
+          userMessage: ERROR_MESSAGES.UNAUTHORIZED,
+          message: 'Unauthorized',
+          status: 401,
+        });
       }
     }
 

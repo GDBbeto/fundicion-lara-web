@@ -12,3 +12,9 @@ export interface LoginRequest {
   email: string;
   password: string;
 }
+
+export type AuthResponse = LoginResponse;
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}

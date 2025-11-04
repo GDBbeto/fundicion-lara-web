@@ -10,6 +10,7 @@ export const validationMessages = {
 };
 
 export const ERROR_MESSAGES = {
+  UNAUTHORIZED: 'No autorizado.',
   NETWORK: 'No se pudo conectar con el servidor.',
   UNKNOWN: 'Ocurri\u00F3 un error inesperado. Intenta nuevamente.',
   GENERIC: 'Error desconocido.',

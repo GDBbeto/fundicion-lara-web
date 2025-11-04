@@ -9,9 +9,11 @@ const useSnackbar = () => {
   const showSnackbar = (
     mensaje: string | React.ReactNode,
     variant: 'default' | 'success' | 'warning' | 'info',
+    autoHideDuration?: number,
   ) => {
     enqueueSnackbar(mensaje, {
       variant,
+      autoHideDuration,
     });
   };
 

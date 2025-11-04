@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -21,6 +21,9 @@ import type { LoginRequest } from 'types/api';
 import schema from './schema';
 import * as styles from './styles';
 
+const REMEMBER_ME_KEY = 'rememberMe';
+const SAVED_EMAIL_KEY = 'savedEmail';
+
 interface Props {
   onSubmit: (data: LoginRequest) => Promise<void>;
 }
@@ -33,6 +36,8 @@ const LoginForm = ({ onSubmit }: Props) => {
   const {
     control,
     handleSubmit,
+    setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<LoginRequest>({
     resolver: yupResolver(schema) as any,
@@ -41,6 +46,30 @@ const LoginForm = ({ onSubmit }: Props) => {
       password: '',
     },
   });
+
+  const emailValue = watch('email');
+
+  // Cargar email guardado al montar el componente
+  useEffect(() => {
+    const savedRememberMe = localStorage.getItem(REMEMBER_ME_KEY) === 'true';
+    const savedEmail = localStorage.getItem(SAVED_EMAIL_KEY);
+
+    if (savedRememberMe && savedEmail) {
+      setRememberMe(true);
+      setValue('email', savedEmail);
+    }
+  }, [setValue]);
+
+  // Guardar/eliminar email cuando cambia el checkbox o el email
+  useEffect(() => {
+    if (rememberMe && emailValue) {
+      localStorage.setItem(REMEMBER_ME_KEY, 'true');
+      localStorage.setItem(SAVED_EMAIL_KEY, emailValue);
+    } else if (!rememberMe) {
+      localStorage.removeItem(REMEMBER_ME_KEY);
+      localStorage.removeItem(SAVED_EMAIL_KEY);
+    }
+  }, [rememberMe, emailValue]);
 
   return (
     <FormLayout id={'login-form'} onSubmit={handleSubmit(onSubmit)}>
