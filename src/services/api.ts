@@ -13,8 +13,7 @@ const getRefreshToken = () => {
 };
 
 // Base URL desde variables de entorno, por defecto localhost para desarrollo
-const baseURL =
-  process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
+const baseURL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: baseURL,
@@ -51,7 +50,7 @@ api.interceptors.response.use(
 
       try {
         // Usar la misma ruta que authService.ts
-        const res = await axios.post(`${baseURL}/${AUTH_API_BASE}/refresh`, {
+        const res = await api.post(`/${AUTH_API_BASE}/refresh`, {
           refreshToken: getRefreshToken(),
         });
 
