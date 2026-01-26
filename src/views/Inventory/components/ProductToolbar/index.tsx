@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Box, Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -7,11 +7,16 @@ import { useDebounce } from 'use-debounce';
 
 import { useDevice, usePermissions, useSnackbar } from 'hooks';
 
-import { CustomSpinner, SearchInput } from 'components/shared';
+import {
+  CustomSelectField,
+  CustomSpinner,
+  SearchInput,
+} from 'components/shared';
 
 import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 
 import type { Product } from 'types/api';
+import Option from 'types/option';
 
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from 'commons/messages';
 import { HttpStatusCode } from 'commons/global';
@@ -27,8 +32,23 @@ const ProductToolbar = () => {
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const { showSnackbar, showSnackbarError } = useSnackbar();
 
-  const { handleSearch, error, handleRefresh } = useProductos();
+  const {
+    handleSearch,
+    handleClientChange,
+    selectedClient,
+    clients,
+    error,
+    handleRefresh,
+  } = useProductos();
   const { mutate: saveProduct, isPending } = useSaveProduct();
+
+  const clientOptions: Option[] = useMemo(() => {
+    const options: Option[] = [
+      { value: '', label: 'Todos los clientes' },
+      ...clients.map((client: string) => ({ value: client, label: client })),
+    ];
+    return options;
+  }, [clients]);
 
   const handleAddProduct = () => {
     setOpen(true);
@@ -37,6 +57,13 @@ const ProductToolbar = () => {
   const handleSearchInputChange = useCallback((value: string) => {
     setSearchTerm(value);
   }, []);
+
+  const handleClientSelectChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      handleClientChange(event.target.value);
+    },
+    [handleClientChange],
+  );
 
   const handleSubmit = (productData: Product) => {
     saveProduct(productData, {
@@ -58,7 +85,7 @@ const ProductToolbar = () => {
   return (
     <Box mb={3}>
       <Grid container spacing={2} alignItems="center">
-        <Grid size={{ xs: 12, sm: 8 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
           <SearchInput
             id="searchTerm"
             value={searchTerm}
@@ -68,9 +95,21 @@ const ProductToolbar = () => {
           />
         </Grid>
 
+        <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+          <CustomSelectField
+            id="clientSelect"
+            label="Cliente"
+            value={selectedClient}
+            onChange={handleClientSelectChange}
+            options={clientOptions}
+            disabled={!!error && error.status !== HttpStatusCode.NotFound}
+            size={'small'}
+          />
+        </Grid>
+
         <Grid
-          size={{ xs: 12, sm: 4 }}
-          textAlign={{ xs: 'center', sm: 'right' }}
+          size={{ xs: 12, sm: 12, md: 4 }}
+          textAlign={{ xs: 'center', sm: 'center', md: 'right' }}
         >
           <Button
             id="addButton"
@@ -81,6 +120,7 @@ const ProductToolbar = () => {
               isReadOnly ||
               (!!error && error.status !== HttpStatusCode.NotFound)
             }
+            fullWidth={isXs || false}
           >
             {isXs ? 'Agregar' : ' Agregar producto'}
           </Button>

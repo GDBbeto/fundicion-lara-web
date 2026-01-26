@@ -20,6 +20,13 @@ const api = axios.create({
   timeout: 10000, // 10s
 });
 
+const refreshApi = axios.create({
+  baseURL,
+  timeout: 10000,
+});
+
+let isRefreshing = false;
+
 // Interceptor de request: agrega el token a cada request
 api.interceptors.request.use(
   (config) => {
@@ -46,11 +53,16 @@ api.interceptors.response.use(
       !originalRequest._retry &&
       getRefreshToken()
     ) {
+      if (isRefreshing) {
+        return Promise.reject(error);
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
         // Usar la misma ruta que authService.ts
-        const res = await api.post(`/${AUTH_API_BASE}/refresh`, {
+        const res = await refreshApi.post(`/${AUTH_API_BASE}/refresh`, {
           refreshToken: getRefreshToken(),
         });
 
@@ -64,6 +76,7 @@ api.interceptors.response.use(
         originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
         return api(originalRequest);
       } catch (refreshError) {
+        isRefreshing = false;
         // Si falla el refresh, hacer logout completo
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');

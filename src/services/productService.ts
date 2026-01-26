@@ -7,6 +7,7 @@ interface ProductQueryParams {
   page?: number;
   pageSize?: number;
   search?: string;
+  client?: string;
   order?: 'asc' | 'desc';
   orderBy?: keyof Product; // ejemplo: 'productId', 'name', etc.
 }
@@ -17,6 +18,13 @@ export const getProducts = async (
   const response = await api.get<ApiResponse<Product[]>>(PRODUCT_API_BASE, {
     params,
   });
+  return response.data;
+};
+
+export const getClients = async (): Promise<ApiResponse<string[]>> => {
+  const response = await api.get<ApiResponse<string[]>>(
+    `${PRODUCT_API_BASE}/clients`,
+  );
   return response.data;
 };
 

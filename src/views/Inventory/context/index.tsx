@@ -6,7 +6,7 @@ import type { ApiResponse, CommonError, Product } from 'types/api';
 
 import { useSnackbar, useTableData } from 'hooks';
 
-import { getProducts } from 'services/productService';
+import { getClients, getProducts } from 'services/productService';
 
 import { ERROR_MESSAGES } from 'commons/messages';
 import { HttpStatusCode } from 'commons/global';
@@ -21,6 +21,7 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
   const { showSnackbarError } = useSnackbar();
 
   const [search, setSearch] = useState('');
+  const [selectedClient, setSelectedClient] = useState('');
 
   const {
     pagination,
@@ -36,7 +37,15 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     ApiResponse<Product[]>,
     CommonError
   >({
-    queryKey: ['products', pagination.page, pagination.pageSize, search],
+    queryKey: [
+      'products',
+      {
+        page: pagination.page,
+        pageSize: pagination.pageSize,
+        search,
+        client: selectedClient,
+      },
+    ],
     queryFn: () =>
       getProducts({
         page: pagination.page,
@@ -44,7 +53,13 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
         order: 'desc',
         orderBy: 'productId',
         search,
+        client: selectedClient || undefined,
       }),
+  });
+
+  const { data: clientsData } = useQuery<ApiResponse<string[]>, CommonError>({
+    queryKey: ['clients'],
+    queryFn: () => getClients(),
   });
 
   const handleSearch = (value: string) => {
@@ -52,6 +67,11 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
       setPagination((prev) => ({ ...prev, page: 1 }));
     }
     setSearch(value);
+  };
+
+  const handleClientChange = (value: string) => {
+    setPagination((prev) => ({ ...prev, page: 1 }));
+    setSelectedClient(value);
   };
 
   const handleRefresh = () => {
@@ -82,11 +102,14 @@ const ProductProvider = ({ children }: { children: React.ReactNode }) => {
     <ProductContext.Provider
       value={{
         search,
+        selectedClient,
         products: rows,
+        clients: clientsData?.data ?? [],
         isLoading,
         error,
         pagination,
         handleSearch,
+        handleClientChange,
         handleRefresh,
         handlePageChange,
         handleRowsPerPageChange,

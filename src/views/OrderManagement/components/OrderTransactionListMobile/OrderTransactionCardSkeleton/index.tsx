@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Box, Stack, Skeleton } from '@mui/material';
 
 import { CardLayout } from 'components/shared';
