@@ -42,7 +42,7 @@ const FileUploadLayout = ({
   const handleFile = useCallback(
     (file: File) => {
       if (validateFileSize && file.size > MAX_FILE_SIZE) {
-        setError(ERROR_MESSAGES.UPLOAD_DOCUMENT_MAX_SIZE);
+        setError(ERROR_MESSAGES.UPLOAD_IMAGE_MAX_SIZE);
         return;
       }
 
