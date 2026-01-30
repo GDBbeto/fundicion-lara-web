@@ -25,6 +25,7 @@ const DesktopUploader = ({ imageUrl, onUpload, loading = false }: Props) => {
       validateFile={validateImageFile}
       dragText={'Arrastra y suelta una imagen aqu\u00ED'}
       buttonText={'Seleccionar imagen'}
+      validateFileSize={true}
     >
       {imageUrl && (
         <Box

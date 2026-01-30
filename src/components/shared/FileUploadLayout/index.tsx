@@ -20,6 +20,7 @@ interface Props {
   dragText?: string;
   buttonText?: string;
   disableDragAndDrop?: boolean;
+  validateFileSize?: boolean;
 }
 
 const FileUploadLayout = ({
@@ -31,6 +32,7 @@ const FileUploadLayout = ({
   dragText = 'Arrastra y suelta un archivo aquí',
   buttonText = 'Seleccionar archivo',
   disableDragAndDrop = false,
+  validateFileSize,
 }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,8 +41,8 @@ const FileUploadLayout = ({
 
   const handleFile = useCallback(
     (file: File) => {
-      if (file.size > MAX_FILE_SIZE) {
-        setError(ERROR_MESSAGES.UPLOAD_IMAGE_MAX_SIZE);
+      if (validateFileSize && file.size > MAX_FILE_SIZE) {
+        setError(ERROR_MESSAGES.UPLOAD_DOCUMENT_MAX_SIZE);
         return;
       }
 
@@ -54,7 +56,7 @@ const FileUploadLayout = ({
       setError(null);
       onUpload(file);
     },
-    [validateFile, onUpload],
+    [validateFile, onUpload, validateFileSize],
   );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,13 +144,15 @@ const FileUploadLayout = ({
             {buttonText}
           </Button>
 
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ mt: 1, fontStyle: 'italic' }}
-          >
-            Tamaño máximo: 100 KB
-          </Typography>
+          {validateFileSize && (
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ mt: 1, fontStyle: 'italic' }}
+            >
+              Tamaño máximo: 100 KB
+            </Typography>
+          )}
 
           {error && (
             <Typography color="error" mt={2} variant="caption">
