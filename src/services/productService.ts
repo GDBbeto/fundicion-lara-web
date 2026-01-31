@@ -73,3 +73,18 @@ export const uploadProductImage = async (productId: number, file: File) => {
   );
   return response.data;
 };
+
+export const downloadProducts = async (params: {
+  client?: string;
+  search?: string;
+}) => {
+  const response = await api.get<Blob>(`${PRODUCT_API_BASE}/download`, {
+    headers: {
+      'Content-Type': 'application/octet-stream',
+      'Cache-Control': 'no-cache',
+    },
+    responseType: 'arraybuffer',
+    params,
+  });
+  return response;
+};

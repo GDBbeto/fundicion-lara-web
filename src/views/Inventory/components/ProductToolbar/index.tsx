@@ -2,10 +2,11 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Box, Button, Grid } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import DownloadIcon from '@mui/icons-material/Download';
 
 import { useDebounce } from 'use-debounce';
 
-import { useDevice, usePermissions, useSnackbar } from 'hooks';
+import { useDevice, usePermissions, useSnackbar, useErrorHandler } from 'hooks';
 
 import {
   CustomSelectField,
@@ -15,6 +16,10 @@ import {
 
 import { useProductos, useSaveProduct } from 'views/Inventory/hooks';
 
+import { downloadProducts } from 'services/productService';
+
+import { downloadFile } from 'utils/utils';
+
 import type { Product } from 'types/api';
 import Option from 'types/option';
 
@@ -23,16 +28,31 @@ import { HttpStatusCode } from 'commons/global';
 
 import ProductFormModal from '../ProductFormModal';
 
+const generateProductFileName = (): string => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  const timestamp = `${year}${month}${day}-${hours}${minutes}${seconds}`;
+  return `productos_fundicion_${timestamp}.xlsx`;
+};
 const ProductToolbar = () => {
   const { isXs } = useDevice();
   const { isReadOnly } = usePermissions();
   const [open, setOpen] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch] = useDebounce(searchTerm, 500);
   const { showSnackbar, showSnackbarError } = useSnackbar();
+  const { showError } = useErrorHandler();
 
   const {
+    products,
     handleSearch,
     handleClientChange,
     selectedClient,
@@ -78,6 +98,30 @@ const ProductToolbar = () => {
     });
   };
 
+  const handleDownload = useCallback(async () => {
+    try {
+      setIsDownloading(true);
+      const response = await downloadProducts({
+        client: selectedClient || undefined,
+        search: debouncedSearch || undefined,
+      });
+
+      downloadFile({
+        data: response.data,
+        headers: response.headers,
+        defaultFileName: generateProductFileName(),
+        mimeType:
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      });
+
+      showSnackbar('Descarga iniciada exitosamente', 'success');
+    } catch (downloadError) {
+      showError(downloadError);
+    } finally {
+      setIsDownloading(false);
+    }
+  }, [selectedClient, debouncedSearch, showSnackbar, showError]);
+
   useEffect(() => {
     handleSearch(debouncedSearch);
   }, [debouncedSearch, handleSearch]);
@@ -111,19 +155,45 @@ const ProductToolbar = () => {
           size={{ xs: 12, sm: 12, md: 4 }}
           textAlign={{ xs: 'center', sm: 'center', md: 'right' }}
         >
-          <Button
-            id="addButton"
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={handleAddProduct}
-            disabled={
-              isReadOnly ||
-              (!!error && error.status !== HttpStatusCode.NotFound)
-            }
-            fullWidth={isXs || false}
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 1,
+              justifyContent: {
+                xs: 'center',
+                sm: 'center',
+                md: 'flex-end',
+              },
+            }}
           >
-            {isXs ? 'Agregar' : ' Agregar producto'}
-          </Button>
+            <Button
+              id="downloadButton"
+              variant="outlined"
+              startIcon={<DownloadIcon />}
+              onClick={handleDownload}
+              disabled={
+                isDownloading ||
+                (!!error && error.status !== HttpStatusCode.NotFound) ||
+                products.length === 0
+              }
+              size={isXs ? 'small' : 'medium'}
+            >
+              {isXs ? 'Descargar' : 'Descargar'}
+            </Button>
+            <Button
+              id="addButton"
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={handleAddProduct}
+              disabled={
+                isReadOnly ||
+                (!!error && error.status !== HttpStatusCode.NotFound)
+              }
+              size={isXs ? 'small' : 'medium'}
+            >
+              {isXs ? 'Agregar' : 'Agregar producto'}
+            </Button>
+          </Box>
         </Grid>
       </Grid>
       {open ? (
@@ -134,7 +204,7 @@ const ProductToolbar = () => {
           onSubmit={handleSubmit}
         />
       ) : null}
-      {isPending ? <CustomSpinner open /> : null}
+      {isPending || isDownloading ? <CustomSpinner open /> : null}
     </Box>
   );
 };
