@@ -12,6 +12,8 @@ import { es } from 'date-fns/locale';
 import theme from 'theme';
 
 import NotistackProvider from 'providers/NotistackProvider';
+import { BackendStatusProvider } from 'providers/BackendStatusProvider';
+
 import AuthProvider from 'context/auth';
 
 import AppRoutes from 'router/AppRoutes';
@@ -31,11 +33,13 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
           <NotistackProvider>
-            <AuthProvider>
-              <Router>
-                <AppRoutes />
-              </Router>
-            </AuthProvider>
+            <BackendStatusProvider>
+              <AuthProvider>
+                <Router>
+                  <AppRoutes />
+                </Router>
+              </AuthProvider>
+            </BackendStatusProvider>
           </NotistackProvider>
         </LocalizationProvider>
       </QueryClientProvider>

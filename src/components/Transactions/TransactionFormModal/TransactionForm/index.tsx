@@ -45,6 +45,7 @@ const TransactionForm = ({ id, transaction, onSubmit }: Props) => {
       issuerRfc: '',
       type,
       status: null,
+      operationDate: formatDateToDefault(new Date()),
     },
   });
 

@@ -12,6 +12,7 @@ import GlobalScrollStyles from '../GlobalScrollStyles';
 
 const Layout = () => {
   const { isRolePending } = usePermissions();
+
   if (isRolePending) {
     return <PendingRoleNotice />;
   }
